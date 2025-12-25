@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/USER/Desktop/mystic-john/components/mystical-sparkles.tsx"],"sourcesContent":["'use client'\r\n\r\nexport function MysticalSparkles() {\r\n  return (\r\n    <div className=\"pointer-events-none absolute inset-0 overflow-hidden\">\r\n      {[...Array(20)].map((_, i) => (\r\n        <div\r\n          key={i}\r\n          className=\"absolute h-1 w-1 rounded-full bg-accent animate-sparkle\"\r\n          style={{\r\n            left: `${Math.random() * 100}%`,\r\n            top: `${Math.random() * 100}%`,\r\n            animationDelay: `${Math.random() * 2}s`,\r\n            animationDuration: `${2 + Math.random() * 2}s`,\r\n          }}\r\n        />\r\n      ))}\r\n    </div>\r\n  )\r\n}\r\n"],"names":[],"mappings":";;;;;AAAA;;AAEO,SAAS;IACd,qBACE,8OAAC;QAAI,WAAU;kBACZ;eAAI,MAAM;SAAI,CAAC,GAAG,CAAC,CAAC,GAAG,kBACtB,8OAAC;gBAEC,WAAU;gBACV,OAAO;oBACL,MAAM,GAAG,KAAK,MAAM,KAAK,IAAI,CAAC,CAAC;oBAC/B,KAAK,GAAG,KAAK,MAAM,KAAK,IAAI,CAAC,CAAC;oBAC9B,gBAAgB,GAAG,KAAK,MAAM,KAAK,EAAE,CAAC,CAAC;oBACvC,mBAAmB,GAAG,IAAI,KAAK,MAAM,KAAK,EAAE,CAAC,CAAC;gBAChD;eAPK;;;;;;;;;;AAYf"}}]
+}
