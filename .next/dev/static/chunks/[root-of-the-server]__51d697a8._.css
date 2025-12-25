@@ -198,6 +198,7 @@
     --font-weight-bold: 700;
     --leading-tight: 1.25;
     --leading-relaxed: 1.625;
+    --animate-spin: spin 1s linear infinite;
     --blur-sm: 8px;
     --blur-xl: 24px;
     --blur-2xl: 40px;
@@ -486,6 +487,10 @@
 
   .pointer-events-none {
     pointer-events: none;
+  }
+
+  .visible {
+    visibility: visible;
   }
 
   .absolute {
@@ -861,6 +866,10 @@
     transform: var(--tw-rotate-x, ) var(--tw-rotate-y, ) var(--tw-rotate-z, ) var(--tw-skew-x, ) var(--tw-skew-y, );
   }
 
+  .animate-spin {
+    animation: var(--animate-spin);
+  }
+
   .resize-none {
     resize: none;
   }
@@ -1023,6 +1032,11 @@
     border-bottom-width: 1px;
   }
 
+  .border-b-2 {
+    border-bottom-style: var(--tw-border-style);
+    border-bottom-width: 2px;
+  }
+
   .border-accent\/20 {
     border-color: var(--accent);
   }
@@ -1055,6 +1069,10 @@
 
   .border-input {
     border-color: var(--input);
+  }
+
+  .border-primary {
+    border-color: var(--primary);
   }
 
   .border-primary\/20 {
@@ -2907,6 +2925,12 @@
 @property --tw-duration {
   syntax: "*";
   inherits: false
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /*# sourceMappingURL=%5Broot-of-the-server%5D__51d697a8._.css.map*/
