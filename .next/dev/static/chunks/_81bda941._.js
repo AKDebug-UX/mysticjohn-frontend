@@ -274,12 +274,15 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2f$client$2e$ts__
 const bookingsApi = {
     /**
    * Get all active services
+   * Backend route: bookingRoutes mounted at /api with router.get('/')
+   * This resolves to /api/ (note trailing slash)
    */ getServices: async ()=>{
-        const response = await __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2f$client$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["apiClient"].get('/api');
+        const response = await __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2f$client$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["apiClient"].get('/api/');
         return response;
     },
     /**
    * Get service by ID
+   * Backend route: /api/:id (now correctly ordered after specific routes)
    */ getService: async (id)=>{
         return __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2f$client$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["apiClient"].get(`/api/${id}`);
     },

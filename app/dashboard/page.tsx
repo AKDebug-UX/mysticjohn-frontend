@@ -17,6 +17,8 @@ import { useCredits } from '@/lib/hooks'
 import { Calendar, Star, BookOpen, Bell, Coins, Plus, Clock, MapPin, Play, Link as LinkIcon } from 'lucide-react'
 import Link from 'next/link'
 import { format, parseISO, isFuture } from 'date-fns'
+import { BuyCreditsDialog } from '@/components/BuyCreditsDialog'
+import { useState } from 'react'
 
 export default function DashboardPage() {
   const { user } = useAuthContext();
@@ -24,6 +26,7 @@ export default function DashboardPage() {
   const { enrollments, fetchEnrollments, isLoading: coursesLoading } = useCourses();
   const { tickets, fetchTickets, isLoading: ticketsLoading } = useEvents();
   const { balance, fetchBalance, isLoading: creditsLoading } = useCredits();
+  const [buyCreditsOpen, setBuyCreditsOpen] = useState(false);
 
   useEffect(() => {
     fetchBookings();
@@ -131,11 +134,13 @@ export default function DashboardPage() {
                           </div>
                           <p className="text-sm text-muted-foreground">Credits remaining</p>
                         </div>
-                        <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90" asChild>
-                          <Link href="/dashboard">
-                            <Plus className="h-4 w-4 mr-1" />
-                            Buy More
-                          </Link>
+                        <Button
+                          size="sm"
+                          className="bg-primary text-primary-foreground hover:bg-primary/90"
+                          onClick={() => setBuyCreditsOpen(true)}
+                        >
+                          <Plus className="h-4 w-4 mr-1" />
+                          Buy More
                         </Button>
                       </div>
                     </CardContent>
@@ -354,6 +359,7 @@ export default function DashboardPage() {
           </main>
         </div>
       </div>
+      <BuyCreditsDialog open={buyCreditsOpen} onOpenChange={setBuyCreditsOpen} />
     </ProtectedRoute>
   )
 }

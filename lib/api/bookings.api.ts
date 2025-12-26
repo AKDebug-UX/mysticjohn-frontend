@@ -12,14 +12,17 @@ import type {
 export const bookingsApi = {
   /**
    * Get all active services
+   * Backend route: bookingRoutes mounted at /api with router.get('/')
+   * This resolves to /api/ (note trailing slash)
    */
   getServices: async (): Promise<Service[]> => {
-    const response = await apiClient.get<Service[]>('/api');
+    const response = await apiClient.get<Service[]>('/api/');
     return response;
   },
 
   /**
    * Get service by ID
+   * Backend route: /api/:id (now correctly ordered after specific routes)
    */
   getService: async (id: string): Promise<Service> => {
     return apiClient.get<Service>(`/api/${id}`);

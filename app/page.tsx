@@ -9,7 +9,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      
+
       {/* Hero Section */}
       <section className="relative overflow-hidden py-24 md:py-32">
         <MysticalSparkles />
@@ -22,16 +22,16 @@ export default function HomePage() {
                 <Sparkles className="h-24 w-24 mx-auto text-primary animate-float" />
               </div>
             </div>
-            
+
             <h1 className="text-5xl md:text-7xl font-bold text-foreground text-balance leading-tight">
               Welcome, Lovely Soul
               <span className="block text-primary mt-2">Your Journey Starts Here</span>
             </h1>
-            
+
             <p className="text-xl md:text-2xl text-muted-foreground text-pretty">
               Aye, come in. Let's see what the universe has tae say today.
             </p>
-            
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 text-lg px-8" asChild>
                 <Link href="/bookings">Book a Reading</Link>
@@ -112,7 +112,7 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto">
             <Card className="border-primary/30 relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/5 to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-br from-primary/5 via-accent/5 to-transparent" />
               <MysticalSparkles />
               <CardHeader className="relative z-10">
                 <CardTitle className="text-2xl text-center text-foreground flex items-center justify-center gap-2">
@@ -123,7 +123,7 @@ export default function HomePage() {
               <CardContent className="relative z-10">
                 <div className="bg-card/50 rounded-lg p-6 border border-border/50">
                   <p className="text-muted-foreground text-center text-lg italic leading-relaxed">
-                    "The universe whispers tae those who listen. Today, trust yer intuition—it's sharper than ye think. 
+                    "The universe whispers tae those who listen. Today, trust yer intuition—it's sharper than ye think.
                     The spirits are alignin' in yer favor, so dinnae doubt yerself, lovely soul."
                   </p>
                   <p className="text-right text-sm text-muted-foreground mt-4">— John</p>
@@ -154,7 +154,7 @@ export default function HomePage() {
             ].map((event, i) => (
               <Card key={i} className="border-border/50 hover:border-accent/50 transition-all duration-300 hover:shadow-lg hover:shadow-accent/20">
                 <CardHeader>
-                  <div className="h-40 bg-gradient-to-br from-primary/20 via-accent/20 to-secondary/20 rounded-lg mb-4 flex items-center justify-center relative overflow-hidden">
+                  <div className="h-40 bg-linear-to-br from-primary/20 via-accent/20 to-secondary/20 rounded-lg mb-4 flex items-center justify-center relative overflow-hidden">
                     <MysticalSparkles />
                     <Star className="h-16 w-16 text-accent/40 animate-float" />
                   </div>
@@ -185,7 +185,7 @@ export default function HomePage() {
 
       {/* Join the Community CTA */}
       <section id="community" className="py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10" />
+        <div className="absolute inset-0 bg-linear-to-br from-primary/10 via-accent/10 to-secondary/10" />
         <MysticalSparkles />
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-2xl mx-auto text-center space-y-6">
