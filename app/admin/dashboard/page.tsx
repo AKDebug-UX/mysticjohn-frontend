@@ -3,10 +3,19 @@
 import { ProtectedAdminRoute } from '@/components/ProtectedAdminRoute';
 import { useAuthContext } from '@/contexts/AuthContext';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Shield, Users, CreditCard, Calendar, BookOpen, MessageSquare } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Shield, Users, CreditCard, Calendar, BookOpen, MessageSquare, LogOut } from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function AdminDashboardPage() {
-  const { user } = useAuthContext();
+  const { user, logout } = useAuthContext();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    await logout();
+    router.push('/admin/login');
+  };
 
   return (
     <ProtectedAdminRoute>
@@ -19,8 +28,19 @@ export default function AdminDashboardPage() {
                 <Shield className="h-6 w-6 text-primary" />
                 <h1 className="text-2xl font-bold text-foreground">Admin Dashboard</h1>
               </div>
-              <div className="text-sm text-muted-foreground">
-                Welcome, {user?.name || user?.email}
+              <div className="flex items-center gap-4">
+                <div className="text-sm text-muted-foreground">
+                  Welcome, {user?.name || user?.email}
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleLogout}
+                  className="border-primary/50 hover:bg-primary/10"
+                >
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Logout
+                </Button>
               </div>
             </div>
           </div>
@@ -81,7 +101,11 @@ export default function AdminDashboardPage() {
                 <CardDescription>Manage credit packs</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground">Manage credit packs and pricing</p>
+                <Link href="/admin/credit-packs">
+                  <Button variant="outline" className="w-full">
+                    Manage Credit Packs
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
 

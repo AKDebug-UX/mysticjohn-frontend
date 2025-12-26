@@ -18,4 +18,5 @@ export { useEvents } from './useEvents';
 export { useGroups } from './useGroups';
 export { useCredits } from './useCredits';
 export { useCheckout } from './useCheckout';
+export { useAdminCredits } from './useAdminCredits';
 

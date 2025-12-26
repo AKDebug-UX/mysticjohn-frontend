@@ -30,10 +30,6 @@ export default function LoginPage() {
     }
   }, [isAuthenticated, user, router]);
 
-  if (isAuthenticated) {
-    return null;
-  }
-
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     clearError();
@@ -51,16 +47,10 @@ export default function LoginPage() {
     }
   };
 
-  // Redirect based on role after authentication
-  useEffect(() => {
-    if (isAuthenticated && user) {
-      if (user.role === 'ADMIN') {
-        router.push('/admin/dashboard');
-      } else {
-        router.push('/dashboard');
-      }
-    }
-  }, [isAuthenticated, user, router]);
+  // Show loading or redirect if already authenticated
+  if (isAuthenticated) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen bg-background">
