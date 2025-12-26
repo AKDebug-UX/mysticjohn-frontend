@@ -51,7 +51,7 @@ export default function LoginPage() {
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-md mx-auto">
             <Card className="border-primary/30 relative overflow-hidden shadow-lg shadow-primary/10">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/5 to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-br from-primary/5 via-accent/5 to-transparent" />
               <MysticalSparkles />
 
               <CardHeader className="relative z-10 text-center">
