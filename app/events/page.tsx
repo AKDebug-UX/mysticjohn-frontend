@@ -1,7 +1,10 @@
+'use client'
+
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Navigation } from '@/components/navigation'
+import { DashboardSidebar } from '@/components/dashboard-sidebar'
 import { MysticalSparkles } from '@/components/mystical-sparkles'
 import { Calendar, Clock, MapPin, Users, Star, Sparkles } from 'lucide-react'
 
@@ -91,9 +94,13 @@ export default function EventsPage() {
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      
-      {/* Header */}
-      <section className="relative overflow-hidden py-16 md:py-24">
+
+      <div className="flex">
+        <DashboardSidebar />
+
+        <main className="flex-1">
+          {/* Header */}
+          <section className="relative overflow-hidden py-16 md:py-24">
         <MysticalSparkles />
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center space-y-4">
@@ -228,6 +235,8 @@ export default function EventsPage() {
           </div>
         </div>
       </section>
+        </main>
+      </div>
     </div>
   )
 }

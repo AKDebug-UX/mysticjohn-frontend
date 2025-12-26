@@ -10,9 +10,9 @@ const navigation = [
   { name: 'Bookings', href: '/bookings', icon: Calendar },
   { name: 'Events', href: '/events', icon: Star },
   { name: 'Courses', href: '/courses', icon: BookOpen },
-  { name: 'Groups', href: '/dashboard', icon: Users },
+  { name: 'Groups', href: '/groups', icon: Users },
   { name: 'Messages', href: '/messages', icon: MessageSquare },
-  { name: 'Settings', href: '/dashboard', icon: Settings },
+  { name: 'Settings', href: '/settings', icon: Settings },
 ]
 
 export function DashboardSidebar() {
