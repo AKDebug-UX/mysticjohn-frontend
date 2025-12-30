@@ -20,7 +20,7 @@ interface BookingDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   service: Service | null;
-}
+}   
 
 export function BookingDialog({ open, onOpenChange, service }: BookingDialogProps) {
   const { fetchAvailability, createBooking, isLoading, error, clearError, availability } = useBookings();
