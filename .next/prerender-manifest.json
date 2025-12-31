@@ -16,7 +16,6 @@
       "initialRevalidateSeconds": false,
       "srcRoute": "/_global-error",
       "dataRoute": "/_global-error.rsc",
-      "prefetchDataRoute": null,
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -42,7 +41,6 @@
       "initialRevalidateSeconds": false,
       "srcRoute": "/_not-found",
       "dataRoute": "/_not-found.rsc",
-      "prefetchDataRoute": null,
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -67,7 +65,6 @@
       "initialRevalidateSeconds": false,
       "srcRoute": "/admin/credit-packs",
       "dataRoute": "/admin/credit-packs.rsc",
-      "prefetchDataRoute": null,
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -92,7 +89,6 @@
       "initialRevalidateSeconds": false,
       "srcRoute": "/admin/dashboard",
       "dataRoute": "/admin/dashboard.rsc",
-      "prefetchDataRoute": null,
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -117,7 +113,6 @@
       "initialRevalidateSeconds": false,
       "srcRoute": "/admin/login",
       "dataRoute": "/admin/login.rsc",
-      "prefetchDataRoute": null,
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -142,7 +137,6 @@
       "initialRevalidateSeconds": false,
       "srcRoute": "/bookings/my",
       "dataRoute": "/bookings/my.rsc",
-      "prefetchDataRoute": null,
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -167,7 +161,6 @@
       "initialRevalidateSeconds": false,
       "srcRoute": "/bookings",
       "dataRoute": "/bookings.rsc",
-      "prefetchDataRoute": null,
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -192,7 +185,6 @@
       "initialRevalidateSeconds": false,
       "srcRoute": "/courses",
       "dataRoute": "/courses.rsc",
-      "prefetchDataRoute": null,
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -217,7 +209,6 @@
       "initialRevalidateSeconds": false,
       "srcRoute": "/dashboard",
       "dataRoute": "/dashboard.rsc",
-      "prefetchDataRoute": null,
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -242,7 +233,6 @@
       "initialRevalidateSeconds": false,
       "srcRoute": "/events",
       "dataRoute": "/events.rsc",
-      "prefetchDataRoute": null,
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -267,7 +257,6 @@
       "initialRevalidateSeconds": false,
       "srcRoute": "/groups",
       "dataRoute": "/groups.rsc",
-      "prefetchDataRoute": null,
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -292,7 +281,6 @@
       "initialRevalidateSeconds": false,
       "srcRoute": "/login",
       "dataRoute": "/login.rsc",
-      "prefetchDataRoute": null,
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -317,7 +305,6 @@
       "initialRevalidateSeconds": false,
       "srcRoute": "/messages",
       "dataRoute": "/messages.rsc",
-      "prefetchDataRoute": null,
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -342,7 +329,6 @@
       "initialRevalidateSeconds": false,
       "srcRoute": "/",
       "dataRoute": "/index.rsc",
-      "prefetchDataRoute": null,
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -367,7 +353,6 @@
       "initialRevalidateSeconds": false,
       "srcRoute": "/register",
       "dataRoute": "/register.rsc",
-      "prefetchDataRoute": null,
       "allowHeader": [
         "host",
         "x-matched-path",
