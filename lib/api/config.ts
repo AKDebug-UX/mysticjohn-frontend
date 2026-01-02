@@ -3,7 +3,7 @@
  * Base URL for the backend API
  */
 export const API_CONFIG = {
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000',
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://mystic-john-server-1.onrender.com',
   timeout: 30000, // 30 seconds
 } as const;
 
