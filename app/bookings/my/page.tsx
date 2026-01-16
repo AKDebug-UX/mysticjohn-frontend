@@ -5,8 +5,17 @@ import { useBookings } from '@/lib/hooks';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Navigation } from '@/components/navigation';
 import { DashboardSidebar } from '@/components/dashboard-sidebar';
+import { MobileBottomNav } from '@/components/mobile-bottom-nav';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { Calendar, Clock, Video, MapPin, X, Loader2, AlertCircle } from 'lucide-react';
 import { format, parseISO, isPast, isToday } from 'date-fns';
@@ -16,26 +25,45 @@ import Link from 'next/link';
 export default function MyBookingsPage() {
   const { bookings, isLoading, error, fetchBookings, cancelBooking } = useBookings();
   const [cancellingId, setCancellingId] = useState<string | null>(null);
+  const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
+  const [bookingToCancel, setBookingToCancel] = useState<string | null>(null);
 
   useEffect(() => {
     fetchBookings();
   }, [fetchBookings]);
 
-  const handleCancel = async (bookingId: string) => {
-    if (!confirm('Are you sure you want to cancel this booking?')) {
+  const handleCancelClick = (bookingId: string) => {
+    console.log('Cancel button clicked for booking:', bookingId);
+    setBookingToCancel(bookingId);
+    setCancelDialogOpen(true);
+  };
+
+  const handleCancelConfirm = async () => {
+    if (!bookingToCancel) {
+      console.error('No booking ID to cancel');
       return;
     }
 
-    setCancellingId(bookingId);
+    setCancelDialogOpen(false);
+    setCancellingId(bookingToCancel);
     try {
-      await cancelBooking(bookingId);
+      console.log('Cancelling booking:', bookingToCancel);
+      await cancelBooking(bookingToCancel);
       toast.success('Booking cancelled successfully');
       await fetchBookings(); // Refresh list
-    } catch (err) {
-      toast.error('Failed to cancel booking');
+    } catch (err: any) {
+      console.error('Error cancelling booking:', err);
+      const errorMessage = err?.message || 'Failed to cancel booking';
+      toast.error(errorMessage);
     } finally {
       setCancellingId(null);
+      setBookingToCancel(null);
     }
+  };
+
+  const handleCancelDialogClose = () => {
+    setCancelDialogOpen(false);
+    setBookingToCancel(null);
   };
 
   const getStatusColor = (status: string) => {
@@ -70,7 +98,7 @@ export default function MyBookingsPage() {
           <Navigation />
           <div className="flex">
             <DashboardSidebar />
-            <main className="flex-1 p-6 lg:p-8 lg:ml-64">
+            <main className="flex-1 p-6 lg:p-8 lg:ml-64 pb-20 lg:pb-8">
               <div className="flex items-center justify-center py-20">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
               </div>
@@ -89,7 +117,7 @@ export default function MyBookingsPage() {
         <div className="flex">
           <DashboardSidebar />
 
-          <main className="flex-1 p-6 lg:p-8">
+          <main className="flex-1 p-6 lg:p-8 lg:ml-64 pb-20 lg:pb-8">
             {/* Header */}
             <div className="mb-8">
               <div className="flex items-center justify-between mb-4">
@@ -133,14 +161,14 @@ export default function MyBookingsPage() {
                 </Card>
               ) : (
                 <div className="grid gap-4 md:grid-cols-2">
-                  {upcomingBookings.map((booking) => {
+                  {upcomingBookings.map((booking, index) => {
                     const startDate = parseISO(booking.startDateTime);
                     const endDate = parseISO(booking.endDateTime);
                     const isUpcomingToday = isToday(startDate);
 
                     return (
                       <Card
-                        key={booking.id}
+                        key={booking.id || `upcoming-booking-${index}-${booking.startDateTime}`}
                         className={`border-border/50 hover:border-primary/40 transition-all ${
                           isUpcomingToday ? 'ring-2 ring-primary/50' : ''
                         }`}
@@ -166,8 +194,12 @@ export default function MyBookingsPage() {
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                onClick={() => handleCancel(booking.id)}
-                                disabled={cancellingId === booking.id}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  e.preventDefault();
+                                  handleCancelClick(booking.id);
+                                }}
+                                disabled={cancellingId === booking.id || cancelDialogOpen}
                                 className="text-destructive hover:text-destructive hover:bg-destructive/10"
                               >
                                 {cancellingId === booking.id ? (
@@ -231,13 +263,13 @@ export default function MyBookingsPage() {
               <div>
                 <h2 className="text-2xl font-semibold text-foreground mb-4">Past Bookings</h2>
                 <div className="grid gap-4 md:grid-cols-2">
-                  {pastBookings.map((booking) => {
+                  {pastBookings.map((booking, index) => {
                     const startDate = parseISO(booking.startDateTime);
                     const endDate = parseISO(booking.endDateTime);
 
                     return (
                       <Card
-                        key={booking.id}
+                        key={booking.id || `past-booking-${index}-${booking.startDateTime}`}
                         className="border-border/50 opacity-75 hover:opacity-100 transition-opacity"
                       >
                         <CardHeader>
@@ -280,6 +312,42 @@ export default function MyBookingsPage() {
             )}
           </main>
         </div>
+        <MobileBottomNav />
+
+        {/* Cancel Booking Confirmation Dialog */}
+        <Dialog open={cancelDialogOpen} onOpenChange={handleCancelDialogClose}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Cancel Booking</DialogTitle>
+              <DialogDescription>
+                Are you sure you want to cancel this booking? This action cannot be undone.
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <Button
+                variant="outline"
+                onClick={handleCancelDialogClose}
+                disabled={cancellingId !== null}
+              >
+                Keep Booking
+              </Button>
+              <Button
+                variant="destructive"
+                onClick={handleCancelConfirm}
+                disabled={cancellingId !== null}
+              >
+                {cancellingId ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Cancelling...
+                  </>
+                ) : (
+                  'Cancel Booking'
+                )}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </ProtectedRoute>
   );

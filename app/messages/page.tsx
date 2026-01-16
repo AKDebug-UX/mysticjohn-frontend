@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Textarea } from '@/components/ui/textarea'
 import { Navigation } from '@/components/navigation'
 import { DashboardSidebar } from '@/components/dashboard-sidebar'
+import { MobileBottomNav } from '@/components/mobile-bottom-nav'
 import { ProtectedRoute } from '@/components/ProtectedRoute'
 import { MysticalSparkles } from '@/components/mystical-sparkles'
 import { useCredits } from '@/lib/hooks'
@@ -58,7 +59,7 @@ export default function MessagesPage() {
         <div className="flex">
           <DashboardSidebar />
 
-          <main className="flex-1 p-6 lg:p-8 lg:ml-64">
+          <main className="flex-1 p-6 lg:p-8 lg:ml-64 pb-20 lg:pb-8">
             {/* Header */}
             <div className="mb-8 relative">
               <div className="absolute -top-4 -left-4 w-32 h-32 bg-primary/20 blur-3xl rounded-full animate-glow" />
@@ -305,6 +306,7 @@ export default function MessagesPage() {
             )}
           </main>
         </div>
+        <MobileBottomNav />
       </div>
       <BuyCreditsDialog open={buyCreditsOpen} onOpenChange={setBuyCreditsOpen} />
     </ProtectedRoute>

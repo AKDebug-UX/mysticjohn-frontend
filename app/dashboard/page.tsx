@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { Navigation } from '@/components/navigation'
 import { DashboardSidebar } from '@/components/dashboard-sidebar'
+import { MobileBottomNav } from '@/components/mobile-bottom-nav'
 import { MysticalSparkles } from '@/components/mystical-sparkles'
 import { ProtectedRoute } from '@/components/ProtectedRoute'
 import { useAuthContext } from '@/contexts/AuthContext'
@@ -90,7 +91,7 @@ export default function DashboardPage() {
         <div className="flex">
           <DashboardSidebar />
 
-          <main className="flex-1 p-6 lg:p-8 lg:ml-64">
+          <main className="flex-1 p-6 lg:p-8 lg:ml-64 pb-20 lg:pb-6">
             {/* Welcome Header */}
             <div className="mb-8 relative">
               <div className="absolute -top-4 -left-4 w-32 h-32 bg-primary/20 blur-3xl rounded-full" />
@@ -358,6 +359,7 @@ export default function DashboardPage() {
             )}
           </main>
         </div>
+        <MobileBottomNav />
       </div>
       <BuyCreditsDialog open={buyCreditsOpen} onOpenChange={setBuyCreditsOpen} />
     </ProtectedRoute>

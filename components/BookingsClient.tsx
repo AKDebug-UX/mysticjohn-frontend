@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Navigation } from '@/components/navigation'
 import { DashboardSidebar } from '@/components/dashboard-sidebar'
+import { MobileBottomNav } from '@/components/mobile-bottom-nav'
 import { MysticalSparkles } from '@/components/mystical-sparkles'
 import { BookingDialog } from '@/components/BookingDialog'
 import { useBookings } from '@/lib/hooks'
@@ -185,6 +186,8 @@ export default function BookingsClient() {
             </section>
         </main>
       </div>
+
+      <MobileBottomNav />
 
       <BookingDialog
         open={isBookingDialogOpen}

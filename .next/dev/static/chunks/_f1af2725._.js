@@ -256,6 +256,11 @@ const authApi = {
    * Get current user
    */ getMe: async ()=>{
         return __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2f$client$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["apiClient"].get('/api/auth/me');
+    },
+    /**
+   * Update user profile
+   */ updateProfile: async (data)=>{
+        return __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2f$client$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["apiClient"].patch('/api/auth/profile', data);
     }
 };
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
@@ -318,8 +323,14 @@ const bookingsApi = {
     },
     /**
    * Get user's bookings
+   * Transforms backend format (_id) to frontend format (id)
    */ getMyBookings: async ()=>{
-        return __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2f$client$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["apiClient"].get('/api/bookings/my');
+        const response = await __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2f$client$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["apiClient"].get('/api/bookings/my');
+        // Transform backend format to frontend format
+        return response.map((booking)=>({
+                ...booking,
+                id: booking._id || booking.id
+            }));
     },
     /**
    * Get booking by ID

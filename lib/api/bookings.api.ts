@@ -67,9 +67,15 @@ export const bookingsApi = {
 
   /**
    * Get user's bookings
+   * Transforms backend format (_id) to frontend format (id)
    */
   getMyBookings: async (): Promise<Booking[]> => {
-    return apiClient.get<Booking[]>('/api/bookings/my');
+    const response = await apiClient.get<any[]>('/api/bookings/my');
+    // Transform backend format to frontend format
+    return response.map((booking: any) => ({
+      ...booking,
+      id: booking._id || booking.id,
+    }));
   },
 
   /**

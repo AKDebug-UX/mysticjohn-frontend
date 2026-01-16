@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Navigation } from '@/components/navigation'
 import { DashboardSidebar } from '@/components/dashboard-sidebar'
+import { MobileBottomNav } from '@/components/mobile-bottom-nav'
 import { MysticalSparkles } from '@/components/mystical-sparkles'
 import { useEvents } from '@/lib/hooks'
 import { Calendar, Clock, MapPin, Users, Star, Sparkles } from 'lucide-react'
@@ -46,7 +47,7 @@ export default function EventsPage() {
         <div className="flex">
           <DashboardSidebar />
 
-          <main className="flex-1 lg:ml-64">
+          <main className="flex-1 lg:ml-64 pb-20 lg:pb-0">
             {/* Header */}
             <section className="relative overflow-hidden py-16 md:py-24">
               <MysticalSparkles />
@@ -233,6 +234,7 @@ export default function EventsPage() {
             </section>
           </main>
         </div>
+        <MobileBottomNav />
       </div>
   )
 }

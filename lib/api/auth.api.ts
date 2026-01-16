@@ -62,5 +62,12 @@ export const authApi = {
   getMe: async (): Promise<User> => {
     return apiClient.get<User>('/api/auth/me');
   },
+
+  /**
+   * Update user profile
+   */
+  updateProfile: async (data: { name?: string; phone?: string }): Promise<{ user: User; message: string }> => {
+    return apiClient.patch<{ user: User; message: string }>('/api/auth/profile', data);
+  },
 };
 
