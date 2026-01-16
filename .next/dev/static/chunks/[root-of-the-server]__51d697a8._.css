@@ -716,6 +716,10 @@
     margin-left: calc(var(--spacing) * 2);
   }
 
+  .ml-8 {
+    margin-left: calc(var(--spacing) * 8);
+  }
+
   .block {
     display: block;
   }
@@ -1071,6 +1075,10 @@
 
   .justify-start {
     justify-content: flex-start;
+  }
+
+  .gap-0 {
+    gap: calc(var(--spacing) * 0);
   }
 
   .gap-1 {

@@ -6,7 +6,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Navigation } from '@/components/navigation'
 import { DashboardSidebar } from '@/components/dashboard-sidebar'
-import { ProtectedRoute } from '@/components/ProtectedRoute'
 import { MysticalSparkles } from '@/components/mystical-sparkles'
 import { useEvents } from '@/lib/hooks'
 import { Calendar, Clock, MapPin, Users, Star, Sparkles } from 'lucide-react'
@@ -41,8 +40,7 @@ export default function EventsPage() {
   }
 
   return (
-    <ProtectedRoute>
-      <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background">
         <Navigation />
 
         <div className="flex">
@@ -236,6 +234,5 @@ export default function EventsPage() {
           </main>
         </div>
       </div>
-    </ProtectedRoute>
   )
 }

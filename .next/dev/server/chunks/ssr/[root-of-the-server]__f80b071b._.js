@@ -67,7 +67,7 @@ function ThemeProvider({ children, ...props }) {
     ()=>getApiUrl
 ]);
 const API_CONFIG = {
-    baseURL: ("TURBOPACK compile-time value", "https://mystic-john-server-1.onrender.com") || 'https://mystic-john-server-1.onrender.com',
+    baseURL: ("TURBOPACK compile-time value", "http://localhost:5000") || 'https://mystic-john-server-1.onrender.com',
     timeout: 30000
 };
 const getApiUrl = (endpoint)=>{
@@ -1687,7 +1687,7 @@ function useChat() {
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
         const token = (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2f$client$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getAuthToken"])();
         if (!token) return;
-        const API_URL = ("TURBOPACK compile-time value", "https://mystic-john-server-1.onrender.com") || 'http://localhost:5000';
+        const API_URL = ("TURBOPACK compile-time value", "http://localhost:5000") || 'http://localhost:5000';
         const socket = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$socket$2e$io$2d$client$2f$build$2f$esm$2d$debug$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["io"])(`${API_URL}/chat`, {
             auth: {
                 token: token

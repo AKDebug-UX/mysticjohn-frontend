@@ -5,8 +5,6 @@ import { useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Navigation } from '@/components/navigation'
-import { DashboardSidebar } from '@/components/dashboard-sidebar'
-import { ProtectedRoute } from '@/components/ProtectedRoute'
 import { MysticalSparkles } from '@/components/mystical-sparkles'
 import { BookingDialog } from '@/components/BookingDialog'
 import { useBookings } from '@/lib/hooks'
@@ -45,22 +43,27 @@ export default function BookingsClient() {
     }
   }, [searchParams, services, isBookingDialogOpen])
 
+  // Note: Services don't have a type field - users choose ONLINE/IN_PERSON when booking
+  // Filter is kept for future enhancement if services get categorized
   const filteredServices = services.filter(service => {
     if (filter === 'all') return true
-    // Note: You may need to adjust this based on your Service type structure
-    // For now, we'll assume services don't have a type field in the API response
+    // For now, all services support both online and in-person
+    // This can be enhanced when service types are added to the API
     return true
   })
 
+  const handleBookClick = (service: Service) => {
+    // Check if user is authenticated before opening booking dialog
+    // This will be handled by the BookingDialog component
+    setSelectedService(service)
+    setIsBookingDialogOpen(true)
+  }
+
   return (
-    <ProtectedRoute>
-      <div className="min-h-screen bg-background">
-        <Navigation />
+    <div className="min-h-screen bg-background">
+      <Navigation />
 
-        <div className="flex">
-          <DashboardSidebar />
-
-          <main className="flex-1">
+      <main>
             {/* Header */}
             <section className="relative overflow-hidden py-16 md:py-24">
               <MysticalSparkles />
@@ -124,7 +127,12 @@ export default function BookingsClient() {
                   </div>
                 ) : filteredServices.length === 0 ? (
                   <div className="text-center py-20">
-                    <p className="text-muted-foreground text-lg">No services available at the moment.</p>
+                    <div className="max-w-md mx-auto space-y-4">
+                      <p className="text-muted-foreground text-lg">No services available at the moment.</p>
+                      <p className="text-sm text-muted-foreground">
+                        We're working on adding more services. Check back soon or contact us for special requests.
+                      </p>
+                    </div>
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
@@ -158,10 +166,7 @@ export default function BookingsClient() {
                               <Button
                                 size="sm"
                                 className="bg-primary text-primary-foreground hover:bg-primary/90"
-                                onClick={() => {
-                                  setSelectedService(service)
-                                  setIsBookingDialogOpen(true)
-                                }}
+                                onClick={() => handleBookClick(service)}
                               >
                                 Book Now
                               </Button>
@@ -174,14 +179,13 @@ export default function BookingsClient() {
                 )}
               </div>
             </section>
-          </main>
-        </div>
-      </div>
+      </main>
+
       <BookingDialog
         open={isBookingDialogOpen}
         onOpenChange={setIsBookingDialogOpen}
         service={selectedService}
       />
-    </ProtectedRoute>
+    </div>
   )
 }

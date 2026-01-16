@@ -40,9 +40,9 @@ export function NavigationBlocks() {
       iconColor: 'text-secondary-foreground',
     },
     {
-      href: '/dashboard',
+      href: '/groups',
       icon: Users,
-      title: 'Groups',
+      title: 'John Circle',
       description: 'Join the spiritual circle',
       iconClassName: 'bg-primary/10 group-hover:bg-primary/20',
       iconColor: 'text-primary',

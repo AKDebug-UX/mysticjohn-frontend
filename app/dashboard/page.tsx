@@ -296,7 +296,7 @@ export default function DashboardPage() {
                       <div className="flex gap-3">
                         <div className="h-2 w-2 rounded-full bg-primary mt-2 shrink-0" />
                         <div>
-                          <p className="text-sm text-foreground">Welcome to Mystic John!</p>
+                          <p className="text-sm text-foreground">Welcome to John Spratt Psychic Medium!</p>
                           <p className="text-xs text-muted-foreground">Just now</p>
                         </div>
                       </div>
@@ -335,9 +335,9 @@ export default function DashboardPage() {
                       </Link>
                     </Button>
                     <Button variant="outline" className="h-auto py-4 flex flex-col gap-2 border-accent/50 hover:bg-accent/10" asChild>
-                      <Link href="/dashboard">
+                      <Link href="/groups">
                         <Star className="h-6 w-6 text-accent" />
-                        <span className="text-sm font-medium">Join a Group</span>
+                        <span className="text-sm font-medium">John Circle</span>
                       </Link>
                     </Button>
                     <Button variant="outline" className="h-auto py-4 flex flex-col gap-2 border-primary/50 hover:bg-primary/10" asChild>

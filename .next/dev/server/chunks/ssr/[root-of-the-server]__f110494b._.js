@@ -112,7 +112,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$contexts$2f$Providers$2e$tsx
 ;
 ;
 const metadata = {
-    title: 'Mystic Readings by John | Psychic Services & Spiritual Guidance',
+    title: 'John Spratt Psychic Medium | Psychic Services & Spiritual Guidance',
     description: 'Experience mystical readings, spiritual courses, and psychic guidance with a Scottish flair. Book your session today.',
     generator: 'v0.app',
     icons: {

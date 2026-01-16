@@ -11,6 +11,8 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useBookings } from '@/lib/hooks';
+import { useAuthContext } from '@/contexts/AuthContext';
+import { useRouter } from 'next/navigation';
 import type { Service } from '@/lib/api/types';
 import { Calendar, Clock, Video, MapPin, Loader2, Check } from 'lucide-react';
 import { format, addDays, startOfWeek, addWeeks, isSameDay, parseISO } from 'date-fns';
@@ -20,10 +22,12 @@ interface BookingDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   service: Service | null;
-}   
+}
 
 export function BookingDialog({ open, onOpenChange, service }: BookingDialogProps) {
   const { fetchAvailability, createBooking, isLoading, error, clearError, availability } = useBookings();
+  const { isAuthenticated } = useAuthContext();
+  const router = useRouter();
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [bookingType, setBookingType] = useState<'ONLINE' | 'IN_PERSON'>('ONLINE');
@@ -67,6 +71,14 @@ export function BookingDialog({ open, onOpenChange, service }: BookingDialogProp
 
   const handleBooking = async () => {
     if (!service || !selectedDate || !selectedTime) return;
+
+    // Check if user is authenticated
+    if (!isAuthenticated) {
+      toast.error('Please sign in to book a session');
+      onOpenChange(false);
+      router.push('/login?redirect=/bookings');
+      return;
+    }
 
     setIsSubmitting(true);
     try {

@@ -27,9 +27,12 @@ export function Navigation() {
     <nav className="border-b border-border/50 backdrop-blur-sm sticky top-0 z-50 bg-background/80">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2" onClick={closeMobileMenu}>
-            <Sparkles className="h-6 w-6 text-primary animate-glow" />
-            <span className="text-xl font-bold text-foreground">Mystic John</span>
+          <Link href="/" className="flex flex-col items-start gap-0" onClick={closeMobileMenu}>
+            <div className="flex items-center gap-2">
+              <Sparkles className="h-6 w-6 text-primary animate-glow" />
+              <span className="text-xl font-bold text-foreground">John Spratt</span>
+            </div>
+            <span className="text-xs text-muted-foreground ml-8">Psychic Medium</span>
           </Link>
 
           {/* Desktop Navigation */}

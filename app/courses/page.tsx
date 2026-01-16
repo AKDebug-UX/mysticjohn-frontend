@@ -6,7 +6,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Navigation } from '@/components/navigation'
 import { DashboardSidebar } from '@/components/dashboard-sidebar'
-import { ProtectedRoute } from '@/components/ProtectedRoute'
 import { MysticalSparkles } from '@/components/mystical-sparkles'
 import { useCourses } from '@/lib/hooks'
 import { BookOpen, Clock, Star, Play, Check, Sparkles } from 'lucide-react'
@@ -20,8 +19,7 @@ export default function CoursesPage() {
   }, [fetchCourses])
 
   return (
-    <ProtectedRoute>
-      <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background">
         <Navigation />
 
         <div className="flex">
@@ -168,6 +166,5 @@ export default function CoursesPage() {
           </main>
         </div>
       </div>
-    </ProtectedRoute>
   )
 }

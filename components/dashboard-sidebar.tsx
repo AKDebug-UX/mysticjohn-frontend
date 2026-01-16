@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Sparkles, Calendar, Star, BookOpen, Users, MessageSquare, Settings, Home } from 'lucide-react'
+import { Sparkles, Calendar, Star, BookOpen, MessageSquare, Settings, Home } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const navigation = [
@@ -11,7 +11,6 @@ const navigation = [
   { name: 'My Bookings', href: '/bookings/my', icon: Calendar },
   { name: 'Events', href: '/events', icon: Star },
   { name: 'Courses', href: '/courses', icon: BookOpen },
-  { name: 'Groups', href: '/groups', icon: Users },
   { name: 'Messages', href: '/messages', icon: MessageSquare },
   { name: 'Settings', href: '/settings', icon: Settings },
 ]
