@@ -890,6 +890,14 @@
     max-height: 800px;
   }
 
+  .max-h-\[calc\(100vh-73px\)\] {
+    max-height: calc(100vh - 73px);
+  }
+
+  .min-h-0 {
+    min-height: calc(var(--spacing) * 0);
+  }
+
   .min-h-16 {
     min-height: calc(var(--spacing) * 16);
   }
@@ -3248,18 +3256,6 @@
   }
 
   @media (min-width: 64rem) {
-    .lg\:grid-cols-4 {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-  }
-
-  @media (min-width: 64rem) {
-    .lg\:grid-cols-5 {
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-    }
-  }
-
-  @media (min-width: 64rem) {
     .lg\:grid-cols-6 {
       grid-template-columns: repeat(6, minmax(0, 1fr));
     }
@@ -3286,12 +3282,6 @@
   @media (min-width: 64rem) {
     .lg\:pb-8 {
       padding-bottom: calc(var(--spacing) * 8);
-    }
-  }
-
-  @media (min-width: 80rem) {
-    .xl\:grid-cols-5 {
-      grid-template-columns: repeat(5, minmax(0, 1fr));
     }
   }
 
@@ -3461,6 +3451,53 @@
     a.\[a\&\]\:hover\:text-accent-foreground:hover {
       color: var(--accent-foreground);
     }
+  }
+
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: oklch(55% .22 280 / .5) oklch(92% .02 280);
+  }
+
+  .dark .scrollbar-thin {
+    scrollbar-color: oklch(65% .25 280 / .6) oklch(20% .08 265);
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: #e1e3f2;
+    background: lab(90.5647% 1.36447 -7.41513);
+    border-radius: 4px;
+  }
+
+  .dark .scrollbar-thin::-webkit-scrollbar-track {
+    background: #051139;
+    background: lab(6.32173% 8.28659 -27.9863);
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: #6054ec80 padding-box padding-box;
+    background: lab(44.3191% 38.7475 -76.8339 / .5) padding-box padding-box;
+    border: 2px solid #0000;
+    border-radius: 4px;
+  }
+
+  .dark .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: #7c79ff99;
+    background: lab(55.5457% 42.8708 -87.3308 / .6);
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: #6054ecb3 padding-box padding-box;
+    background: lab(44.3191% 38.7475 -76.8339 / .7) padding-box padding-box;
+  }
+
+  .dark .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: #7c79ffcc;
+    background: lab(55.5457% 42.8708 -87.3308 / .8);
   }
 }
 

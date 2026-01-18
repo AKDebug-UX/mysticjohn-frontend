@@ -133,9 +133,9 @@ export default function AIChatPage() {
         <div className="flex flex-1">
           <DashboardSidebar />
 
-          <main className="flex-1 p-6 lg:p-8 lg:ml-64 pb-20 lg:pb-8 flex flex-col">
+          <main className="flex-1 p-6 lg:p-8 lg:ml-64 pb-20 lg:pb-8 flex flex-col h-[calc(100vh-73px)] max-h-[calc(100vh-73px)]">
             {/* Header */}
-            <div className="mb-6">
+            <div className="mb-6 shrink-0">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <Sparkles className="h-8 w-8 text-primary" />
@@ -186,8 +186,8 @@ export default function AIChatPage() {
             </div>
 
             {/* Chat Messages */}
-            <Card className="flex-1 flex flex-col border-border/50 mb-6">
-              <CardContent className="flex-1 overflow-y-auto p-6 space-y-4">
+            <Card className="flex-1 flex flex-col border-border/50 mb-6 min-h-0">
+              <CardContent className="flex-1 overflow-y-auto p-6 space-y-4 min-h-0 scrollbar-thin">
                 {messages.length === 0 ? (
                   <div className="flex flex-col items-center justify-center h-full text-center py-12">
                     <Bot className="h-16 w-16 text-primary/30 mb-4" />
@@ -242,7 +242,7 @@ export default function AIChatPage() {
               </CardContent>
 
               {/* Chat Input */}
-              <CardHeader className="border-t border-border/50 pt-4 pb-4">
+              <CardHeader className="border-t border-border/50 pt-4 pb-4 shrink-0">
                 <form onSubmit={handleSendMessage} className="flex gap-3">
                   <Input
                     value={inputMessage}
