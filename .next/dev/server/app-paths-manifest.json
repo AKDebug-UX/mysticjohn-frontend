@@ -1,3 +1,6 @@
 {
-  "/ai-chat/page": "app/ai-chat/page.js"
+  "/ai-chat/page": "app/ai-chat/page.js",
+  "/bookings/page": "app/bookings/page.js",
+  "/horoscopes/page": "app/horoscopes/page.js",
+  "/tarot/page": "app/tarot/page.js"
 }

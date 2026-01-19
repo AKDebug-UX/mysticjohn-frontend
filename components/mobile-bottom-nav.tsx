@@ -2,15 +2,15 @@
 
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { Home, Calendar, Star, BookOpen, Settings, CalendarCheck } from 'lucide-react';
+import { Home, Calendar, Star, BookOpen, Settings, CalendarCheck, Sparkles, Gem, Bot } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: Home },
   { name: 'Bookings', href: '/bookings', icon: Calendar },
-  { name: 'My Bookings', href: '/bookings/my', icon: CalendarCheck },
-  { name: 'Events', href: '/events', icon: Star },
-  { name: 'Courses', href: '/courses', icon: BookOpen },
+  { name: 'Horoscopes', href: '/horoscopes', icon: Sparkles },
+  { name: 'Tarot', href: '/tarot', icon: Gem },
+  { name: 'AI Chat', href: '/ai-chat', icon: Bot },
   { name: 'Settings', href: '/settings', icon: Settings },
 ];
 
@@ -19,9 +19,13 @@ const showOnRoutes = [
   '/dashboard',
   '/bookings',
   '/bookings/my',
+  '/horoscopes',
+  '/tarot',
+  '/ai-chat',
   '/events',
   '/courses',
   '/settings',
+  '/messages',
 ];
 
 export function MobileBottomNav() {
