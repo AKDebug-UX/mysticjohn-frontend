@@ -19,6 +19,8 @@ export default function CoursesPage() {
     fetchCourses()
   }, [fetchCourses])
 
+  
+
   return (
     <div className="min-h-screen bg-background">
         <Navigation />
