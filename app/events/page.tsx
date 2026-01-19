@@ -65,7 +65,7 @@ export default function EventsPage() {
 
             {/* Featured Event Spotlight */}
             {featuredEvent && (
-              <section className="py-16 bg-gradient-to-br from-primary/5 via-accent/5 to-transparent">
+              <section className="py-16 bg-linear-to-br from-primary/5 via-accent/5 to-transparent">
                 <div className="container mx-auto px-4">
                   <div className="max-w-4xl mx-auto">
                     <div className="flex items-center gap-2 mb-6">
@@ -73,7 +73,7 @@ export default function EventsPage() {
                       <h2 className="text-2xl font-bold text-foreground">Featured Event</h2>
                     </div>
                     <Card className="border-accent/50 relative overflow-hidden shadow-lg shadow-accent/10">
-                      <div className="absolute inset-0 bg-gradient-to-br from-accent/10 via-primary/5 to-transparent" />
+                      <div className="absolute inset-0 bg-linear-to-br from-accent/10 via-primary/5 to-transparent" />
                       <MysticalSparkles />
                       <div className="relative z-10">
                         <CardHeader>
@@ -154,7 +154,7 @@ export default function EventsPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
                       {otherEvents.map((event) => (
                         <Card key={event.id} className="border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/20 relative overflow-hidden">
-                          <div className="h-48 bg-gradient-to-br from-primary/20 via-accent/20 to-secondary/20 relative overflow-hidden flex items-center justify-center">
+                          <div className="h-48 bg-linear-to-br from-primary/20 via-accent/20 to-secondary/20 relative overflow-hidden flex items-center justify-center">
                             <MysticalSparkles />
                             <Sparkles className="h-20 w-20 text-primary/40 animate-float relative z-10" />
                             {event.coverImageUrl && (

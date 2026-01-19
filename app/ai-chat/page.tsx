@@ -8,6 +8,14 @@ import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Sparkles, Send, Loader2, Trash2, Bot, User, Coins } from 'lucide-react';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
@@ -21,6 +29,7 @@ export default function AIChatPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSending, setIsSending] = useState(false);
   const [isClearing, setIsClearing] = useState(false);
+  const [clearDialogOpen, setClearDialogOpen] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { balance, fetchBalance } = useCredits();
 
@@ -91,11 +100,12 @@ export default function AIChatPage() {
     }
   };
 
-  const handleClearHistory = async () => {
-    if (!confirm('Are you sure you want to clear all chat history? This action cannot be undone.')) {
-      return;
-    }
+  const handleClearHistoryClick = () => {
+    setClearDialogOpen(true);
+  };
 
+  const handleClearHistoryConfirm = async () => {
+    setClearDialogOpen(false);
     setIsClearing(true);
     try {
       await aiChatApi.clearHistory();
@@ -151,7 +161,7 @@ export default function AIChatPage() {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={handleClearHistory}
+                  onClick={handleClearHistoryClick}
                   disabled={isClearing || messages.length === 0}
                   className="flex items-center gap-2"
                 >
@@ -284,6 +294,40 @@ export default function AIChatPage() {
         </div>
 
         <MobileBottomNav />
+
+        {/* Clear History Confirmation Dialog */}
+        <Dialog open={clearDialogOpen} onOpenChange={setClearDialogOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Clear Chat History</DialogTitle>
+              <DialogDescription>
+                Are you sure you want to clear all chat history? This action cannot be undone.
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <Button
+                variant="outline"
+                onClick={() => setClearDialogOpen(false)}
+                disabled={isClearing}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="destructive"
+                onClick={handleClearHistoryConfirm}
+                disabled={isClearing}
+              >
+                {isClearing ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" /> Clearing...
+                  </>
+                ) : (
+                  'Clear History'
+                )}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </ProtectedRoute>
   );

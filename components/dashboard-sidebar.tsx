@@ -33,7 +33,7 @@ export function DashboardSidebar() {
 
   return (
     <>
-      <aside className="hidden lg:block fixed left-0 top-[73px] w-64 h-[calc(100vh-73px)] border-r border-border/50 bg-card/30 overflow-y-auto">
+      <aside className="hidden lg:block fixed left-0 top-[73px] w-64 h-[calc(100vh-73px)] border-r border-border/50 bg-card/30 overflow-y-auto scrollbar-thin">
         <div className="p-6 space-y-4">
           {/* Credit Balance Section */}
           <div className="bg-primary/10 border border-primary/20 rounded-lg p-4 space-y-3">
