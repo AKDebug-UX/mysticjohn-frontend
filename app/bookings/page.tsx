@@ -12,10 +12,8 @@ export default function BookingsPage() {
           </div>
         }
       >
-        
         <BookingsClient />
       </Suspense>
     </ProtectedRoute>
   )
 }
-
