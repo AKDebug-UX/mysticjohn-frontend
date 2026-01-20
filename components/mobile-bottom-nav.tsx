@@ -22,7 +22,6 @@ const showOnRoutes = [
   '/horoscopes',
   '/tarot',
   '/ai-chat',
-  '/events',
   '/courses',
   '/settings',
   '/messages',

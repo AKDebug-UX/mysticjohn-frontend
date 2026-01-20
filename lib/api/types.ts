@@ -135,42 +135,6 @@ export interface UpdateProgressRequest {
 }
 
 /**
- * Event Types
- */
-export interface Event {
-  id: string;
-  title: string;
-  description?: string;
-  startDateTime: string;
-  endDateTime: string;
-  location?: string;
-  coverImageUrl?: string;
-  capacity?: number;
-  isPublished: boolean;
-  ticketTypes?: TicketType[];
-}
-
-export interface TicketType {
-  id: string;
-  eventId: string;
-  name: string;
-  price: number;
-  quantityTotal: number;
-  quantitySold: number;
-}
-
-export interface Ticket {
-  id: string;
-  eventId: string;
-  event?: Event;
-  ticketTypeId: string;
-  ticketType?: TicketType;
-  userId: string;
-  status: string;
-  purchasedAt: string;
-}
-
-/**
  * Group Types
  */
 export interface Group {
@@ -309,9 +273,7 @@ export interface SubmitQuestionsRequest {
  * Checkout Types
  */
 export interface CheckoutRequest {
-  itemType: 'ticket' | 'course' | 'credits';
-  ticketTypeId?: string;
-  quantity?: number;
+  itemType: 'course' | 'credits';
   courseId?: string;
   creditPackId?: string;
 }
@@ -320,7 +282,6 @@ export interface CheckoutResponse {
   orderId?: string;
   bookingId?: string;
   enrollmentId?: string;
-  ticketIds?: string[];
   message: string;
   paymentIntent?: {
     id: string;

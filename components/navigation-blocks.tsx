@@ -1,6 +1,6 @@
 import React from 'react'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Calendar, BookOpen, Users, Star, Sparkles, Gem, Bot } from 'lucide-react'
+import { Calendar, BookOpen, Users, Sparkles, Gem, Bot } from 'lucide-react'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 
@@ -22,14 +22,6 @@ export function NavigationBlocks() {
       description: 'Schedule yer session, pal',
       iconClassName: 'bg-primary/10 group-hover:bg-primary/20',
       iconColor: 'text-primary',
-    },
-    {
-      href: '/events',
-      icon: Star,
-      title: 'Events',
-      description: 'Mystical workshops & gatherings',
-      iconClassName: 'bg-accent/10 group-hover:bg-accent/20',
-      iconColor: 'text-accent',
     },
     {
       href: '/courses',

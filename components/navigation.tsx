@@ -43,9 +43,6 @@ export function Navigation() {
             <Link href="/bookings" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               Bookings
             </Link>
-            <Link href="/events" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-              Events
-            </Link>
             <Link href="/courses" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               Courses
             </Link>
@@ -137,13 +134,6 @@ export function Navigation() {
               onClick={closeMobileMenu}
             >
               Bookings
-            </Link>
-            <Link
-              href="/events"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors py-2"
-              onClick={closeMobileMenu}
-            >
-              Events
             </Link>
             <Link
               href="/courses"

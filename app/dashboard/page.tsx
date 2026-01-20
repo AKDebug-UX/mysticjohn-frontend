@@ -13,9 +13,8 @@ import { ProtectedRoute } from '@/components/ProtectedRoute'
 import { useAuthContext } from '@/contexts/AuthContext'
 import { useBookings } from '@/lib/hooks'
 import { useCourses } from '@/lib/hooks'
-import { useEvents } from '@/lib/hooks'
 import { useCredits } from '@/lib/hooks'
-import { Calendar, Star, BookOpen, Bell, Coins, Plus, Clock, MapPin, Play, Link as LinkIcon } from 'lucide-react'
+import { Calendar, BookOpen, Bell, Coins, Plus, Clock, MapPin, Play, Link as LinkIcon, Star } from 'lucide-react'
 import Link from 'next/link'
 import { format, parseISO, isFuture } from 'date-fns'
 import { BuyCreditsDialog } from '@/components/BuyCreditsDialog'
@@ -25,16 +24,14 @@ export default function DashboardPage() {
   const { user } = useAuthContext();
   const { bookings, fetchBookings, isLoading: bookingsLoading } = useBookings();
   const { enrollments, fetchEnrollments, isLoading: coursesLoading } = useCourses();
-  const { tickets, fetchTickets, isLoading: ticketsLoading } = useEvents();
   const { balance, fetchBalance, isLoading: creditsLoading } = useCredits();
   const [buyCreditsOpen, setBuyCreditsOpen] = useState(false);
 
   useEffect(() => {
     fetchBookings();
     fetchEnrollments();
-    fetchTickets();
     fetchBalance();
-  }, [fetchBookings, fetchEnrollments, fetchTickets, fetchBalance]);
+  }, [fetchBookings, fetchEnrollments, fetchBalance]);
 
   // Get next upcoming booking
   const upcomingBookings = bookings
@@ -81,7 +78,7 @@ export default function DashboardPage() {
     return Math.round((completedSteps / totalSteps) * 100);
   };
 
-  const isLoading = bookingsLoading || coursesLoading || ticketsLoading || creditsLoading;
+  const isLoading = bookingsLoading || coursesLoading || creditsLoading;
 
   return (
     <ProtectedRoute>
@@ -193,44 +190,6 @@ export default function DashboardPage() {
                     </CardContent>
                   </Card>
 
-                  {/* Event Tickets Card */}
-                  <Card className="border-border/50 hover:border-accent/50 transition-colors">
-                    <CardHeader>
-                      <div className="flex items-center justify-between">
-                        <CardTitle className="text-foreground">Event Tickets</CardTitle>
-                        <Star className="h-5 w-5 text-accent" />
-                      </div>
-                      <CardDescription className="text-muted-foreground">Upcoming events</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      {tickets && tickets.length > 0 ? (
-                        <div className="space-y-3">
-                          {tickets.slice(0, 2).map((ticket) => (
-                            <div key={ticket.id} className="flex items-center justify-between p-2 rounded-lg bg-accent/5">
-                              <span className="text-sm font-medium text-foreground">
-                                {ticket.event?.title || 'Event'}
-                              </span>
-                              <Badge variant="outline" className="border-accent/50 text-accent">
-                                {ticket.event?.startDateTime ? format(parseISO(ticket.event.startDateTime), 'MMM d') : ''}
-                              </Badge>
-                            </div>
-                          ))}
-                          {tickets.length > 2 && (
-                            <Link href="/events" className="text-sm text-primary hover:underline">
-                              View all ({tickets.length})
-                            </Link>
-                          )}
-                        </div>
-                      ) : (
-                        <div className="space-y-2">
-                          <p className="text-sm text-muted-foreground">No tickets yet</p>
-                          <Button size="sm" variant="outline" className="w-full mt-2 border-accent/50 hover:bg-accent/10" asChild>
-                            <Link href="/events">Browse Events</Link>
-                          </Button>
-                        </div>
-                      )}
-                    </CardContent>
-                  </Card>
                 </div>
 
                 {/* Two Column Layout */}

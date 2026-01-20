@@ -195,21 +195,12 @@ function Navigation() {
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                    href: "/events",
-                                    className: "text-sm text-muted-foreground hover:text-foreground transition-colors",
-                                    children: "Events"
-                                }, void 0, false, {
-                                    fileName: "[project]/components/navigation.tsx",
-                                    lineNumber: 46,
-                                    columnNumber: 13
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                     href: "/courses",
                                     className: "text-sm text-muted-foreground hover:text-foreground transition-colors",
                                     children: "Courses"
                                 }, void 0, false, {
                                     fileName: "[project]/components/navigation.tsx",
-                                    lineNumber: 49,
+                                    lineNumber: 46,
                                     columnNumber: 13
                                 }, this),
                                 isAuthenticated && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -220,13 +211,22 @@ function Navigation() {
                                             children: "Horoscopes"
                                         }, void 0, false, {
                                             fileName: "[project]/components/navigation.tsx",
-                                            lineNumber: 54,
+                                            lineNumber: 51,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                             href: "/tarot",
                                             className: "text-sm text-muted-foreground hover:text-foreground transition-colors",
                                             children: "Tarot"
+                                        }, void 0, false, {
+                                            fileName: "[project]/components/navigation.tsx",
+                                            lineNumber: 54,
+                                            columnNumber: 17
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                                            href: "/ai-chat",
+                                            className: "text-sm text-muted-foreground hover:text-foreground transition-colors",
+                                            children: "AI Chat"
                                         }, void 0, false, {
                                             fileName: "[project]/components/navigation.tsx",
                                             lineNumber: 57,
@@ -371,23 +371,13 @@ function Navigation() {
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                href: "/events",
-                                className: "text-sm text-muted-foreground hover:text-foreground transition-colors py-2",
-                                onClick: closeMobileMenu,
-                                children: "Events"
-                            }, void 0, false, {
-                                fileName: "[project]/components/navigation.tsx",
-                                lineNumber: 138,
-                                columnNumber: 13
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                 href: "/courses",
                                 className: "text-sm text-muted-foreground hover:text-foreground transition-colors py-2",
                                 onClick: closeMobileMenu,
                                 children: "Courses"
                             }, void 0, false, {
                                 fileName: "[project]/components/navigation.tsx",
-                                lineNumber: 145,
+                                lineNumber: 138,
                                 columnNumber: 13
                             }, this),
                             isAuthenticated && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -399,7 +389,7 @@ function Navigation() {
                                         children: "Horoscopes"
                                     }, void 0, false, {
                                         fileName: "[project]/components/navigation.tsx",
-                                        lineNumber: 154,
+                                        lineNumber: 147,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -407,6 +397,16 @@ function Navigation() {
                                         className: "text-sm text-muted-foreground hover:text-foreground transition-colors py-2",
                                         onClick: closeMobileMenu,
                                         children: "Tarot"
+                                    }, void 0, false, {
+                                        fileName: "[project]/components/navigation.tsx",
+                                        lineNumber: 154,
+                                        columnNumber: 17
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                                        href: "/ai-chat",
+                                        className: "text-sm text-muted-foreground hover:text-foreground transition-colors py-2",
+                                        onClick: closeMobileMenu,
+                                        children: "AI Chat"
                                     }, void 0, false, {
                                         fileName: "[project]/components/navigation.tsx",
                                         lineNumber: 161,
