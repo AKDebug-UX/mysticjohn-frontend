@@ -8,6 +8,10 @@ import { XCircle } from 'lucide-react';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import Link from 'next/link';
 
+// Ensure this route is always rendered dynamically at request time
+// to avoid static prerender errors during build/export.
+export const dynamic = 'force-dynamic';
+
 export default function CheckoutCancelPage() {
   const searchParams = useSearchParams();
   const orderId = searchParams.get('orderId');

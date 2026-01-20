@@ -10,6 +10,9 @@ import { useCredits } from '@/lib/hooks';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import Link from 'next/link';
 
+// Force dynamic rendering to prevent static prerender errors for this route.
+export const dynamic = 'force-dynamic';
+
 export default function CheckoutSuccessPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
