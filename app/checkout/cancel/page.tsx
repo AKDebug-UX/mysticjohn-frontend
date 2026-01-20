@@ -1,5 +1,6 @@
 'use client';
 
+import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Navigation } from '@/components/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,7 +13,7 @@ import Link from 'next/link';
 // to avoid static prerender errors during build/export.
 export const dynamic = 'force-dynamic';
 
-export default function CheckoutCancelPage() {
+function CheckoutCancelContent() {
   const searchParams = useSearchParams();
   const orderId = searchParams.get('orderId');
 
@@ -65,5 +66,13 @@ export default function CheckoutCancelPage() {
         </main>
       </div>
     </ProtectedRoute>
+  );
+}
+
+export default function CheckoutCancelPage() {
+  return (
+    <Suspense fallback={null}>
+      <CheckoutCancelContent />
+    </Suspense>
   );
 }
