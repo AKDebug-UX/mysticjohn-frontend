@@ -190,9 +190,11 @@ export interface CheckoutRequest {
 
 export interface CheckoutResponse {
   orderId?: string;
+  transactionId?: string;
   bookingId?: string;
   enrollmentId?: string;
   message: string;
+  status?: string;
   paymentIntent?: {
     id: string;
     clientSecret: string;
@@ -205,5 +207,14 @@ export interface CheckoutResponse {
   wallet?: any;
   tickets?: any[];
   enrollment?: any;
+}
+
+export interface CheckoutConfirmResponse {
+  success: boolean;
+  message: string;
+  status?: 'COMPLETED' | 'PENDING' | 'FAILED' | 'CANCELLED';
+  order?: any;
+  transactionId?: string;
+  sessionId?: string;
 }
 

@@ -1,47 +1,105 @@
 'use client';
 
-import { Suspense, useEffect, useState } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { Suspense, useEffect, useState, useCallback } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Navigation } from '@/components/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
-import { useCredits } from '@/lib/hooks';
+import { CheckCircle2, Loader2, AlertCircle, Clock, XCircle } from 'lucide-react';
+import { useCredits, useCheckout } from '@/lib/hooks';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import Link from 'next/link';
+import { toast } from 'sonner';
 
 // Force dynamic rendering to prevent static prerender errors for this route.
 export const dynamic = 'force-dynamic';
 
 function CheckoutSuccessContent() {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const { fetchBalance } = useCredits();
+  const { confirm } = useCheckout();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const orderId = searchParams.get('orderId');
-  const sessionId = searchParams.get('session_id');
+  const [status, setStatus] = useState<'processing' | 'success' | 'pending' | 'failed'>(
+    'processing'
+  );
+  const [orderId, setOrderId] = useState<string | null>(null);
+  const [sessionId, setSessionId] = useState<string | null>(null);
 
-  useEffect(() => {
-    // Refresh credit balance after successful payment
-    const refreshData = async () => {
+  const confirmPayment = useCallback(
+    async (transactionId: string, session: string | null, attempt = 0) => {
+      setIsLoading(true);
       try {
-        await fetchBalance();
-        setIsLoading(false);
+        const result = await confirm({ transactionId, sessionId: session });
+
+        if (!result) {
+          setError('Unable to confirm payment. Please try again.');
+          setStatus('failed');
+          return;
+        }
+
+        const newStatus = result.status || (result.success ? 'COMPLETED' : 'FAILED');
+        const normalizedStatus =
+          newStatus === 'COMPLETED'
+            ? 'success'
+            : newStatus === 'PENDING'
+            ? 'pending'
+            : newStatus === 'CANCELLED' || newStatus === 'FAILED'
+            ? 'failed'
+            : 'processing';
+
+        setOrderId(result.transactionId || result.order?._id || transactionId);
+        setSessionId(result.sessionId || session);
+        setStatus(normalizedStatus);
+
+        if (normalizedStatus === 'success') {
+          toast.success('Payment successful! Credits added to your account.');
+          await fetchBalance();
+          // Clear stored ids on success
+          sessionStorage.removeItem('checkout_transaction_id');
+          sessionStorage.removeItem('checkout_session_id');
+        } else if (normalizedStatus === 'pending' && attempt < 2) {
+          toast.info('Payment processing, checking again...');
+          setTimeout(() => {
+            confirmPayment(transactionId, session, attempt + 1);
+          }, 2500);
+        } else if (normalizedStatus === 'failed') {
+          toast.error('Payment failed or was cancelled. If you were charged, contact support.');
+        }
       } catch (err: any) {
-        console.error('Error refreshing balance:', err);
-        setError('Failed to refresh balance, but your payment was successful');
+        console.error('Error confirming payment:', err);
+        setError('Failed to confirm payment. Please try again.');
+        setStatus('failed');
+      } finally {
         setIsLoading(false);
       }
-    };
+    },
+    [confirm, fetchBalance]
+  );
 
-    // Small delay to ensure webhook has processed
-    const timer = setTimeout(() => {
-      refreshData();
-    }, 2000);
+  useEffect(() => {
+    // Grab transaction/session IDs from URL first, fall back to sessionStorage
+    const paramOrderId = searchParams.get('orderId');
+    const paramSessionId = searchParams.get('session_id');
+    const storedTransactionId =
+      typeof window !== 'undefined' ? sessionStorage.getItem('checkout_transaction_id') : null;
+    const storedSessionId =
+      typeof window !== 'undefined' ? sessionStorage.getItem('checkout_session_id') : null;
 
-    return () => clearTimeout(timer);
-  }, [fetchBalance]);
+    const transactionId = paramOrderId || storedTransactionId;
+    const session = paramSessionId || storedSessionId;
+
+    if (!transactionId) {
+      setError('Missing transaction information. Please try again.');
+      setIsLoading(false);
+      setStatus('failed');
+      return;
+    }
+
+    setOrderId(transactionId);
+    setSessionId(session || null);
+    confirmPayment(transactionId, session || null);
+  }, [confirmPayment, searchParams]);
 
   return (
     <ProtectedRoute>
@@ -57,18 +115,34 @@ function CheckoutSuccessContent() {
                     <p className="text-muted-foreground">Processing your payment...</p>
                   </CardContent>
                 </Card>
-              ) : error ? (
+              ) : status === 'pending' ? (
+                <Card className="border-yellow-500/20">
+                  <CardContent className="p-12 text-center space-y-3">
+                    <Clock className="h-12 w-12 text-yellow-500 mx-auto mb-2" />
+                    <CardTitle className="text-2xl">Payment Processing</CardTitle>
+                    <CardDescription className="max-w-xl mx-auto">
+                      We’re waiting for Stripe to confirm your payment. This usually takes a few
+                      seconds. We’ll update automatically.
+                    </CardDescription>
+                    <div className="text-sm text-muted-foreground">
+                      Transaction ID: <span className="font-mono">{orderId || 'N/A'}</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              ) : error || status === 'failed' ? (
                 <Card className="border-yellow-500/20">
                   <CardContent className="p-12 text-center">
                     <AlertCircle className="h-12 w-12 text-yellow-500 mx-auto mb-4" />
-                    <CardTitle className="text-2xl mb-2">Payment Successful</CardTitle>
-                    <CardDescription className="mb-4">{error}</CardDescription>
+                    <CardTitle className="text-2xl mb-2">Payment Issue</CardTitle>
+                    <CardDescription className="mb-4">
+                      {error || 'We could not verify your payment. If you were charged, contact support.'}
+                    </CardDescription>
                     <div className="flex gap-4 justify-center">
                       <Button asChild>
                         <Link href="/dashboard">Go to Dashboard</Link>
                       </Button>
                       <Button variant="outline" asChild>
-                        <Link href="/bookings">View Bookings</Link>
+                        <Link href="/bookings">Try Again</Link>
                       </Button>
                     </div>
                   </CardContent>

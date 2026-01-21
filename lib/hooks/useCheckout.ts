@@ -2,13 +2,16 @@
 
 import { useState, useCallback } from 'react';
 import { checkoutApi } from '@/lib/api';
-import type { CheckoutRequest, CheckoutResponse } from '@/lib/api/types';
+import type { CheckoutRequest, CheckoutResponse, CheckoutConfirmResponse } from '@/lib/api/types';
 import { ApiClientError } from '@/lib/api/client';
 
 interface UseCheckoutReturn {
   isLoading: boolean;
   error: string | null;
   checkout: (data: CheckoutRequest) => Promise<CheckoutResponse | null>;
+  confirm: (
+    params: { transactionId: string; sessionId?: string | null }
+  ) => Promise<CheckoutConfirmResponse | null>;
   clearError: () => void;
 }
 
@@ -41,6 +44,27 @@ export function useCheckout(): UseCheckoutReturn {
     []
   );
 
+  const confirm = useCallback(
+    async (params: { transactionId: string; sessionId?: string | null }): Promise<CheckoutConfirmResponse | null> => {
+      try {
+        setError(null);
+        setIsLoading(true);
+        const response = await checkoutApi.confirm(params);
+        return response;
+      } catch (err) {
+        const errorMessage =
+          err instanceof ApiClientError
+            ? err.message
+            : 'Failed to confirm checkout.';
+        setError(errorMessage);
+        return null;
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    []
+  );
+
   const clearError = useCallback(() => {
     setError(null);
   }, []);
@@ -49,6 +73,7 @@ export function useCheckout(): UseCheckoutReturn {
     isLoading,
     error,
     checkout,
+    confirm,
     clearError,
   };
 }

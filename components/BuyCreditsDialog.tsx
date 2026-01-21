@@ -62,6 +62,20 @@ export function BuyCreditsDialog({ open, onOpenChange }: BuyCreditsDialogProps) 
 
         // For paid packs, redirect to Stripe Checkout
         if (result.checkoutSession?.url) {
+          // Persist transaction + session ids so success page can confirm
+          const transactionId =
+            result.transactionId || result.orderId || result.order?._id;
+          const sessionId = result.checkoutSession?.id;
+
+          if (transactionId) {
+            sessionStorage.setItem('checkout_transaction_id', transactionId);
+          }
+          if (sessionId) {
+            sessionStorage.setItem('checkout_session_id', sessionId);
+          }
+
+          toast.info('Redirecting to secure payment...', { duration: 1500 });
+
           // Redirect to Stripe Checkout Session
           window.location.href = result.checkoutSession.url;
         } else if (result.paymentIntent?.clientSecret) {
