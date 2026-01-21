@@ -28,11 +28,15 @@ function CheckoutSuccessContent() {
 
   const confirmPayment = useCallback(
     async (transactionId: string, session: string | null, attempt = 0) => {
+      console.log('[confirmPayment] Called with:', { transactionId, session, attempt });
       setIsLoading(true);
       try {
+        console.log('[confirmPayment] Calling confirm endpoint with params:', { transactionId, sessionId: session });
         const result = await confirm({ transactionId, sessionId: session });
+        console.log('[confirmPayment] Response received:', result);
 
         if (!result) {
+          console.error('[confirmPayment] No result returned from confirm');
           setError('Unable to confirm payment. Please try again.');
           setStatus('failed');
           return;
@@ -67,7 +71,13 @@ function CheckoutSuccessContent() {
           toast.error('Payment failed or was cancelled. If you were charged, contact support.');
         }
       } catch (err: any) {
-        console.error('Error confirming payment:', err);
+        console.error('[confirmPayment] Error confirming payment:', err);
+        console.error('[confirmPayment] Error details:', {
+          message: err.message,
+          status: err.status,
+          data: err.data,
+          stack: err.stack,
+        });
         setError('Failed to confirm payment. Please try again.');
         setStatus('failed');
       } finally {
@@ -86,10 +96,23 @@ function CheckoutSuccessContent() {
     const storedSessionId =
       typeof window !== 'undefined' ? sessionStorage.getItem('checkout_session_id') : null;
 
+    console.log('[useEffect] Transaction ID sources:', {
+      paramOrderId,
+      paramSessionId,
+      storedTransactionId,
+      storedSessionId,
+    });
+
     const transactionId = paramOrderId || storedTransactionId;
     const session = paramSessionId || storedSessionId;
 
+    console.log('[useEffect] Final transaction IDs to use:', {
+      transactionId,
+      session,
+    });
+
     if (!transactionId) {
+      console.error('[useEffect] No transaction ID found in URL or sessionStorage');
       setError('Missing transaction information. Please try again.');
       setIsLoading(false);
       setStatus('failed');
