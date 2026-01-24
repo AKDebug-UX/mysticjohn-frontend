@@ -30,8 +30,7 @@ export default function DashboardPage() {
   useEffect(() => {
     fetchBookings();
     fetchEnrollments();
-    fetchBalance();
-  }, [fetchBookings, fetchEnrollments, fetchBalance]);
+  }, [fetchBookings, fetchEnrollments]);
 
   // Get next upcoming booking
   const upcomingBookings = bookings
@@ -128,7 +127,7 @@ export default function DashboardPage() {
                       <div className="flex items-end justify-between">
                         <div>
                           <div className="text-4xl font-bold text-primary mb-2">
-                            {balance?.balance ?? 0}
+                            {user?.credits ?? 0}
                           </div>
                           <p className="text-sm text-muted-foreground">Credits remaining</p>
                         </div>

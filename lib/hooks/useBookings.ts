@@ -18,7 +18,7 @@ interface UseBookingsReturn {
   error: string | null;
   fetchServices: () => Promise<void>;
   fetchService: (id: string) => Promise<Service | null>;
-  fetchAvailability: (serviceId: string, date: string) => Promise<void>;
+  fetchAvailability: (serviceId: string, date: string, duration: number) => Promise<void>;
   fetchBookings: () => Promise<void>;
   createBooking: (data: CreateBookingRequest) => Promise<Booking | null>;
   updateBooking: (id: string, data: Partial<Booking>) => Promise<void>;
@@ -74,11 +74,11 @@ export function useBookings(): UseBookingsReturn {
   }, []);
 
   const fetchAvailability = useCallback(
-    async (serviceId: string, date: string) => {
+    async (serviceId: string, date: string, duration: number) => {
       try {
         setError(null);
         setIsLoading(true);
-        const data = await bookingsApi.getAvailability(serviceId, date);
+        const data = await bookingsApi.getAvailability(serviceId, date, duration);
         setAvailability(data);
       } catch (err) {
         const errorMessage =

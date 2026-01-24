@@ -29,20 +29,21 @@ export const tarotApi = {
    * Check if user has picked a card today
    */
   checkDailyPick: async (): Promise<DailyPickStatus> => {
-    return apiClient.get<DailyPickStatus>('/api/tarot/check');
+    return apiClient.get<DailyPickStatus>('/api/content/tarot-today');
   },
 
   /**
    * Save a tarot card pick
+   * @deprecated Server now handles daily picks via /content/tarot-today
    */
   savePick: async (data: SavePickRequest): Promise<{ message: string; pick: TarotPick }> => {
-    return apiClient.post<{ message: string; pick: TarotPick }>('/api/tarot/pick', data);
+    return apiClient.post<{ message: string; pick: TarotPick }>('/api/content/tarot-card', data);
   },
 
   /**
    * Get user's tarot pick history
    */
   getHistory: async (limit?: number): Promise<TarotPick[]> => {
-    return apiClient.get<TarotPick[]>('/api/tarot/history', limit ? { limit } : undefined);
+    return apiClient.get<TarotPick[]>('/api/content/tarot-history', limit ? { limit } : undefined);
   },
 };

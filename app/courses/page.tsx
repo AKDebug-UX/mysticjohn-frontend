@@ -60,9 +60,15 @@ export default function CoursesPage() {
                     <Button onClick={() => fetchCourses()}>Try Again</Button>
                   </div>
                 ) : courses.length === 0 ? (
-                  <div className="text-center py-20">
-                    <p className="text-muted-foreground text-lg">No courses available at the moment.</p>
-                  </div>
+                  <Card className="border-border/50">
+                    <CardContent className="py-12 text-center">
+                      <BookOpen className="h-12 w-12 mx-auto text-muted-foreground mb-4 opacity-50" />
+                      <p className="text-muted-foreground text-lg mb-2">No courses available yet.</p>
+                      <p className="text-sm text-muted-foreground">
+                        Check back soon for new psychic development programs!
+                      </p>
+                    </CardContent>
+                  </Card>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
                     {courses.map((course) => (

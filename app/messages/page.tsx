@@ -210,8 +210,12 @@ export default function MessagesPage() {
                           </div>
                         ))
                       ) : (
-                        <div className="text-center py-8">
-                          <p className="text-muted-foreground">No messages yet. Ask yer first question!</p>
+                        <div className="text-center py-12 bg-card/50 rounded-lg border border-border/50">
+                          <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                            <Sparkles className="h-6 w-6 text-primary" />
+                          </div>
+                          <p className="text-foreground font-medium mb-1">No messages yet</p>
+                          <p className="text-sm text-muted-foreground">Ask yer first question above!</p>
                         </div>
                       )}
                     </CardContent>

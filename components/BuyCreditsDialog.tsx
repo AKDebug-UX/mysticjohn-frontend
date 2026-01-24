@@ -40,12 +40,14 @@ export function BuyCreditsDialog({ open, onOpenChange }: BuyCreditsDialogProps) 
     }
   }, [checkoutError, selectedPack]);
 
-  const handlePurchase = async (packId: string) => {
-    setSelectedPack(packId);
+  const handlePurchase = async (pack: CreditPack) => {
+    setSelectedPack(pack.id);
     try {
       const result = await checkout({
         itemType: 'credits',
-        creditPackId: packId,
+        creditPackId: pack.id,
+        credits: pack.credits,
+        price: pack.price
       });
 
       if (result) {
@@ -170,7 +172,7 @@ export function BuyCreditsDialog({ open, onOpenChange }: BuyCreditsDialogProps) 
                       </div>
                       <Button
                         className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
-                        onClick={() => handlePurchase(pack.id)}
+                        onClick={() => handlePurchase(pack)}
                         disabled={isPurchasing || checkoutLoading}
                       >
                         {isPurchasing ? (

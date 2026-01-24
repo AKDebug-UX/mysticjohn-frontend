@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { creditsApi } from '@/lib/api';
+import { authApi, creditsApi } from '@/lib/api';
 import type {
   CreditPack,
   CreditBalance,
@@ -42,14 +42,45 @@ export function useCredits(): UseCreditsReturn {
     try {
       setError(null);
       setIsLoading(true);
-      const data = await creditsApi.getCreditPacks();
-      setCreditPacks(data);
+      // Use local data instead of API
+      const localPacks: CreditPack[] = [
+        {
+          id: 'pack_starter',
+          name: 'Starter Pack',
+          description: 'Perfect for a quick question',
+          credits: 5,
+          price: 4.99,
+          isActive: true
+        },
+        {
+          id: 'pack_seeker',
+          name: 'Seeker Pack',
+          description: 'Explore deeper meanings',
+          credits: 15,
+          price: 12.99,
+          isActive: true
+        },
+        // {
+        //   id: 'pack_mystic',
+        //   name: 'Mystic Pack',
+        //   description: 'For serious spiritual guidance',
+        //   credits: 30,
+        //   price: 24.99,
+        //   isActive: true
+        // },
+        // {
+        //   id: 'pack_divine',
+        //   name: 'Divine Pack',
+        //   description: 'Ultimate spiritual connection',
+        //   credits: 60,
+        //   price: 49.99,
+        //   isActive: true
+        // }
+      ];
+      setCreditPacks(localPacks);
     } catch (err) {
-      const errorMessage =
-        err instanceof ApiClientError
-          ? err.message
-          : 'Failed to fetch credit packs.';
-      setError(errorMessage);
+      console.error('Error setting local credit packs:', err);
+      setError('Failed to load credit packs.');
     } finally {
       setIsLoading(false);
     }
@@ -59,8 +90,8 @@ export function useCredits(): UseCreditsReturn {
     try {
       setError(null);
       setIsLoading(true);
-      const data = await creditsApi.getCreditBalance();
-      setBalance(data);
+      const data = await authApi.getMe();
+      setBalance(data.credits);
     } catch (err) {
       const errorMessage =
         err instanceof ApiClientError
@@ -94,7 +125,7 @@ export function useCredits(): UseCreditsReturn {
       try {
         setError(null);
         setIsLoading(true);
-        const submitted = await creditsApi.submitQuestions(data);
+        const submitted = await messagesApi.submitQuestions(data);
         setQuestions((prev) => [...submitted, ...prev]);
         // Refresh balance after spending credits
         await fetchBalance();
@@ -117,7 +148,7 @@ export function useCredits(): UseCreditsReturn {
     try {
       setError(null);
       setIsLoading(true);
-      const data = await creditsApi.getMyQuestions();
+      const data = await messagesApi.getMyQuestions();
       setQuestions(data);
     } catch (err) {
       const errorMessage =

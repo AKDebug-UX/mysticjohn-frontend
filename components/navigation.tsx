@@ -64,9 +64,9 @@ export function Navigation() {
             )}
             {isAuthenticated ? (
               <div className="flex items-center gap-4">
-                <span className="text-sm text-muted-foreground">
+                {/* <span className="text-sm text-muted-foreground">
                   {user?.name || user?.email}
-                </span>
+                </span> */}
                 <Button
                   size="sm"
                   variant="outline"

@@ -9,7 +9,17 @@ export const checkoutApi = {
    * Unified checkout for tickets, courses, or credit packs
    */
   checkout: async (data: CheckoutRequest): Promise<CheckoutResponse> => {
-    return apiClient.post<CheckoutResponse>('/api/checkout', data);
+    let endpoint = '/api/payments/booking-checkout';
+    
+    if (data.itemType === 'credits') {
+      endpoint = '/api/payments/credits-checkout';
+    } else if (data.itemType === 'course') {
+      // Assuming courses use the booking checkout or a dedicated one not listed
+      // Using booking-checkout as fallback/closest match based on available endpoints
+      endpoint = '/api/payments/booking-checkout';
+    }
+
+    return apiClient.post<CheckoutResponse>(endpoint, data);
   },
 
   /**
@@ -19,16 +29,7 @@ export const checkoutApi = {
     transactionId: string;
     sessionId?: string | null;
   }): Promise<CheckoutConfirmResponse> => {
-    // Backend expects transactionId and optional sessionId as query parameters
-    const queryParams: Record<string, any> = {
-      transactionId: params.transactionId,
-    };
-    
-    if (params.sessionId) {
-      queryParams.sessionId = params.sessionId;
-    }
-    
-    return apiClient.get<CheckoutConfirmResponse>('/api/checkout/confirm', queryParams);
+    return apiClient.post<CheckoutConfirmResponse>('/api/payments/confirm', params);
   },
 };
 

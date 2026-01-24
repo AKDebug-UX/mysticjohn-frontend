@@ -12,11 +12,11 @@ import type {
 export const bookingsApi = {
   /**
    * Get all active services
-   * Backend route: /api/services or /api/ (for backward compatibility)
+   * Backend route: /api/services
    * Transforms backend format (_id, durationMins, active) to frontend format (id, duration, isActive)
    */
   getServices: async (): Promise<Service[]> => {
-    const response = await apiClient.get<any[]>('/api/services');
+    const response = await apiClient.get<any[]>('/api/bookings');
     // Transform backend format to frontend format
     return response.map((service: any) => ({
       id: service._id || service.id,
@@ -30,11 +30,11 @@ export const bookingsApi = {
 
   /**
    * Get service by ID
-   * Backend route: /api/:id (now correctly ordered after specific routes)
+   * Backend route: /api/services/:id
    * Transforms backend format to frontend format
    */
   getService: async (id: string): Promise<Service> => {
-    const service = await apiClient.get<any>(`/api/${id}`);
+    const service = await apiClient.get<any>(`/api/bookings/${id}`);
     return {
       id: service._id || service.id,
       name: service.name,
@@ -50,11 +50,13 @@ export const bookingsApi = {
    */
   getAvailability: async (
     serviceId: string,
-    date: string
+    date: string,
+    duration: number
   ): Promise<AvailabilitySlot> => {
-    return apiClient.get<AvailabilitySlot>('/api/availability', {
+    return apiClient.get<AvailabilitySlot>('/api/bookings/available-slots', {
       serviceId,
       date,
+      duration,
     });
   },
 
@@ -96,6 +98,6 @@ export const bookingsApi = {
    * Cancel booking
    */
   cancelBooking: async (id: string): Promise<void> => {
-    return apiClient.post<void>(`/api/bookings/${id}/cancel`);
+    return apiClient.delete<void>(`/api/bookings/${id}`);
   },
 };

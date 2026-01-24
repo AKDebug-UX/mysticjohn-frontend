@@ -8,12 +8,11 @@ import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useAuthContext } from '@/contexts/AuthContext';
-import { authApi } from '@/lib/api';
-import { Sparkles, Loader2, Star } from 'lucide-react';
+import { authApi, horoscopeApi } from '@/lib/api';
+import { Sparkles, Loader2, Star, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 import {
-  getDailyHoroscope,
   ZODIAC_SIGNS,
   ZODIAC_DATES,
   type ZodiacSign,
@@ -26,6 +25,7 @@ export default function HoroscopesPage() {
   const [horoscope, setHoroscope] = useState<HoroscopeData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   // Initialize with user's saved zodiac sign or first sign
   useEffect(() => {
@@ -38,32 +38,58 @@ export default function HoroscopesPage() {
   // Fetch horoscope when sign is selected
   useEffect(() => {
     if (selectedSign) {
-      const data = getDailyHoroscope(selectedSign);
-      setHoroscope(data);
+      handleSignChange(selectedSign, false);
     }
   }, [selectedSign]);
 
-  const handleSignChange = async (sign: ZodiacSign) => {
-    setSelectedSign(sign);
+  const handleSignChange = async (sign: ZodiacSign, saveToProfile = true) => {
+    if (saveToProfile) {
+        setSelectedSign(sign);
+    }
+    
     setIsLoading(true);
+    setError(null);
 
-    // Simulate API call delay
-    setTimeout(() => {
-      const data = getDailyHoroscope(sign);
-      setHoroscope(data);
+    try {
+      const data = await horoscopeApi.getDailyHoroscope(sign);
+      // Adapt API response if needed or use directly if it matches
+      // The API returns HoroscopeData which should match our local type mostly
+      // If the API return type is slightly different, we might need to map it
+      // But assuming for now it matches or we cast it
+      setHoroscope(data as unknown as HoroscopeData);
+    } catch (err) {
+      console.error('Failed to fetch horoscope:', err);
+      setError('Failed to load horoscope. Please try again later.');
+    } finally {
       setIsLoading(false);
-    }, 300);
+    }
 
     // Save to profile (optional)
+    if (saveToProfile) {
+      try {
+        setIsSaving(true);
+        await authApi.updateProfile({ zodiacSign: sign });
+        toast.success('Zodiac sign saved to your profile');
+      } catch (error) {
+        // Silently fail - not critical
+        console.error('Failed to save zodiac sign:', error);
+      } finally {
+        setIsSaving(false);
+      }
+    }
+  };
+
+  const getFormattedDate = (dateStr: string) => {
     try {
-      setIsSaving(true);
-      await authApi.updateProfile({ zodiacSign: sign });
-      toast.success('Zodiac sign saved to your profile');
-    } catch (error) {
-      // Silently fail - not critical
-      console.error('Failed to save zodiac sign:', error);
-    } finally {
-      setIsSaving(false);
+      if (!dateStr) return format(new Date(), 'EEEE, MMMM d, yyyy');
+      const date = new Date(dateStr);
+      // Check if date is valid
+      if (isNaN(date.getTime())) {
+        return dateStr; // Return original string if parse fails
+      }
+      return format(date, 'EEEE, MMMM d, yyyy');
+    } catch (e) {
+      return dateStr || format(new Date(), 'EEEE, MMMM d, yyyy');
     }
   };
 
@@ -136,13 +162,23 @@ export default function HoroscopesPage() {
                   <p className="text-muted-foreground">Reading the stars...</p>
                 </CardContent>
               </Card>
+            ) : error ? (
+              <Card className="border-destructive/30">
+                <CardContent className="py-12 text-center">
+                  <AlertCircle className="h-8 w-8 text-destructive mx-auto mb-4" />
+                  <p className="text-destructive mb-2">{error}</p>
+                  <Button variant="outline" onClick={() => selectedSign && handleSignChange(selectedSign)}>
+                    Try Again
+                  </Button>
+                </CardContent>
+              </Card>
             ) : horoscope ? (
               <Card className="border-border/50">
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <div>
                       <CardTitle className="text-2xl mb-2">
-                        {horoscope.sign} - {format(new Date(horoscope.date), 'EEEE, MMMM d, yyyy')}
+                        {horoscope.sign} - {getFormattedDate(horoscope.date)}
                       </CardTitle>
                       <CardDescription>
                         Daily horoscope reading for {horoscope.sign}
@@ -164,27 +200,37 @@ export default function HoroscopesPage() {
                   {/* Lucky Details */}
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {horoscope.luckyNumber && (
-                      <div className="bg-card border border-border/50 rounded-lg p-4 text-center">
-                        <p className="text-sm text-muted-foreground mb-2">Lucky Number</p>
-                        <p className="text-3xl font-bold text-primary">{horoscope.luckyNumber}</p>
+                      <div className="bg-secondary/20 rounded-md p-4 text-center">
+                        <p className="text-sm text-muted-foreground mb-1">Lucky Number</p>
+                        <p className="text-xl font-bold text-foreground">{horoscope.luckyNumber}</p>
                       </div>
                     )}
                     {horoscope.luckyColor && (
-                      <div className="bg-card border border-border/50 rounded-lg p-4 text-center">
-                        <p className="text-sm text-muted-foreground mb-2">Lucky Color</p>
-                        <p className="text-2xl font-bold text-primary">{horoscope.luckyColor}</p>
+                      <div className="bg-secondary/20 rounded-md p-4 text-center">
+                        <p className="text-sm text-muted-foreground mb-1">Lucky Color</p>
+                        <p className="text-xl font-bold text-foreground">{horoscope.luckyColor}</p>
                       </div>
                     )}
                     {horoscope.mood && (
-                      <div className="bg-card border border-border/50 rounded-lg p-4 text-center">
-                        <p className="text-sm text-muted-foreground mb-2">Mood</p>
-                        <p className="text-2xl font-bold text-primary">{horoscope.mood}</p>
+                      <div className="bg-secondary/20 rounded-md p-4 text-center">
+                        <p className="text-sm text-muted-foreground mb-1">Mood</p>
+                        <p className="text-xl font-bold text-foreground">{horoscope.mood}</p>
                       </div>
                     )}
                   </div>
                 </CardContent>
               </Card>
-            ) : null}
+            ) : (
+              <Card className="border-border/50">
+                <CardContent className="py-12 text-center">
+                  <Star className="h-8 w-8 text-muted-foreground mx-auto mb-4 opacity-50" />
+                  <p className="text-muted-foreground mb-2">Select a zodiac sign to view your horoscope</p>
+                  <p className="text-sm text-muted-foreground opacity-75">
+                    Choose from the signs above to see what the stars have in store
+                  </p>
+                </CardContent>
+              </Card>
+            )}
           </main>
         </div>
         <MobileBottomNav />

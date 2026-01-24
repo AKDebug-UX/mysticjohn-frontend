@@ -59,7 +59,7 @@ export function BookingDialog({ open, onOpenChange, service }: BookingDialogProp
     if (selectedDate && service) {
       setIsLoadingSlots(true);
       const dateStr = format(selectedDate, 'yyyy-MM-dd');
-      fetchAvailability(service.id, dateStr);
+      fetchAvailability(service.id, dateStr, service.duration);
     } else {
       setAvailableSlots([]);
       setIsLoadingSlots(false);

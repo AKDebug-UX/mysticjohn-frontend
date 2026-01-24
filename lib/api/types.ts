@@ -41,8 +41,10 @@ export interface AuthResponse {
 
 export interface User {
   id: string;
+  _id?: string;
   email: string;
   name?: string;
+  credits?: number;
   phone?: string;
   zodiacSign?: string;
   role?: string;
@@ -154,6 +156,7 @@ export interface CreditTransaction {
   id: string;
   userId: string;
   amount: number;
+  credits: number;
   type: string;
   description?: string;
   createdAt: string;
@@ -186,6 +189,9 @@ export interface CheckoutRequest {
   itemType: 'course' | 'credits';
   courseId?: string;
   creditPackId?: string;
+  amount?: number;
+  price?: number;
+  credits?: number;
 }
 
 export interface CheckoutResponse {
