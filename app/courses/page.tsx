@@ -59,7 +59,7 @@ export default function CoursesPage() {
                     <p className="text-destructive mb-4">{error}</p>
                     <Button onClick={() => fetchCourses()}>Try Again</Button>
                   </div>
-                ) : courses.length === 0 ? (
+                ) : !courses || courses.length === 0 ? (
                   <Card className="border-border/50">
                     <CardContent className="py-12 text-center">
                       <BookOpen className="h-12 w-12 mx-auto text-muted-foreground mb-4 opacity-50" />

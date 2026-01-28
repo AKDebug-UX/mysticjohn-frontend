@@ -51,23 +51,12 @@ export function BuyCreditsDialog({ open, onOpenChange }: BuyCreditsDialogProps) 
       });
 
       if (result) {
-        // If free pack, success immediately
-        if (!result.checkoutSession && !result.paymentIntent) {
-          toast.success('Credit pack purchased successfully!');
-          await fetchBalance();
-          setTimeout(() => {
-            onOpenChange(false);
-            setSelectedPack(null);
-          }, 1000);
-          return;
-        }
 
         // For paid packs, redirect to Stripe Checkout
-        if (result.checkoutSession?.url) {
+        if ('checkoutUrl' in result && result.checkoutUrl) {
           // Persist transaction + session ids so success page can confirm
-          const transactionId =
-            result.transactionId || result.orderId || result.order?._id;
-          const sessionId = result.checkoutSession?.id;
+          const transactionId = result?.paymentId;
+          const sessionId = result?.sessionId;
 
           if (transactionId) {
             sessionStorage.setItem('checkout_transaction_id', transactionId);
@@ -79,7 +68,7 @@ export function BuyCreditsDialog({ open, onOpenChange }: BuyCreditsDialogProps) 
           toast.info('Redirecting to secure payment...', { duration: 1500 });
 
           // Redirect to Stripe Checkout Session
-          window.location.href = result.checkoutSession.url;
+          window.location.href = result.checkoutUrl;
         } else if (result.paymentIntent?.clientSecret) {
           // Fallback to PaymentIntent (legacy support)
           toast.error('Please update the backend to use Checkout Sessions');

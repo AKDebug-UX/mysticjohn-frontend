@@ -81,12 +81,12 @@ export default function MyBookingsPage() {
     }
   };
 
-  const upcomingBookings = bookings.filter((booking) => {
+  const upcomingBookings = (bookings || []).filter((booking) => {
     const bookingDate = parseISO(booking.startDateTime);
     return !isPast(bookingDate) && booking.status !== 'CANCELLED' && booking.status !== 'COMPLETED';
   });
 
-  const pastBookings = bookings.filter((booking) => {
+  const pastBookings = (bookings || []).filter((booking) => {
     const bookingDate = parseISO(booking.startDateTime);
     return isPast(bookingDate) || booking.status === 'COMPLETED' || booking.status === 'CANCELLED';
   });

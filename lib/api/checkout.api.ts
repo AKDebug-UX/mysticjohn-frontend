@@ -19,7 +19,28 @@ export const checkoutApi = {
       endpoint = '/api/payments/booking-checkout';
     }
 
-    return apiClient.post<CheckoutResponse>(endpoint, data);
+    const response = await apiClient.post<any>(endpoint, data);
+    
+    // Handle wrapped response
+    const result = response.data || response;
+    
+    // Map backend fields to frontend expectations
+    // BuyCreditsDialog expects checkoutUrl at top level
+    if (result.checkoutSession?.url && !result.checkoutUrl) {
+      result.checkoutUrl = result.checkoutSession.url;
+    }
+    
+    // Map session ID
+    if (result.checkoutSession?.id && !result.sessionId) {
+      result.sessionId = result.checkoutSession.id;
+    }
+
+    // Map transaction ID if needed (some components might look for paymentId)
+    if (result.transactionId && !result.paymentId) {
+      result.paymentId = result.transactionId;
+    }
+
+    return result as CheckoutResponse;
   },
 
   /**

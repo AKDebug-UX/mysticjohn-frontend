@@ -27,20 +27,20 @@ export const aiChatApi = {
    * Send a message to the Spratt AI Chat Bot
    */
   sendMessage: async (data: SendAIChatMessageRequest): Promise<SendAIChatMessageResponse> => {
-    return apiClient.post<SendAIChatMessageResponse>('/api/ai-chat/message', data);
+    return apiClient.post<SendAIChatMessageResponse>('/api/chat/send', data);
   },
 
   /**
    * Get user's AI chat history
    */
   getHistory: async (limit?: number): Promise<AIChatMessage[]> => {
-    return apiClient.get<AIChatMessage[]>('/api/ai-chat/history', limit ? { limit } : undefined);
+    return apiClient.get<AIChatMessage[]>('/api/chat/history', limit ? { limit } : undefined);
   },
 
   /**
    * Clear user's AI chat history
    */
   clearHistory: async (): Promise<{ message: string }> => {
-    return apiClient.delete<{ message: string }>('/api/ai-chat/history');
+    return apiClient.delete<{ message: string }>('/api/chat/history');
   },
 };

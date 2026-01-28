@@ -197,6 +197,7 @@ export interface CheckoutRequest {
 export interface CheckoutResponse {
   orderId?: string;
   transactionId?: string;
+  paymentId?: string; // Mapped from transactionId
   bookingId?: string;
   enrollmentId?: string;
   message: string;
@@ -209,6 +210,8 @@ export interface CheckoutResponse {
     id: string;
     url: string;
   };
+  checkoutUrl?: string; // Mapped from checkoutSession.url
+  sessionId?: string; // Mapped from checkoutSession.id
   order?: any;
   wallet?: any;
   tickets?: any[];
