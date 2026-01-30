@@ -10,14 +10,19 @@ export const adminApi = {
    * Get all credit packs (including inactive)
    */
   getAllCreditPacks: async (): Promise<CreditPack[]> => {
-    return apiClient.get<CreditPack[]>('/api/admin/credit-packs');
+    const response = await apiClient.get<any>('/api/credit-packs');
+    if (Array.isArray(response)) {
+      return response;
+    }
+    return response.data || response.creditPacks || [];
   },
 
   /**
    * Get credit pack by ID
    */
   getCreditPackById: async (id: string): Promise<CreditPack> => {
-    return apiClient.get<CreditPack>(`/api/admin/credit-packs/${id}`);
+    const response = await apiClient.get<any>(`/api/credit-packs/${id}`);
+    return response.data || response;
   },
 
   /**
@@ -30,7 +35,8 @@ export const adminApi = {
     currency?: string;
     isActive?: boolean;
   }): Promise<CreditPack> => {
-    return apiClient.post<CreditPack>('/api/admin/credit-packs', data);
+    const response = await apiClient.post<any>('/api/credit-packs', data);
+    return response.data || response;
   },
 
   /**
@@ -46,7 +52,8 @@ export const adminApi = {
       isActive?: boolean;
     }
   ): Promise<CreditPack> => {
-    return apiClient.patch<CreditPack>(`/api/admin/credit-packs/${id}`, data);
+    const response = await apiClient.patch<any>(`/api/admin/credit-packs/${id}`, data);
+    return response.data || response;
   },
 
   /**

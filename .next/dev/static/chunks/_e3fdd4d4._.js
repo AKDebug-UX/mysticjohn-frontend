@@ -26,7 +26,7 @@ function ProtectedAdminRoute({ children, redirectTo = '/admin/login' }) {
                 if (!isAuthenticated) {
                     // Not logged in, redirect to admin login
                     router.push(redirectTo);
-                } else if (user?.role !== 'ADMIN') {
+                } else if (user?.role !== 'admin') {
                     // Logged in but not admin, redirect to regular dashboard
                     router.push('/dashboard');
                 }
@@ -74,7 +74,7 @@ function ProtectedAdminRoute({ children, redirectTo = '/admin/login' }) {
         }, this);
     }
     // If not authenticated or not admin, don't render children
-    if (!isAuthenticated || user?.role !== 'ADMIN') {
+    if (!isAuthenticated || user?.role !== 'admin') {
         return null;
     }
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {

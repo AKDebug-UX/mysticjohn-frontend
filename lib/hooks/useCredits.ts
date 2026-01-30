@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { authApi, creditsApi } from '@/lib/api';
+import { authApi, creditsApi, messagesApi } from '@/lib/api';
 import type {
   CreditPack,
   CreditBalance,

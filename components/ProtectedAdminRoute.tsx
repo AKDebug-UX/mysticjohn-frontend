@@ -28,7 +28,7 @@ export function ProtectedAdminRoute({
       if (!isAuthenticated) {
         // Not logged in, redirect to admin login
         router.push(redirectTo);
-      } else if (user?.role !== 'ADMIN') {
+      } else if (user?.role !== 'admin') {
         // Logged in but not admin, redirect to regular dashboard
         router.push('/dashboard');
       }
@@ -48,7 +48,7 @@ export function ProtectedAdminRoute({
   }
 
   // If not authenticated or not admin, don't render children
-  if (!isAuthenticated || user?.role !== 'ADMIN') {
+  if (!isAuthenticated || user?.role !== 'admin') {
     return null;
   }
 

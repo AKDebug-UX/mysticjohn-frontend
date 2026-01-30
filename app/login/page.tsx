@@ -22,7 +22,7 @@ export default function LoginPage() {
   // Redirect if already authenticated
   useEffect(() => {
     if (isAuthenticated && user) {
-      if (user.role === 'ADMIN') {
+      if (user.role === 'admin') {
         router.push('/admin/dashboard');
       } else {
         router.push('/dashboard');
@@ -36,9 +36,15 @@ export default function LoginPage() {
     setIsSubmitting(true);
 
     try {
-      await login({ email, password });
+      const user = await login({ email, password });
       // Redirect based on role after login
-      // The useEffect will handle the redirect once user state is updated
+      if (user) {
+        if (user.role === 'admin') {
+          router.push('/admin/dashboard');
+        } else {
+          router.push('/dashboard');
+        }
+      }
     } catch (err) {
       // Error is handled by the auth context
       console.error('Login failed:', err);

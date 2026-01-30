@@ -58,6 +58,7 @@ export function useAuth(): UseAuthReturn {
       setIsLoading(true);
       const response = await authApi.login(credentials);
       setUser(response.user);
+      return response.user;
     } catch (err) {
       const errorMessage =
         err instanceof ApiClientError

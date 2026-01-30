@@ -21,7 +21,7 @@ export default function AdminLoginPage() {
   // Redirect if already authenticated
   useEffect(() => {
     if (isAuthenticated) {
-      if (user?.role === 'ADMIN') {
+      if (user?.role === 'admin') {
         router.push('/admin/dashboard');
       } else {
         router.push('/dashboard');
@@ -36,8 +36,7 @@ export default function AdminLoginPage() {
 
     try {
       await login({ email, password });
-      // After login, the useEffect will check role and redirect
-      // If user is not admin, they'll be redirected to /dashboard
+      
     } catch (err) {
       // Error is handled by the auth context
       console.error('Admin login failed:', err);
