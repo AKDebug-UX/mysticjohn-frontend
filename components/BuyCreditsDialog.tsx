@@ -21,7 +21,7 @@ interface BuyCreditsDialogProps {
 }
 
 export function BuyCreditsDialog({ open, onOpenChange }: BuyCreditsDialogProps) {
-  const { creditPacks, fetchCreditPacks, fetchBalance, isLoading: creditsLoading } = useCredits();
+  const { creditPacks, fetchCreditPacks, isLoading: creditsLoading } = useCredits();
   const { checkout, isLoading: checkoutLoading, error: checkoutError, clearError } = useCheckout();
   const [selectedPack, setSelectedPack] = useState<string | null>(null);
 

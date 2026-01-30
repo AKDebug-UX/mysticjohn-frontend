@@ -87,7 +87,11 @@ export const authApi = {
    * Get current user
    */
   getMe: async (): Promise<User> => {
-    const user = await apiClient.get<User>('/api/auth/profile');
+    const response = await apiClient.get<any>('/api/auth/profile');
+    // Handle wrapped response { status: 'success', data: { ...user... } }
+    const userData = response.data || response;
+    // Handle potential nested user object if backend wraps it further
+    const user = userData.user || userData;
     return mapUser(user);
   },
 
@@ -95,10 +99,15 @@ export const authApi = {
    * Update user profile
    */
   updateProfile: async (data: { name?: string; phone?: string; zodiacSign?: string }): Promise<{ user: User; message: string }> => {
-    const response = await apiClient.put<{ user: User; message: string }>('/api/auth/profile', data);
-    if (response.user) {
-      response.user = mapUser(response.user);
-    }
-    return response;
+    const response = await apiClient.put<any>('/api/auth/profile', data);
+    
+    // Handle wrapped response
+    const userData = response.data || response.user || response;
+    const user = mapUser(userData);
+    
+    return {
+      user,
+      message: response.message || 'Profile updated'
+    };
   },
 };

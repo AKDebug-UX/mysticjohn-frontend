@@ -16,10 +16,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Sparkles, Send, Loader2, Trash2, Bot, User } from 'lucide-react';
+import { Sparkles, Send, Loader2, Trash2, Bot, User, Coins } from 'lucide-react';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { aiChatApi, type AIChatMessage } from '@/lib/api/ai-chat.api';
+import { useAuthContext } from '@/contexts'
 import { cn } from '@/lib/utils';
 
 export default function AIChatPage() {
@@ -30,10 +31,14 @@ export default function AIChatPage() {
   const [isClearing, setIsClearing] = useState(false);
   const [clearDialogOpen, setClearDialogOpen] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const { user, refresh } = useAuthContext();
+
+  const AI_CHAT_CREDITS_COST = 1;
 
   useEffect(() => {
     fetchHistory();
-  }, []);
+    refresh();
+  }, [refresh]);
 
   useEffect(() => {
     scrollToBottom();
@@ -62,6 +67,12 @@ export default function AIChatPage() {
 
     if (!inputMessage.trim() || isSending) return;
 
+    // Check credits
+    if ((user?.credits ?? 0) < AI_CHAT_CREDITS_COST) {
+      toast.error(`Insufficient credits. You need ${AI_CHAT_CREDITS_COST} credit(s) to send a message.`);
+      return;
+    }
+
     const messageText = inputMessage.trim();
     setInputMessage('');
     setIsSending(true);
@@ -72,10 +83,17 @@ export default function AIChatPage() {
       // Add the new message to the list
       setMessages((prev) => [...prev, result.chatMessage]);
 
+      // Refresh credit balance
+      await refresh();
+
       toast.success('Message sent successfully!');
     } catch (error: any) {
       setInputMessage(messageText); // Restore message on error
-      toast.error('Failed to send message. Please try again.');
+      if (error.message?.includes('Insufficient credits')) {
+        toast.error(error.message);
+      } else {
+        toast.error('Failed to send message. Please try again.');
+      }
       console.error('Send message error:', error);
     } finally {
       setIsSending(false);
@@ -158,6 +176,23 @@ export default function AIChatPage() {
                   )}
                 </Button>
               </div>
+
+              {/* Credit Cost Notice */}
+              <Card className="border-primary/20 bg-primary/5">
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-3">
+                    <Coins className="h-5 w-5 text-primary" />
+                    <div className="flex-1">
+                      <p className="text-sm text-foreground">
+                        <span className="font-semibold">{AI_CHAT_CREDITS_COST} credit</span> per message
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Your balance: <span className="font-semibold">{user?.credits ?? 0} credits</span>
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
 
             {/* Chat Messages */}
@@ -205,6 +240,9 @@ export default function AIChatPage() {
                           <div className="bg-muted/50 border border-border/50 rounded-lg p-4 text-foreground">
                             {msg.response}
                           </div>
+                          <p className="text-xs text-muted-foreground mt-1 ml-4">
+                            {msg.creditsUsed} credit{msg.creditsUsed !== 1 ? 's' : ''} used
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -221,14 +259,16 @@ export default function AIChatPage() {
                     onChange={(e) => setInputMessage(e.target.value)}
                     placeholder="Ask me anything about your spiritual path..."
                     className="flex-1"
-                    disabled={isSending}
+                    disabled={isSending || !user || user?.credits < AI_CHAT_CREDITS_COST}
                     maxLength={1000}
                   />
                   <Button
                     type="submit"
                     disabled={
                       !inputMessage.trim() ||
-                      isSending
+                      isSending ||
+                      !user ||
+                      user?.credits < AI_CHAT_CREDITS_COST
                     }
                     className="bg-primary text-primary-foreground hover:bg-primary/90"
                   >
@@ -243,6 +283,11 @@ export default function AIChatPage() {
                     )}
                   </Button>
                 </form>
+                {user && user?.credits < AI_CHAT_CREDITS_COST && (
+                  <p className="text-sm text-destructive mt-2">
+                    Insufficient credits. You need {AI_CHAT_CREDITS_COST} credit(s) to send a message.
+                  </p>
+                )}
               </CardHeader>
             </Card>
           </main>

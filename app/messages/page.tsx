@@ -10,6 +10,7 @@ import { MobileBottomNav } from '@/components/mobile-bottom-nav'
 import { ProtectedRoute } from '@/components/ProtectedRoute'
 import { MysticalSparkles } from '@/components/mystical-sparkles'
 import { useCredits } from '@/lib/hooks'
+import { useAuthContext } from '@/contexts'
 import { Coins, Send, Sparkles } from 'lucide-react'
 import { format, parseISO } from 'date-fns'
 import { BuyCreditsDialog } from '@/components/BuyCreditsDialog'
@@ -18,23 +19,24 @@ export default function MessagesPage() {
   const [message, setMessage] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [buyCreditsOpen, setBuyCreditsOpen] = useState(false)
-  const { balance, questions, isLoading, error, fetchBalance, fetchQuestions, submitQuestions } = useCredits()
+  const { questions, isLoading, error, fetchQuestions, submitQuestions } = useCredits()
+  const { user, refresh } = useAuthContext()
 
   useEffect(() => {
-    fetchBalance()
+    refresh()
     fetchQuestions()
-  }, [fetchBalance, fetchQuestions])
+  }, [refresh, fetchQuestions])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!message.trim() || !balance || balance.balance < 1) return
+    if (!message.trim() || (user?.credits ?? 0) < 1) return
 
     setIsSubmitting(true)
     try {
       await submitQuestions({ questions: [message.trim()] })
       setMessage('')
       // Refresh balance and questions
-      await fetchBalance()
+      await refresh()
       await fetchQuestions()
     } catch (err) {
       console.error('Failed to submit question:', err)
@@ -97,7 +99,7 @@ export default function MessagesPage() {
                           <div>
                             <p className="text-sm text-muted-foreground">Your Balance</p>
                             <p className="text-2xl font-bold text-foreground">
-                              {balance?.balance ?? 0} Credits
+                              {user?.credits ?? 0} Credits
                             </p>
                           </div>
                         </div>
@@ -128,7 +130,7 @@ export default function MessagesPage() {
                           className="min-h-[150px] resize-none border-border/50 focus:border-primary/50 bg-background/50 text-foreground placeholder:text-muted-foreground"
                           value={message}
                           onChange={(e) => setMessage(e.target.value)}
-                          disabled={isSubmitting || !balance || balance.balance < 1}
+                          disabled={isSubmitting || !user || user?.credits < 1}
                         />
                         <div className="flex items-center justify-between mt-4">
                           <p className="text-sm text-muted-foreground">
@@ -137,7 +139,7 @@ export default function MessagesPage() {
                           <Button
                             type="submit"
                             className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/20"
-                            disabled={!message.trim() || !balance || balance.balance < 1 || isSubmitting}
+                            disabled={!message.trim() || !user || user?.credits < 1 || isSubmitting}
                           >
                             <Send className="h-4 w-4 mr-2" />
                             {isSubmitting ? 'Sending...' : 'Spend 1 Credit & Send'}

@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { useCredits } from '@/lib/hooks'
 import { BuyCreditsDialog } from '@/components/BuyCreditsDialog'
+import { useAuthContext } from '@/contexts'
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: Home },
@@ -23,12 +24,10 @@ const navigation = [
 
 export function DashboardSidebar() {
   const pathname = usePathname()
-  const { balance, fetchBalance } = useCredits()
+    const { user, refresh } = useAuthContext();
   const [buyCreditsOpen, setBuyCreditsOpen] = useState(false)
 
-  useEffect(() => {
-    fetchBalance()
-  }, [fetchBalance])
+
 
   return (
     <>
@@ -43,7 +42,7 @@ export function DashboardSidebar() {
               </div>
               <div className="text-right">
                 <div className="text-2xl font-bold text-primary">
-                  {balance?.balance ?? 0}
+                  {user?.credits ?? 0}
                 </div>
                 <div className="text-xs text-muted-foreground">Available</div>
               </div>
@@ -89,7 +88,7 @@ export function DashboardSidebar() {
           setBuyCreditsOpen(open)
           // Refresh balance when dialog closes (in case credits were purchased)
           if (!open) {
-            fetchBalance()
+            refresh()
           }
         }}
       />

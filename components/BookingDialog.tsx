@@ -27,8 +27,7 @@ interface BookingDialogProps {
 
 export function BookingDialog({ open, onOpenChange, service }: BookingDialogProps) {
   const { fetchAvailability, createBooking, isLoading, error, clearError, availability } = useBookings();
-  const { balance, fetchBalance } = useCredits();
-  const { isAuthenticated } = useAuthContext();
+  const { isAuthenticated, user, refresh } = useAuthContext();
   const router = useRouter();
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
@@ -49,10 +48,10 @@ export function BookingDialog({ open, onOpenChange, service }: BookingDialogProp
       clearError();
       // Fetch credit balance when dialog opens
       if (isAuthenticated) {
-        fetchBalance();
+        refresh();
       }
     }
-  }, [open, service, clearError, isAuthenticated, fetchBalance]);
+  }, [open, service, clearError, isAuthenticated, refresh]);
 
   // Fetch availability when date is selected
   useEffect(() => {

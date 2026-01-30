@@ -70,7 +70,7 @@ export default function BookingsClient() {
 
         <main className="flex-1 lg:ml-64">
             {/* Header */}
-            <section className="relative overflow-hidden py-16 md:py-24">
+            <section className="relative overflow-hidden pt-16">
               <MysticalSparkles />
               <div className="container mx-auto px-4 relative z-10">
                 <div className="max-w-3xl mx-auto text-center space-y-4">
@@ -85,7 +85,7 @@ export default function BookingsClient() {
             </section>
 
             {/* Service Filters */}
-            <section className="py-8 border-b border-border/50">
+            <section className="py-6 border-b border-border/50">
               <div className="container mx-auto px-4">
                 <div className="flex flex-wrap justify-center gap-4">
                   <Button

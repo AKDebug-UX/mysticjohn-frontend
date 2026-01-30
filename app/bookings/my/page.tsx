@@ -137,13 +137,6 @@ export default function MyBookingsPage() {
               </div>
             </div>
 
-            {error && (
-              <div className="mb-6 p-4 rounded-md bg-destructive/10 border border-destructive/20 text-destructive flex items-center gap-2">
-                <AlertCircle className="h-5 w-5" />
-                {error}
-              </div>
-            )}
-
             {/* Upcoming Bookings */}
             <div className="mb-8">
               <h2 className="text-2xl font-semibold text-foreground mb-4">Upcoming</h2>
