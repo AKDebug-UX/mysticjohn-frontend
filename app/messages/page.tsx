@@ -33,7 +33,7 @@ export default function MessagesPage() {
 
     setIsSubmitting(true)
     try {
-      await submitQuestions({ questions: [message.trim()] })
+      await submitQuestions({ message: message.trim() })
       setMessage('')
       // Refresh balance and questions
       await refresh()

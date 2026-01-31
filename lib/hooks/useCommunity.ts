@@ -28,9 +28,13 @@ export function useCommunity(): UseCommunityReturn {
             setIsLoading(true);
             const response = await communityApi.getFeed(page);
             // Handle both paginated and array responses
-            const newPosts = Array.isArray(response)
+            const rawPosts = Array.isArray(response)
                 ? response
                 : (response as any).data?.posts || (response as any).posts || []; // Adjust based on actual API response structure
+
+            const newPosts = Array.isArray(rawPosts) 
+                ? rawPosts.map((p: any) => ({ ...p, id: p.id || p._id })) 
+                : [];
 
             if (page === 1) {
                 setPosts(newPosts);
@@ -105,20 +109,25 @@ export function useCommunity(): UseCommunityReturn {
 
     const addComment = useCallback(async (postId: string, data: CreateCommentRequest): Promise<boolean> => {
         try {
-            await communityApi.addComment(postId, data);
-            // simple increment for now, real app would update comment list
-            setPosts((prev) =>
-                prev.map((post) => {
-                    if (post.id === postId) {
-                        return {
-                            ...post,
-                            commentsCount: post.commentsCount + 1,
-                        };
-                    }
-                    return post;
-                })
-            );
-            return true;
+            const response = await communityApi.addComment(postId, data);
+            const newComment = response.data;
+
+            if (newComment) {
+                setPosts((prev) =>
+                    prev.map((post) => {
+                        if (post.id === postId) {
+                            return {
+                                ...post,
+                                commentsCount: post.commentsCount + 1,
+                                comments: [...(post.comments || []), newComment],
+                            };
+                        }
+                        return post;
+                    })
+                );
+                return true;
+            }
+            return false;
         } catch (err) {
             console.error('Failed to add comment', err);
             return false;

@@ -16,10 +16,12 @@ import { formatDistanceToNow } from 'date-fns';
 import { toast } from 'sonner';
 
 export default function CommunityPage() {
-    const { posts, isLoading, error, fetchFeed, createPost, likePost } = useCommunity();
+    const { posts, isLoading, error, fetchFeed, createPost, likePost, addComment } = useCommunity();
     const { user } = useAuthContext();
     const [newPostContent, setNewPostContent] = useState('');
     const [isPosting, setIsPosting] = useState(false);
+    const [activeCommentId, setActiveCommentId] = useState<string | null>(null);
+    const [commentText, setCommentText] = useState('');
 
     useEffect(() => {
         fetchFeed();
@@ -41,6 +43,28 @@ export default function CommunityPage() {
 
     const handleLike = async (postId: string) => {
         await likePost(postId);
+    };
+
+    const toggleComments = (postId: string) => {
+        if (activeCommentId === postId) {
+            setActiveCommentId(null);
+            setCommentText('');
+        } else {
+            setActiveCommentId(postId);
+            setCommentText('');
+        }
+    };
+
+    const handleSubmitComment = async (postId: string) => {
+        if (!commentText.trim()) return;
+        
+        const success = await addComment(postId, { content: commentText });
+        if (success) {
+            setCommentText('');
+            toast.success('Comment added');
+        } else {
+            toast.error('Failed to add comment');
+        }
     };
 
     return (
@@ -151,7 +175,7 @@ export default function CommunityPage() {
                                                     </div>
                                                 )}
                                             </CardContent>
-                                            <CardFooter className="border-t border-border/50 py-3 bg-muted/20">
+                                            <CardFooter className="flex flex-col border-t border-border/50 py-3 bg-muted/20">
                                                 <div className="flex w-full justify-between items-center text-sm text-muted-foreground">
                                                     <Button
                                                         variant="ghost"
@@ -160,9 +184,14 @@ export default function CommunityPage() {
                                                         className={post.isLiked ? "text-red-500 hover:text-red-600 hover:bg-red-500/10" : "hover:text-foreground"}
                                                     >
                                                         <Heart className={`h-4 w-4 mr-2 ${post.isLiked ? 'fill-current' : ''}`} />
-                                                        {post.likesCount}
+                                                        {post.likes?.length || 0}
                                                     </Button>
-                                                    <Button variant="ghost" size="sm" className="hover:text-foreground">
+                                                    <Button 
+                                                        variant="ghost" 
+                                                        size="sm" 
+                                                        className={`hover:text-foreground ${activeCommentId === post.id ? 'text-primary bg-primary/10' : ''}`}
+                                                        onClick={() => toggleComments(post.id)}
+                                                    >
                                                         <MessageCircle className="h-4 w-4 mr-2" />
                                                         {post.commentsCount}
                                                     </Button>
@@ -171,6 +200,50 @@ export default function CommunityPage() {
                                                         Share
                                                     </Button>
                                                 </div>
+
+                                                {/* Comment Section */}
+                                                {activeCommentId === post.id && (
+                                                    <div className="w-full mt-4 space-y-4 animate-in fade-in slide-in-from-top-2">
+                                                        {/* Existing Comments */}
+                                                        {post.comments && post.comments.length > 0 ? (
+                                                            <div className="space-y-3 pl-4 border-l-2 border-primary/20">
+                                                                {post.comments.map((comment) => (
+                                                                    <div key={comment.id} className="space-y-1">
+                                                                        <div className="flex items-center gap-2">
+                                                                            <span className="font-semibold text-sm">{comment.user?.name || 'User'}</span>
+                                                                            <span className="text-xs text-muted-foreground">
+                                                                                {formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true })}
+                                                                            </span>
+                                                                        </div>
+                                                                        <p className="text-sm text-foreground/90">{comment.content}</p>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        ) : (
+                                                            <div className="text-center text-sm text-muted-foreground py-2">
+                                                                No comments yet. Be the first to share your thoughts!
+                                                            </div>
+                                                        )}
+                                                        
+                                                        {/* Add Comment Input */}
+                                                        <div className="flex gap-2">
+                                                            <Textarea 
+                                                                placeholder="Write a comment..." 
+                                                                value={commentText}
+                                                                onChange={(e) => setCommentText(e.target.value)}
+                                                                className="min-h-[60px] resize-none bg-background focus-visible:ring-1"
+                                                            />
+                                                            <Button 
+                                                                size="icon" 
+                                                                className="h-[60px] w-[60px]"
+                                                                disabled={!commentText.trim()}
+                                                                onClick={() => handleSubmitComment(post.id)}
+                                                            >
+                                                                <Send className="h-4 w-4" />
+                                                            </Button>
+                                                        </div>
+                                                    </div>
+                                                )}
                                             </CardFooter>
                                         </Card>
                                     ))}

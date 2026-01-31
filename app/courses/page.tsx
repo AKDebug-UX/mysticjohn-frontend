@@ -106,7 +106,7 @@ export default function CoursesPage() {
                           <div className="flex items-center justify-between pt-3 border-t border-border/50">
                             <span className="text-2xl font-bold text-primary">£{course.price}</span>
                             <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90" asChild>
-                              <Link href={`/courses/${course.id}`}>
+                              <Link href={`/courses/${course._id}`}>
                                 Start Course
                               </Link>
                             </Button>

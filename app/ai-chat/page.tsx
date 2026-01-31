@@ -5,7 +5,7 @@ import { Navigation } from '@/components/navigation';
 import { DashboardSidebar } from '@/components/dashboard-sidebar';
 import { MobileBottomNav } from '@/components/mobile-bottom-nav';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -16,29 +16,30 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Sparkles, Send, Loader2, Trash2, Bot, User, Coins } from 'lucide-react';
+import { Sparkles, Send, Loader2, Trash2, Bot, User, Coins, Plus, MessageSquare, History } from 'lucide-react';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
-import { aiChatApi, type AIChatMessage } from '@/lib/api/ai-chat.api';
+import { aiChatApi, type AIChatMessage, type Conversation } from '@/lib/api/ai-chat.api';
 import { useAuthContext } from '@/contexts'
 import { cn } from '@/lib/utils';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 
 export default function AIChatPage() {
   const [messages, setMessages] = useState<AIChatMessage[]>([]);
+  const [conversations, setConversations] = useState<Conversation[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [isSending, setIsSending] = useState(false);
-  const [isClearing, setIsClearing] = useState(false);
-  const [clearDialogOpen, setClearDialogOpen] = useState(false);
+  const [isStartingNew, setIsStartingNew] = useState(false);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { user, refresh } = useAuthContext();
 
   const AI_CHAT_CREDITS_COST = 1;
 
   useEffect(() => {
-    fetchHistory();
-    refresh();
-  }, [refresh]);
+    fetchInitialData();
+  }, []);
 
   useEffect(() => {
     scrollToBottom();
@@ -48,17 +49,32 @@ export default function AIChatPage() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const fetchHistory = async () => {
+  const fetchInitialData = async () => {
     setIsLoading(true);
+    await Promise.all([fetchHistory(), fetchConversations(), refresh()]);
+    setIsLoading(false);
+  };
+
+  const fetchHistory = async () => {
     try {
-      const history = await aiChatApi.getHistory(50);
-      // Reverse to show oldest first, newest last
-      setMessages(history.reverse());
+      const response = await aiChatApi.getHistory();
+      // Handle various response formats
+      const data = response.data || response.messages || response;
+      const history = Array.isArray(data) ? data : [];
+      setMessages(history);
     } catch (error: any) {
-      toast.error('Failed to load chat history');
       console.error('Chat history error:', error);
-    } finally {
-      setIsLoading(false);
+      // Don't toast on initial load to avoid annoyance if empty
+    }
+  };
+
+  const fetchConversations = async () => {
+    try {
+      const response = await aiChatApi.getConversations();
+      const data = response.data || response.conversations || response;
+      setConversations(Array.isArray(data) ? data : []);
+    } catch (error: any) {
+      console.error('Fetch conversations error:', error);
     }
   };
 
@@ -67,7 +83,6 @@ export default function AIChatPage() {
 
     if (!inputMessage.trim() || isSending) return;
 
-    // Check credits
     if ((user?.credits ?? 0) < AI_CHAT_CREDITS_COST) {
       toast.error(`Insufficient credits. You need ${AI_CHAT_CREDITS_COST} credit(s) to send a message.`);
       return;
@@ -77,45 +92,63 @@ export default function AIChatPage() {
     setInputMessage('');
     setIsSending(true);
 
+    // Optimistically add user message
+    const tempId = Date.now().toString();
+    const tempMessage: AIChatMessage = {
+      _id: tempId,
+      role: 'user',
+      content: messageText,
+      createdAt: new Date().toISOString(),
+    };
+    setMessages(prev => [...prev, tempMessage]);
+
     try {
-      const result = await aiChatApi.sendMessage({ message: messageText });
-
-      // Add the new message to the list
-      setMessages((prev) => [...prev, result.chatMessage]);
-
-      // Refresh credit balance
-      await refresh();
-
-      toast.success('Message sent successfully!');
+      const response = await aiChatApi.sendMessage({ message: messageText });
+      
+      // Refresh history to get the AI response and correct IDs
+      await fetchHistory();
+      await refresh(); // Update credits
     } catch (error: any) {
-      setInputMessage(messageText); // Restore message on error
+      // Remove temp message or show error
+      setMessages(prev => prev.filter(m => m._id !== tempId));
+      setInputMessage(messageText);
+      
       if (error.message?.includes('Insufficient credits')) {
         toast.error(error.message);
       } else {
-        toast.error('Failed to send message. Please try again.');
+        toast.error('Failed to send message.');
       }
-      console.error('Send message error:', error);
     } finally {
       setIsSending(false);
     }
   };
 
-  const handleClearHistoryClick = () => {
-    setClearDialogOpen(true);
+  const handleNewConversation = async () => {
+    setIsStartingNew(true);
+    try {
+      await aiChatApi.startNewConversation();
+      setMessages([]);
+      await fetchConversations();
+      toast.success('Started a new conversation');
+    } catch (error) {
+      toast.error('Failed to start new conversation');
+    } finally {
+      setIsStartingNew(false);
+    }
   };
 
-  const handleClearHistoryConfirm = async () => {
-    setClearDialogOpen(false);
-    setIsClearing(true);
+  const handleDeleteConversation = async (id: string) => {
     try {
-      await aiChatApi.clearHistory();
-      setMessages([]);
-      toast.success('Chat history cleared successfully');
-    } catch (error: any) {
-      toast.error('Failed to clear chat history');
-      console.error('Clear history error:', error);
-    } finally {
-      setIsClearing(false);
+      await aiChatApi.deleteConversation(id);
+      setConversations(prev => prev.filter(c => c._id !== id));
+      toast.success('Conversation deleted');
+      setDeleteId(null);
+      // If we deleted the current one (how do we know?), we might want to clear messages
+      // But we don't know which one is current from the list usually.
+      // We'll just refresh history just in case.
+      await fetchHistory();
+    } catch (error) {
+      toast.error('Failed to delete conversation');
     }
   };
 
@@ -143,188 +176,183 @@ export default function AIChatPage() {
         <div className="flex flex-1">
           <DashboardSidebar />
 
-          <main className="flex-1 p-6 lg:p-8 lg:ml-64 pb-20 lg:pb-8 flex flex-col h-[calc(100vh-73px)] max-h-[calc(100vh-73px)]">
+          <main className="flex-1 p-4 lg:p-8 lg:ml-64 pb-20 lg:pb-8 flex flex-col h-[calc(100vh-73px)] max-h-[calc(100vh-73px)]">
             {/* Header */}
-            <div className="mb-6 shrink-0">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <Sparkles className="h-8 w-8 text-primary" />
-                  <div>
-                    <h1 className="text-3xl md:text-4xl font-bold text-foreground">
-                      Spratt AI Chat Bot
-                    </h1>
-                    <p className="text-muted-foreground text-lg">
-                      Chat with John Spratt's AI for psychic guidance and spiritual insights
-                    </p>
-                  </div>
+            <div className="mb-4 shrink-0 flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <Sparkles className="h-6 w-6 md:h-8 md:w-8 text-primary" />
+                <div>
+                  <h1 className="text-2xl md:text-3xl font-bold text-foreground">
+                    Spratt AI Chat
+                  </h1>
+                  <p className="text-muted-foreground text-sm md:text-base">
+                    Psychic guidance & insights
+                  </p>
                 </div>
+              </div>
+              
+              <div className="flex items-center gap-2">
+                 <Sheet>
+                  <SheetTrigger asChild>
+                    <Button variant="outline" size="sm" className="md:hidden">
+                      <History className="h-4 w-4 mr-2" /> History
+                    </Button>
+                  </SheetTrigger>
+                  <SheetContent side="left">
+                    <SheetHeader>
+                      <SheetTitle>Conversations</SheetTitle>
+                    </SheetHeader>
+                    <div className="mt-4 space-y-2">
+                      {conversations.length === 0 ? (
+                        <p className="text-sm text-muted-foreground">No past conversations</p>
+                      ) : (
+                        conversations.map(c => (
+                          <div key={c._id} className="flex items-center justify-between p-2 rounded-lg border bg-card">
+                             <div className="flex flex-col overflow-hidden">
+                               <span className="text-sm font-medium truncate">
+                                 {c.lastMessage || 'Conversation'}
+                               </span>
+                               <span className="text-xs text-muted-foreground">
+                                 {c.updatedAt ? format(new Date(c.updatedAt), 'MMM d, HH:mm') : ''}
+                               </span>
+                             </div>
+                             <Button
+                               variant="ghost"
+                               size="icon"
+                               className="h-8 w-8 text-destructive"
+                               onClick={() => setDeleteId(c._id)}
+                             >
+                               <Trash2 className="h-4 w-4" />
+                             </Button>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </SheetContent>
+                </Sheet>
+
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={handleClearHistoryClick}
-                  disabled={isClearing || messages.length === 0}
-                  className="flex items-center gap-2"
+                  onClick={handleNewConversation}
+                  disabled={isStartingNew}
                 >
-                  {isClearing ? (
-                    <>
-                      <Loader2 className="h-4 w-4 animate-spin" /> Clearing...
-                    </>
-                  ) : (
-                    <>
-                      <Trash2 className="h-4 w-4" /> Clear History
-                    </>
-                  )}
+                  {isStartingNew ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4 mr-2" />}
+                  New Chat
                 </Button>
               </div>
-
-              {/* Credit Cost Notice */}
-              <Card className="border-primary/20 bg-primary/5">
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-3">
-                    <Coins className="h-5 w-5 text-primary" />
-                    <div className="flex-1">
-                      <p className="text-sm text-foreground">
-                        <span className="font-semibold">{AI_CHAT_CREDITS_COST} credit</span> per message
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        Your balance: <span className="font-semibold">{user?.credits ?? 0} credits</span>
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
             </div>
 
-            {/* Chat Messages */}
-            <Card className="flex-1 flex flex-col border-border/50 mb-6 min-h-0">
-              <CardContent className="flex-1 overflow-y-auto p-6 space-y-4 min-h-0 scrollbar-thin">
-                {messages.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center h-full text-center py-12">
-                    <Bot className="h-16 w-16 text-primary/30 mb-4" />
-                    <p className="text-muted-foreground text-lg mb-2">
-                      Welcome to Spratt AI Chat!
-                    </p>
-                    <p className="text-muted-foreground text-sm">
-                      Ask me anything about your spiritual path, life guidance, or mystical insights.
-                    </p>
-                  </div>
-                ) : (
-                  messages.map((msg) => (
-                    <div key={msg.id} className="space-y-3">
-                      {/* User Message */}
-                      <div className="flex items-start gap-3 justify-end">
-                        <div className="flex-1 max-w-[80%] lg:max-w-[70%]">
-                          <div className="flex items-center gap-2 justify-end mb-1">
-                            <User className="h-4 w-4 text-muted-foreground" />
-                            <span className="text-xs text-muted-foreground">You</span>
-                            <span className="text-xs text-muted-foreground">
-                              {format(new Date(msg.timestamp), 'HH:mm')}
-                            </span>
+            <div className="flex flex-1 gap-6 min-h-0">
+               {/* Desktop Conversation List */}
+               <Card className="hidden md:flex flex-col w-64 shrink-0 border-border/50">
+                  <CardHeader className="p-4 border-b">
+                    <CardTitle className="text-lg">History</CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex-1 overflow-y-auto p-2 space-y-2 scrollbar-thin">
+                      {conversations.length === 0 ? (
+                        <p className="text-sm text-muted-foreground text-center py-4">No past conversations</p>
+                      ) : (
+                        conversations.map(c => (
+                          <div key={c._id} className="group flex items-center justify-between p-3 rounded-md hover:bg-muted/50 border border-transparent hover:border-border/50 transition-colors">
+                             <div className="flex flex-col overflow-hidden mr-2">
+                               <span className="text-sm font-medium truncate">
+                                 {c.lastMessage || 'Conversation'}
+                               </span>
+                               <span className="text-xs text-muted-foreground">
+                                 {c.updatedAt ? format(new Date(c.updatedAt), 'MMM d, HH:mm') : ''}
+                               </span>
+                             </div>
+                             <Button
+                               variant="ghost"
+                               size="icon"
+                               className="h-6 w-6 opacity-0 group-hover:opacity-100 text-destructive"
+                               onClick={() => setDeleteId(c._id)}
+                             >
+                               <Trash2 className="h-3 w-3" />
+                             </Button>
                           </div>
-                          <div className="bg-primary/10 border border-primary/20 rounded-lg p-4 text-foreground">
-                            {msg.message}
-                          </div>
-                        </div>
-                      </div>
+                        ))
+                      )}
+                  </CardContent>
+               </Card>
 
-                      {/* AI Response */}
-                      <div className="flex items-start gap-3">
-                        <div className="flex-1 max-w-[80%] lg:max-w-[70%]">
-                          <div className="flex items-center gap-2 mb-1">
-                            <Bot className="h-4 w-4 text-primary" />
-                            <span className="text-xs text-primary font-medium">Spratt AI</span>
-                            <span className="text-xs text-muted-foreground">
-                              {format(new Date(msg.timestamp), 'HH:mm')}
-                            </span>
-                          </div>
-                          <div className="bg-muted/50 border border-border/50 rounded-lg p-4 text-foreground">
-                            {msg.response}
-                          </div>
-                          <p className="text-xs text-muted-foreground mt-1 ml-4">
-                            {msg.creditsUsed} credit{msg.creditsUsed !== 1 ? 's' : ''} used
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  ))
-                )}
-                <div ref={messagesEndRef} />
-              </CardContent>
+               {/* Chat Area */}
+               <div className="flex-1 flex flex-col min-h-0">
+                  {/* Credit Notice */}
+                  <Card className="border-primary/20 bg-primary/5 mb-4 shrink-0">
+                    <CardContent className="p-3 flex items-center justify-between">
+                       <div className="flex items-center gap-2">
+                          <Coins className="h-4 w-4 text-primary" />
+                          <span className="text-sm font-medium">{AI_CHAT_CREDITS_COST} credit/msg</span>
+                       </div>
+                       <span className="text-sm text-muted-foreground">Balance: {user?.credits ?? 0}</span>
+                    </CardContent>
+                  </Card>
 
-              {/* Chat Input */}
-              <CardHeader className="border-t border-border/50 pt-4 pb-4 shrink-0">
-                <form onSubmit={handleSendMessage} className="flex gap-3">
-                  <Input
-                    value={inputMessage}
-                    onChange={(e) => setInputMessage(e.target.value)}
-                    placeholder="Ask me anything about your spiritual path..."
-                    className="flex-1"
-                    disabled={isSending || !user || user?.credits < AI_CHAT_CREDITS_COST}
-                    maxLength={1000}
-                  />
-                  <Button
-                    type="submit"
-                    disabled={
-                      !inputMessage.trim() ||
-                      isSending ||
-                      !user ||
-                      user?.credits < AI_CHAT_CREDITS_COST
-                    }
-                    className="bg-primary text-primary-foreground hover:bg-primary/90"
-                  >
-                    {isSending ? (
-                      <>
-                        <Loader2 className="h-4 w-4 mr-2 animate-spin" /> Sending...
-                      </>
-                    ) : (
-                      <>
-                        <Send className="h-4 w-4 mr-2" /> Send
-                      </>
-                    )}
-                  </Button>
-                </form>
-                {user && user?.credits < AI_CHAT_CREDITS_COST && (
-                  <p className="text-sm text-destructive mt-2">
-                    Insufficient credits. You need {AI_CHAT_CREDITS_COST} credit(s) to send a message.
-                  </p>
-                )}
-              </CardHeader>
-            </Card>
+                  {/* Messages */}
+                  <Card className="flex-1 flex flex-col border-border/50 min-h-0">
+                    <CardContent className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0 scrollbar-thin">
+                      {messages.length === 0 ? (
+                        <div className="flex flex-col items-center justify-center h-full text-center">
+                          <Bot className="h-12 w-12 text-primary/30 mb-3" />
+                          <p className="text-muted-foreground">Start a conversation with the spirits...</p>
+                        </div>
+                      ) : (
+                        messages.map((msg, idx) => (
+                          <div key={msg._id || idx} className={cn(
+                            "flex w-full",
+                            msg.role === 'user' ? "justify-end" : "justify-start"
+                          )}>
+                            <div className={cn(
+                              "max-w-[80%] rounded-lg p-3",
+                              msg.role === 'user' 
+                                ? "bg-primary text-primary-foreground ml-4" 
+                                : "bg-muted mr-4"
+                            )}>
+                              <p className="text-sm whitespace-pre-wrap">{msg.content || msg.message || (msg as any).response}</p>
+                              <span className="text-[10px] opacity-70 block mt-1 text-right">
+                                {msg.createdAt ? format(new Date(msg.createdAt), 'HH:mm') : ''}
+                              </span>
+                            </div>
+                          </div>
+                        ))
+                      )}
+                      <div ref={messagesEndRef} />
+                    </CardContent>
+
+                    <CardHeader className="border-t p-3">
+                      <form onSubmit={handleSendMessage} className="flex gap-2">
+                        <Input
+                          value={inputMessage}
+                          onChange={(e) => setInputMessage(e.target.value)}
+                          placeholder="Type your message..."
+                          disabled={isSending || (user?.credits ?? 0) < AI_CHAT_CREDITS_COST}
+                        />
+                        <Button type="submit" size="icon" disabled={isSending || !inputMessage.trim()}>
+                           {isSending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+                        </Button>
+                      </form>
+                    </CardHeader>
+                  </Card>
+               </div>
+            </div>
           </main>
         </div>
 
         <MobileBottomNav />
 
-        {/* Clear History Confirmation Dialog */}
-        <Dialog open={clearDialogOpen} onOpenChange={setClearDialogOpen}>
+        <Dialog open={!!deleteId} onOpenChange={(open) => !open && setDeleteId(null)}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Clear Chat History</DialogTitle>
+              <DialogTitle>Delete Conversation</DialogTitle>
               <DialogDescription>
-                Are you sure you want to clear all chat history? This action cannot be undone.
+                Are you sure you want to delete this conversation? This action cannot be undone.
               </DialogDescription>
             </DialogHeader>
             <DialogFooter>
-              <Button
-                variant="outline"
-                onClick={() => setClearDialogOpen(false)}
-                disabled={isClearing}
-              >
-                Cancel
-              </Button>
-              <Button
-                variant="destructive"
-                onClick={handleClearHistoryConfirm}
-                disabled={isClearing}
-              >
-                {isClearing ? (
-                  <>
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" /> Clearing...
-                  </>
-                ) : (
-                  'Clear History'
-                )}
-              </Button>
+              <Button variant="outline" onClick={() => setDeleteId(null)}>Cancel</Button>
+              <Button variant="destructive" onClick={() => deleteId && handleDeleteConversation(deleteId)}>Delete</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>

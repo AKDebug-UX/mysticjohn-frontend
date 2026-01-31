@@ -227,7 +227,7 @@
 
 ---
 
-## POST /community/posts
+## POST /api/community/posts
 **Summary**: Create a post
 **Description**: 
 **Tags**: Community
@@ -236,7 +236,7 @@
 
 ---
 
-## GET /community/feed
+## GET /api/community/feed
 **Summary**: Get community feed
 **Description**: 
 **Tags**: Community
@@ -257,7 +257,7 @@
 
 ---
 
-## POST /community/posts/{postId}/like
+## POST /api/community/posts/{postId}/like
 **Summary**: Like a post
 **Description**: 
 **Tags**: Community
@@ -266,7 +266,7 @@
 
 ---
 
-## POST /community/posts/{postId}/comment
+## POST /api/community/posts/{postId}/comment
 **Summary**: Add comment to post
 **Description**: 
 **Tags**: Community
@@ -277,7 +277,7 @@
 
 ---
 
-## DELETE /community/posts/{postId}
+## DELETE /api/community/posts/{postId}
 **Summary**: Delete own post
 **Description**: 
 **Tags**: Community
@@ -286,7 +286,7 @@
 
 ---
 
-## POST /community/posts/{postId}/moderate
+## POST /api/community/posts/{postId}/moderate
 **Summary**: Moderate post (admin only)
 **Description**: 
 **Tags**: Community

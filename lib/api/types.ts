@@ -57,6 +57,7 @@ export interface User {
  */
 export interface Service {
   id: string;
+  _id?: string;
   name: string;
   description?: string;
   price: number;
@@ -78,6 +79,7 @@ export interface CreateBookingRequest {
 
 export interface Booking {
   id: string;
+  _id?: string;
   serviceId: string;
   service?: Service;
   userId: string;
@@ -96,6 +98,7 @@ export interface Booking {
  */
 export interface Course {
   id: string;
+  _id?: string;
   title: string;
   description?: string;
   price: number;
@@ -113,6 +116,7 @@ export interface Course {
 
 export interface CourseStep {
   id: string;
+  _id?: string;
   courseId: string;
   title: string;
   contentType: 'TEXT' | 'VIDEO' | 'LINK' | 'FILE';
@@ -122,6 +126,7 @@ export interface CourseStep {
 
 export interface CourseEnrollment {
   id: string;
+  _id?: string;
   courseId: string;
   course?: Course;
   userId: string;
@@ -183,6 +188,7 @@ export interface UpdateServiceRequest extends Partial<CreateServiceRequest> { }
  */
 export interface CreditPack {
   id: string;
+  _id?: string;
   name: string;
   description?: string;
   credits: number;
@@ -196,6 +202,7 @@ export interface CreditBalance {
 
 export interface CreditTransaction {
   id: string;
+  _id?: string;
   userId: string;
   amount: number;
   credits: number;
@@ -206,8 +213,10 @@ export interface CreditTransaction {
 
 export interface QuickQuestion {
   id: string;
+  _id?: string;
   userId: string;
   question: string;
+  message?: string; // API returns message
   reply?: QuickReply;
   status: string;
   createdAt: string;
@@ -215,13 +224,14 @@ export interface QuickQuestion {
 
 export interface QuickReply {
   id: string;
+  _id?: string;
   questionId: string;
   replyText: string;
   repliedAt: string;
 }
 
 export interface SubmitQuestionsRequest {
-  questions: string[];
+  message: string;
 }
 
 /**
@@ -277,6 +287,7 @@ export interface CheckoutConfirmResponse {
  */
 export interface Event {
   id: string;
+  _id?: string;
   title: string;
   description?: string;
   startDateTime: string;
@@ -295,6 +306,7 @@ export interface Event {
 
 export interface Ticket {
   id: string;
+  _id?: string;
   eventId: string;
   event?: Event;
   userId: string;
@@ -327,6 +339,7 @@ export interface UpdateEventRequest extends Partial<CreateEventRequest> {
  */
 export interface Post {
   id: string;
+  _id?: string;
   userId: string;
   user?: User;
   content: string;
@@ -335,6 +348,7 @@ export interface Post {
   tags?: string[];
   likesCount: number;
   commentsCount: number;
+  comments?: Comment[];
   isLiked?: boolean; // For current user
   createdAt: string;
   updatedAt: string;
@@ -342,6 +356,7 @@ export interface Post {
 
 export interface Comment {
   id: string;
+  _id?: string;
   postId: string;
   userId: string;
   user?: User;

@@ -92,10 +92,27 @@ export function useCredits(): UseCreditsReturn {
         setError(null);
         setIsLoading(true);
         const submitted = await messagesApi.submitQuestions(data);
-        setQuestions((prev) => [...submitted, ...prev]);
+        let rawQuestions: any[] = [];
+        
+        if (Array.isArray(submitted)) {
+            rawQuestions = submitted;
+        } else if ((submitted as any).data) {
+             rawQuestions = Array.isArray((submitted as any).data) 
+                ? (submitted as any).data 
+                : [(submitted as any).data];
+        } else {
+             rawQuestions = [submitted];
+        }
+
+        const newQuestions = rawQuestions.map((q: any) => ({ 
+             ...q, 
+             id: q.id || q._id,
+             question: q.question || q.message // Map message to question
+         }));
+         setQuestions((prev) => [...newQuestions, ...prev]);
         // Refresh balance after spending credits
         await fetchBalance();
-        return submitted;
+        return newQuestions;
       } catch (err) {
         const errorMessage =
           err instanceof ApiClientError
@@ -115,7 +132,15 @@ export function useCredits(): UseCreditsReturn {
       setError(null);
       setIsLoading(true);
       const data = await messagesApi.getMyQuestions();
-      setQuestions(data);
+      const rawQuestions = Array.isArray(data) 
+         ? data 
+         : (data as any).data || (data as any).questions || [];
+       const mappedQuestions = rawQuestions.map((q: any) => ({ 
+           ...q, 
+           id: q.id || q._id,
+           question: q.question || q.message // Map message to question
+       }));
+       setQuestions(mappedQuestions);
     } catch (err) {
       const errorMessage =
         err instanceof ApiClientError
