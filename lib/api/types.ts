@@ -63,6 +63,10 @@ export interface Service {
   price: number;
   duration: number;
   active: boolean;
+  capacity?: number;
+  eventType?: string;
+  location?: string;
+  date?: string;
 }
 
 export interface AvailabilitySlot {
@@ -71,9 +75,9 @@ export interface AvailabilitySlot {
 }
 
 export interface CreateBookingRequest {
-  serviceId: string;
-  startDateTime: string;
-  type: 'ONLINE' | 'IN_PERSON';
+  bookingTypeId: string; // was serviceId
+  startTime: string; // was startDateTime
+  bookingType: 'online' | 'in-person';
   paymentMethod?: 'CREDITS' | 'STRIPE';
 }
 
@@ -285,11 +289,17 @@ export interface CheckoutConfirmResponse {
 /**
  * Event Types
  */
+export enum EventType {
+  ONLINE = 'online',
+  IN_PERSON = 'in-person',
+}
+
 export interface Event {
   id: string;
   _id?: string;
   title: string;
   description?: string;
+  eventType?: EventType;
   startDateTime: string;
   endDateTime?: string;
   location?: string;
@@ -318,7 +328,7 @@ export interface Ticket {
 export interface CreateEventRequest {
   title: string;
   description?: string;
-  eventType: string; // From user request
+  eventType: EventType; // From user request
   price: number;
   date: string; // From user request
   startDateTime?: string; // Keeping for compatibility or mapping

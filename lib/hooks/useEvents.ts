@@ -32,7 +32,10 @@ export function useEvents(): UseEventsReturn {
             setIsLoading(true);
             const data = await eventsApi.getEvents();
             const eventsData = Array.isArray(data) ? data : (data as any).data || [];
-            setEvents(Array.isArray(eventsData) ? eventsData : []);
+            const mappedEvents = Array.isArray(eventsData) 
+                ? eventsData.map((e: any) => ({ ...e, id: e._id || e.id })) 
+                : [];
+            setEvents(mappedEvents);
         } catch (err) {
             const errorMessage =
                 err instanceof ApiClientError
@@ -49,7 +52,8 @@ export function useEvents(): UseEventsReturn {
             setError(null);
             setIsLoading(true);
             const data = await eventsApi.getEvent(id);
-            return data as unknown as Event; // Type assertion if response wrapper is tricky
+            const eventData = (data as any).data || data;
+            return { ...eventData, id: eventData._id || eventData.id } as Event;
         } catch (err) {
             const errorMessage =
                 err instanceof ApiClientError
@@ -68,7 +72,10 @@ export function useEvents(): UseEventsReturn {
             setIsLoading(true);
             const data = await eventsApi.getMyTickets();
             const ticketsData = Array.isArray(data) ? data : (data as any).data || [];
-            setTickets(Array.isArray(ticketsData) ? ticketsData : []);
+            const mappedTickets = Array.isArray(ticketsData) 
+                ? ticketsData.map((t: any) => ({ ...t, id: t._id || t.id })) 
+                : [];
+            setTickets(mappedTickets);
         } catch (err) {
             const errorMessage =
                 err instanceof ApiClientError

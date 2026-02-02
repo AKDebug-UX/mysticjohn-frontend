@@ -125,11 +125,6 @@ export default function BookingsClient() {
                       <p className="mt-4 text-muted-foreground">Loading services...</p>
                     </div>
                   </div>
-                ) : error ? (
-                  <div className="text-center py-20">
-                    <p className="text-destructive mb-4">{error}</p>
-                    <Button onClick={() => fetchServices()}>Try Again</Button>
-                  </div>
                 ) : filteredServices.length === 0 ? (
                   <div className="text-center py-20">
                     <div className="max-w-md mx-auto space-y-4">
@@ -142,7 +137,7 @@ export default function BookingsClient() {
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
                     {filteredServices.map((service) => (
-                      <Card key={service.id} className="border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/20 relative overflow-hidden">
+                      <Card key={service._id} className="border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/20 relative overflow-hidden">
                         <div className="absolute top-0 right-0 w-24 h-24 bg-linear-to-br from-primary/20 to-accent/20 blur-2xl" />
                         <CardHeader className="relative">
                           <div className="flex items-start justify-between mb-2">

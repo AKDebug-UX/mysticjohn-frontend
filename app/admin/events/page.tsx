@@ -11,8 +11,16 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { useEvents } from '@/lib/hooks/useEvents';
 import { eventsApi } from '@/lib/api';
+import { EventType } from '@/lib/api/types';
 import { Plus, Edit, Trash2, Calendar, MapPin, Loader2 } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { toast } from 'sonner';
@@ -59,7 +67,7 @@ export default function AdminEventsPage() {
             description: event.description || '',
             eventType: event.eventType || '',
             price: event.price,
-            date: event.date || event.startDateTime?.slice(0, 16) || '',
+            date: (event.date || event.startDateTime || '').slice(0, 16),
             capacity: event.capacity || 100,
             googleMeetLink: event.googleMeetLink || event.meetingLink || '',
             location: event.location || '',
@@ -87,7 +95,7 @@ export default function AdminEventsPage() {
         try {
             const data = {
                 ...formData,
-                isOnline: !!formData.googleMeetLink,
+                isOnline: formData.eventType === EventType.ONLINE,
             };
 
             if (editingEvent) {
@@ -143,6 +151,7 @@ export default function AdminEventsPage() {
                 <Textarea
                     id="description"
                     value={formData.description}
+                    className='h-32'
                     onChange={e => setFormData({ ...formData, description: e.target.value })}
                     required
                 />
@@ -151,13 +160,19 @@ export default function AdminEventsPage() {
             <div className="grid grid-cols-2 gap-4">
                 <div className="grid gap-2">
                     <Label htmlFor="eventType">Event Type</Label>
-                    <Input
-                        id="eventType"
+                    <Select
                         value={formData.eventType}
-                        onChange={e => setFormData({ ...formData, eventType: e.target.value })}
-                        placeholder="e.g. Workshop, Webinar"
+                        onValueChange={(value) => setFormData({ ...formData, eventType: value })}
                         required
-                    />
+                    >
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select event type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value={EventType.ONLINE}>Online</SelectItem>
+                            <SelectItem value={EventType.IN_PERSON}>In Person</SelectItem>
+                        </SelectContent>
+                    </Select>
                 </div>
                 <div className="grid gap-2">
                     <Label htmlFor="price">Price (£)</Label>

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useAdminBookings } from '@/lib/hooks/useAdminBookings';
-import { Service, CreateServiceRequest, Booking } from '@/lib/api/types';
+import { Service, CreateServiceRequest, Booking, CreateBookingRequest } from '@/lib/api/types';
 import { Button } from '@/components/ui/button';
 import {
     Card,
@@ -24,6 +24,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import {
     Table,
     TableBody,
@@ -47,9 +54,11 @@ export default function AdminBookingsPage() {
         createService,
         updateService,
         deleteService,
+        createBooking,
     } = useAdminBookings();
 
     const [isServiceDialogOpen, setIsServiceDialogOpen] = useState(false);
+    const [isBookingDialogOpen, setIsBookingDialogOpen] = useState(false);
     const [editingService, setEditingService] = useState<Service | null>(null);
     const [serviceFormData, setServiceFormData] = useState<CreateServiceRequest>({
         name: '',
@@ -57,6 +66,11 @@ export default function AdminBookingsPage() {
         price: 0,
         duration: 60,
         active: true,
+    });
+    const [bookingFormData, setBookingFormData] = useState<CreateBookingRequest>({
+        bookingTypeId: '',
+        startTime: '',
+        bookingType: 'in-person',
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -73,6 +87,17 @@ export default function AdminBookingsPage() {
             price: 0,
             duration: 60,
             active: true,
+            capacity: 1,
+            eventType: 'service',
+            location: 'online',
+        });
+    };
+
+    const resetBookingForm = () => {
+        setBookingFormData({
+            bookingTypeId: '',
+            startTime: '',
+            bookingType: 'in-person',
         });
     };
 
@@ -83,6 +108,10 @@ export default function AdminBookingsPage() {
             description: service.description || '',
             price: service.price,
             duration: service.duration,
+            capacity: service.capacity,
+            eventType: service.eventType,
+            location: service.location,
+            date: service.date,
             active: service.active,
         });
         setIsServiceDialogOpen(true);
@@ -99,12 +128,29 @@ export default function AdminBookingsPage() {
         setIsSubmitting(true);
         try {
             if (editingService) {
-                await updateService(editingService.id, serviceFormData);
+                await updateService(editingService._id || editingService.id, serviceFormData);
             } else {
                 await createService(serviceFormData);
             }
             setIsServiceDialogOpen(false);
             resetServiceForm();
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    const handleBookingSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+        try {
+            const success = await createBooking({
+                ...bookingFormData,
+                startTime: new Date(bookingFormData.startTime).toISOString(),
+            });
+            if (success) {
+                setIsBookingDialogOpen(false);
+                resetBookingForm();
+            }
         } finally {
             setIsSubmitting(false);
         }
@@ -141,6 +187,94 @@ export default function AdminBookingsPage() {
                 </TabsList>
 
                 <TabsContent value="bookings">
+                    <div className="flex justify-end mb-4">
+                        <Dialog
+                            open={isBookingDialogOpen}
+                            onOpenChange={setIsBookingDialogOpen}
+                        >
+                            <DialogTrigger asChild>
+                                <Button onClick={resetBookingForm}>
+                                    <Plus className="h-4 w-4 mr-2" /> Create Booking
+                                </Button>
+                            </DialogTrigger>
+                            <DialogContent className="max-w-md">
+                                <DialogHeader>
+                                    <DialogTitle>Create New Booking</DialogTitle>
+                                    <DialogDescription>
+                                        Manually create a booking for a client.
+                                    </DialogDescription>
+                                </DialogHeader>
+                                <form onSubmit={handleBookingSubmit} className="space-y-4">
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="service">Service</Label>
+                                        <Select
+                                            value={bookingFormData.bookingTypeId}
+                                            onValueChange={(value) =>
+                                                setBookingFormData({ ...bookingFormData, bookingTypeId: value })
+                                            }
+                                            required
+                                        >
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Select a service" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {services.map((service) => (
+                                                    <SelectItem key={service.id || service._id} value={service.id || service._id || ''}>
+                                                        {service.name}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="startTime">Date & Time</Label>
+                                        <Input
+                                            id="startTime"
+                                            type="datetime-local"
+                                            value={bookingFormData.startTime}
+                                            onChange={(e) =>
+                                                setBookingFormData({
+                                                    ...bookingFormData,
+                                                    startTime: e.target.value,
+                                                })
+                                            }
+                                            required
+                                        />
+                                    </div>
+
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="bookingType">Type</Label>
+                                        <Select
+                                            value={bookingFormData.bookingType}
+                                            onValueChange={(value: 'online' | 'in-person') =>
+                                                setBookingFormData({ ...bookingFormData, bookingType: value })
+                                            }
+                                            required
+                                        >
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Select booking type" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="online">Online</SelectItem>
+                                                <SelectItem value="in-person">In-Person</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+
+                                    <DialogFooter>
+                                        <Button type="submit" disabled={isSubmitting}>
+                                            {isSubmitting && (
+                                                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                                            )}
+                                            Create Booking
+                                        </Button>
+                                    </DialogFooter>
+                                </form>
+                            </DialogContent>
+                        </Dialog>
+                    </div>
+
                     <Card>
                         <CardHeader>
                             <CardTitle>Booking History</CardTitle>
@@ -167,7 +301,7 @@ export default function AdminBookingsPage() {
                                         {bookings.map((booking) => (
                                             <TableRow key={booking.id}>
                                                 <TableCell className="font-medium">
-                                                    {booking.service?.name || 'Unknown Service'}
+                                                    {booking?.serviceName || 'Unknown Service'}
                                                 </TableCell>
                                                 <TableCell>
                                                     <div className="flex flex-col">
@@ -250,6 +384,7 @@ export default function AdminBookingsPage() {
                                         <Textarea
                                             id="description"
                                             value={serviceFormData.description}
+                                            className='h-32'
                                             onChange={(e) =>
                                                 setServiceFormData({
                                                     ...serviceFormData,
@@ -297,6 +432,53 @@ export default function AdminBookingsPage() {
                                         </div>
                                     </div>
 
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div className="grid gap-2">
+                                            <Label htmlFor="capacity">Capacity</Label>
+                                            <Input
+                                                id="capacity"
+                                                type="number"
+                                                min="1"
+                                                value={serviceFormData.capacity || 1}
+                                                onChange={(e) =>
+                                                    setServiceFormData({
+                                                        ...serviceFormData,
+                                                        capacity: parseInt(e.target.value),
+                                                    })
+                                                }
+                                            />
+                                        </div>
+                                        <div className="grid gap-2">
+                                            <Label htmlFor="eventType">Event Type</Label>
+                                            <Input
+                                                id="eventType"
+                                                value={serviceFormData.eventType || ''}
+                                                onChange={(e) =>
+                                                    setServiceFormData({
+                                                        ...serviceFormData,
+                                                        eventType: e.target.value,
+                                                    })
+                                                }
+                                                placeholder="e.g. service"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="location">Location</Label>
+                                        <Input
+                                            id="location"
+                                            value={serviceFormData.location || ''}
+                                            onChange={(e) =>
+                                                setServiceFormData({
+                                                    ...serviceFormData,
+                                                    location: e.target.value,
+                                                })
+                                            }
+                                            placeholder="e.g. online"
+                                        />
+                                    </div>
+
                                     <div className="flex items-center space-x-2 border p-4 rounded-md">
                                         <Switch
                                             id="active"
@@ -337,7 +519,7 @@ export default function AdminBookingsPage() {
                                 <div className="grid gap-4 md:grid-cols-2">
                                     {services.map((service) => (
                                         <Card
-                                            key={service.id}
+                                            key={service._id}
                                             className="border border-border/50 hover:border-border transition-colors"
                                         >
                                             <CardHeader className="pb-2">
@@ -376,7 +558,7 @@ export default function AdminBookingsPage() {
                                                         variant="ghost"
                                                         size="sm"
                                                         className="text-destructive hover:bg-destructive/10"
-                                                        onClick={() => handleDeleteService(service.id)}
+                                                        onClick={() => handleDeleteService(service.id || service._id || '')}
                                                     >
                                                         <Trash2 className="h-4 w-4" />
                                                     </Button>

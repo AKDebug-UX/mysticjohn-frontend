@@ -27,6 +27,7 @@ interface BookingDialogProps {
 
 export function BookingDialog({ open, onOpenChange, service }: BookingDialogProps) {
   const { fetchAvailability, createBooking, isLoading, error, clearError, availability } = useBookings();
+  const { fetchBalance } = useCredits();
   const { isAuthenticated, user, refresh } = useAuthContext();
   const router = useRouter();
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -95,9 +96,9 @@ export function BookingDialog({ open, onOpenChange, service }: BookingDialogProp
       bookingDateTime.setHours(hours, minutes, 0, 0);
 
       const booking = await createBooking({
-        serviceId: service.id,
-        startDateTime: bookingDateTime.toISOString(),
-        type: bookingType,
+        bookingTypeId: service.id,
+        startTime: bookingDateTime.toISOString(),
+        bookingType: bookingType === 'ONLINE' ? 'online' : 'in-person',
         paymentMethod,
       });
 

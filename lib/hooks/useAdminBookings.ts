@@ -21,6 +21,7 @@ interface UseAdminBookingsReturn {
     createService: (data: CreateServiceRequest) => Promise<boolean>;
     updateService: (id: string, data: UpdateServiceRequest) => Promise<boolean>;
     deleteService: (id: string) => Promise<boolean>;
+    createBooking: (data: CreateBookingRequest) => Promise<boolean>;
 }
 
 export function useAdminBookings(): UseAdminBookingsReturn {
@@ -33,7 +34,7 @@ export function useAdminBookings(): UseAdminBookingsReturn {
         try {
             setIsLoading(true);
             setError(null);
-            const data = await bookingsApi.getServices();
+            const data = await bookingsApi.getBookingTypes();
             const servicesData = Array.isArray(data) ? data : (data as any).data || [];
             setServices(Array.isArray(servicesData) ? servicesData : []);
         } catch (err) {
@@ -111,6 +112,30 @@ export function useAdminBookings(): UseAdminBookingsReturn {
         [fetchServices]
     );
 
+    const createBooking = useCallback(
+        async (data: CreateBookingRequest): Promise<boolean> => {
+            try {
+                setIsLoading(true);
+                setError(null);
+                await bookingsApi.createBooking(data);
+                await fetchAllBookings();
+                toast.success('Booking created successfully');
+                return true;
+            } catch (err) {
+                const message =
+                    err instanceof ApiClientError
+                        ? err.message
+                        : 'Failed to create booking';
+                setError(message);
+                toast.error(message);
+                return false;
+            } finally {
+                setIsLoading(false);
+            }
+        },
+        [fetchAllBookings]
+    );
+
     const deleteService = useCallback(
         async (id: string): Promise<boolean> => {
             try {
@@ -145,5 +170,6 @@ export function useAdminBookings(): UseAdminBookingsReturn {
         createService,
         updateService,
         deleteService,
+        createBooking,
     };
 }
