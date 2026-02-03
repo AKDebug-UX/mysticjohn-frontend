@@ -40,7 +40,7 @@ export default function ContactPage() {
 
     return (
         <div className="min-h-screen bg-background flex flex-col">
-            <Navigation />
+            <LandingNavigation />
 
             <main className="flex-1">
                 {/* Header */}

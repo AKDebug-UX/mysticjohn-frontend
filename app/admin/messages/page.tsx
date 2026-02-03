@@ -8,7 +8,7 @@ import { Card } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Loader2, Send, Search, MessageSquare, User as UserIcon } from 'lucide-react';
+import { Loader2, Send, Search, MessageSquare, User as UserIcon, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { format } from 'date-fns';
 import { Input } from '@/components/ui/input';
 
@@ -21,9 +21,17 @@ export default function AdminMessagesPage() {
     } = useAdminMessages();
 
     const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
-    const [replyText, setReplyText] = useState<Record<string, string>>({}); // questionId -> text
-    const [sendingReply, setSendingReply] = useState<string | null>(null); // questionId being replied to
+    const [globalReplyText, setGlobalReplyText] = useState('');
+    const [sendingReply, setSendingReply] = useState<boolean>(false);
     const [searchTerm, setSearchTerm] = useState('');
+    const [messagesEndRef, setMessagesEndRef] = useState<HTMLDivElement | null>(null);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+    useEffect(() => {
+        if (messagesEndRef) {
+            messagesEndRef.scrollIntoView({ behavior: "smooth" });
+        }
+    }, [questions, selectedUserId, messagesEndRef]);
 
     useEffect(() => {
         fetchQuestions();
@@ -89,22 +97,35 @@ export default function AdminMessagesPage() {
         }
     }, [sortedUserIds, selectedUserId]);
 
-    const handleReplySubmit = async (questionId: string) => {
-        const text = replyText[questionId];
-        if (!text?.trim()) return;
+    const handleGlobalReplySubmit = async () => {
+        if (!selectedUserId || !globalReplyText.trim()) return;
+        
+        // Find the oldest pending question to reply to
+        // If no pending questions, we can't reply (backend limitation)
+        // Or we could try replying to the last question even if replied? 
+        // Let's stick to "Pending" first.
+        const userQuestions = conversations[selectedUserId].questions;
+        const pendingQuestions = userQuestions.filter(q => q.status === 'pending');
+        
+        // Target: Oldest pending question (FIFO)
+        const targetQuestion = pendingQuestions.length > 0 
+            ? pendingQuestions[0] 
+            : null;
 
-        setSendingReply(questionId);
+        if (!targetQuestion) {
+            // Optional: Handle case where no pending question exists
+            // For now, we disable the button, but if logic falls through:
+            return;
+        }
+
+        setSendingReply(true);
         try {
-            const success = await replyToQuestion(questionId, { reply: text });
+            const success = await replyToQuestion(targetQuestion.id || targetQuestion._id!, { reply: globalReplyText });
             if (success) {
-                setReplyText(prev => {
-                    const next = { ...prev };
-                    delete next[questionId];
-                    return next;
-                });
+                setGlobalReplyText('');
             }
         } finally {
-            setSendingReply(null);
+            setSendingReply(false);
         }
     };
 
@@ -147,13 +168,21 @@ export default function AdminMessagesPage() {
                 </div>
             </div>
 
-            <Card className="flex-1 flex overflow-hidden border-muted">
+            <Card className="flex flex-col md:flex-row overflow-auto h-screen border-muted">
                 {/* Sidebar - User List */}
-                <div className="w-80 border-r border-border bg-muted/10 flex flex-col">
-                    <div className="p-4 border-b border-border bg-muted/20">
-                        <h2 className="font-semibold text-sm text-muted-foreground uppercase tracking-wider">
+                <div 
+                    className={`
+                        border-r border-border bg-muted/10 flex flex-col transition-all duration-300 ease-in-out
+                        ${isSidebarOpen ? 'w-70 translate-x-0' : 'w-0 -translate-x-full opacity-0 overflow-hidden'}
+                    `}
+                >
+                    <div className="p-4 border-b border-border bg-muted/20 flex justify-between items-center">
+                        <h2 className="font-semibold text-sm text-muted-foreground uppercase tracking-wider whitespace-nowrap">
                             Conversations ({sortedUserIds.length})
                         </h2>
+                        <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => setIsSidebarOpen(false)}>
+                            <PanelLeftClose className="h-4 w-4" />
+                        </Button>
                     </div>
                     <div className="flex-1 overflow-y-auto">
                         {sortedUserIds.length === 0 ? (
@@ -214,6 +243,11 @@ export default function AdminMessagesPage() {
                         <>
                             {/* Chat Header */}
                             <div className="p-4 border-b border-border flex items-center gap-3 shadow-sm bg-background/95 backdrop-blur z-10">
+                                {!isSidebarOpen && (
+                                    <Button variant="ghost" size="icon" onClick={() => setIsSidebarOpen(true)} className="mr-2">
+                                        <PanelLeftOpen className="h-5 w-5" />
+                                    </Button>
+                                )}
                                 <Avatar className="h-10 w-10">
                                     <AvatarFallback className="bg-primary/10 text-primary">
                                         {getInitials(conversations[selectedUserId].user.name)}
@@ -258,8 +292,8 @@ export default function AdminMessagesPage() {
                                             </div>
                                         </div>
 
-                                        {/* Admin Reply or Reply Form */}
-                                        {q.status !== 'pending' && (q.adminReply || q.reply || q.status === 'replied' || q.status === 'completed') ? (
+                                        {/* Admin Reply (if exists) */}
+                                        {(q.adminReply || q.reply || q.status === 'replied' || q.status === 'completed') && (
                                             <div className="flex gap-3 justify-end">
                                                 <div className="max-w-[80%]">
                                                     <div className="bg-primary text-primary-foreground p-4 rounded-2xl rounded-tr-none shadow-md">
@@ -280,46 +314,43 @@ export default function AdminMessagesPage() {
                                                     </div>
                                                 </div>
                                             </div>
-                                        ) : (
-                                            <div className="pl-11 pr-4">
-                                                <div className="bg-accent/10 border border-accent/20 p-4 rounded-lg">
-                                                    <label className="text-xs font-medium text-muted-foreground mb-2 block">
-                                                        Reply to this question:
-                                                    </label>
-                                                    <div className="flex gap-2">
-                                                        <Textarea
-                                                            placeholder="Type your answer here..."
-                                                            value={replyText[q.id || q._id!] || ''}
-                                                            onChange={(e) => setReplyText(prev => ({
-                                                                ...prev,
-                                                                [q.id || q._id!]: e.target.value
-                                                            }))}
-                                                            className="min-h-[80px] bg-background resize-none focus-visible:ring-1"
-                                                        />
-                                                    </div>
-                                                    <div className="flex justify-end mt-2">
-                                                        <Button
-                                                            size="sm"
-                                                            onClick={() => handleReplySubmit(q.id || q._id!)}
-                                                            disabled={!replyText[q.id || q._id!]?.trim() || sendingReply === (q.id || q._id!)}
-                                                            className="gap-2"
-                                                        >
-                                                            {sendingReply === (q.id || q._id!) ? (
-                                                                <Loader2 className="h-3 w-3 animate-spin" />
-                                                            ) : (
-                                                                <Send className="h-3 w-3" />
-                                                            )}
-                                                            Send Reply
-                                                        </Button>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         )}
-                                        
-                                        {/* Separator for clarity */}
-                                        <div className="h-px bg-border/30 my-4" />
                                     </div>
                                 ))}
+                                <div ref={setMessagesEndRef} />
+                            </div>
+
+                            {/* Global Reply Input */}
+                            <div className="p-4 border-t border-border bg-background">
+                                <div className="flex gap-2 items-end">
+                                    <Textarea
+                                        placeholder={
+                                            conversations[selectedUserId].questions.some(q => q.status === 'pending') 
+                                            ? "Type your reply..." 
+                                            : "No pending messages to reply to"
+                                        }
+                                        value={globalReplyText}
+                                        onChange={(e) => setGlobalReplyText(e.target.value)}
+                                        className="min-h-[80px] bg-background resize-none focus-visible:ring-1"
+                                        disabled={!conversations[selectedUserId].questions.some(q => q.status === 'pending')}
+                                    />
+                                    <Button
+                                        size="icon"
+                                        onClick={handleGlobalReplySubmit}
+                                        disabled={
+                                            !globalReplyText.trim() || 
+                                            sendingReply || 
+                                            !conversations[selectedUserId].questions.some(q => q.status === 'pending')
+                                        }
+                                        className="h-10 w-10 shrink-0 mb-1"
+                                    >
+                                        {sendingReply ? (
+                                            <Loader2 className="h-4 w-4 animate-spin" />
+                                        ) : (
+                                            <Send className="h-4 w-4" />
+                                        )}
+                                    </Button>
+                                </div>
                             </div>
                         </>
                     ) : (
