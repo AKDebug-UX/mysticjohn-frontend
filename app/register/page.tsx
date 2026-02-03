@@ -29,22 +29,25 @@ export default function RegisterPage() {
     return null;
   }
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    clearError();
     setIsSubmitting(true);
+    clearError();
 
     try {
       await register({
         email,
         password,
-        name: name || undefined,
-        phone: phone || undefined,
+        name,
+        dateOfBirth: "2000-01-01",
+        // Send empty/default values if needed by API, or omit them
       });
+      // Registration successful - auth context will handle state update
+      // and redirect is handled in the effect or component body check
       router.push('/dashboard');
     } catch (err) {
-      // Error is handled by the auth context
       console.error('Registration failed:', err);
+      // Error is set in auth context
     } finally {
       setIsSubmitting(false);
     }

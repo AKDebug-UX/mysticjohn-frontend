@@ -49,6 +49,7 @@ export interface User {
   phone?: string;
   zodiacSign?: string;
   role?: string;
+  level?: string | number;
   createdAt?: string;
   updatedAt?: string;
 }
