@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, FormEvent } from 'react';
+import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Navigation } from '@/components/navigation';
@@ -29,24 +29,7 @@ export default function RegisterPage() {
     return null;
   }
 
-  // Helper to detect errors that should redirect
-  const shouldRedirectForError = (msg: string) => {
-    const norm = msg.toLowerCase();
-    return (
-      norm.startsWith('request timed out') ||
-      norm.includes('failed to register') ||
-      norm.includes('failedto regiser') ||
-      norm.includes('please try again in a moment')
-    );
-  };
-  // Redirect to login and suppress specific error messages
-  useEffect(() => {
-    if (error && shouldRedirectForError(error)) {
-      clearError();
-      router.push('/login');
-    }
-  }, [error, clearError, router]);
-
+  
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -58,9 +41,12 @@ export default function RegisterPage() {
         password,
         name,
       });
+      // Registration successful - auth context will handle state update
+      // and redirect is handled in the effect or component body check
       router.push('/dashboard');
     } catch (err) {
       console.error('Registration failed:', err);
+      // Error is set in auth context
     } finally {
       setIsSubmitting(false);
     }
@@ -96,7 +82,7 @@ export default function RegisterPage() {
 
               <CardContent className="relative z-10">
                 <form onSubmit={handleSubmit} className="space-y-5">
-                  {error && !shouldRedirectForError(error) && (
+                  {error && (
                     <div className="p-3 rounded-md bg-destructive/10 border border-destructive/20 text-destructive text-sm">
                       {error}
                     </div>
