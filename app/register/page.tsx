@@ -36,10 +36,12 @@ export default function RegisterPage() {
     clearError();
 
     try {
+      const normalizedEmail = email.trim().toLowerCase();
+      const normalizedName = name.trim();
       await register({
-        email,
+        email: normalizedEmail,
         password,
-        name,
+        name: normalizedName,
       });
       // Registration successful - auth context will handle state update
       // and redirect is handled in the effect or component body check

@@ -36,7 +36,9 @@ export default function LoginPage() {
     setIsSubmitting(true);
 
     try {
-      const user = await login({ email, password });
+      const normalizedEmail = email.trim().toLowerCase();
+      const normalizedPassword = password; // avoid trimming passwords
+      const user = await login({ email: normalizedEmail, password: normalizedPassword });
       // Redirect based on role after login
       if (user) {
         if (user.role === 'admin') {
