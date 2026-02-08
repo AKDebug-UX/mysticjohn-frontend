@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Navigation } from '@/components/navigation';
@@ -23,13 +23,18 @@ export default function RegisterPage() {
   const { register, error, clearError, isAuthenticated } = useAuthContext();
   const router = useRouter();
 
-  // Redirect if already authenticated
+  // Redirect if already authenticated (use effect to avoid side effects in render)
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push('/dashboard');
+    }
+  }, [isAuthenticated, router]);
+
+  // Prevent rendering the register form while redirecting
   if (isAuthenticated) {
-    router.push('/dashboard');
     return null;
   }
 
-  
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -43,8 +48,7 @@ export default function RegisterPage() {
         password,
         name: normalizedName,
       });
-      // Registration successful - auth context will handle state update
-      // and redirect is handled in the effect or component body check
+      // Registration successful - redirect to dashboard
       router.push('/dashboard');
     } catch (err) {
       console.error('Registration failed:', err);
