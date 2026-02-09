@@ -35,7 +35,9 @@ export default function AIChatPage() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { user, refresh } = useAuthContext();
 
-  const AI_CHAT_CREDITS_COST = 1;
+-  const AI_CHAT_CREDITS_COST = 1;
++  // AI Chat is free to use; no credits required
++  const AI_CHAT_CREDITS_COST = 0;
 
   useEffect(() => {
     fetchInitialData();
@@ -83,10 +85,11 @@ export default function AIChatPage() {
 
     if (!inputMessage.trim() || isSending) return;
 
-    if ((user?.credits ?? 0) < AI_CHAT_CREDITS_COST) {
-      toast.error(`Insufficient credits. You need ${AI_CHAT_CREDITS_COST} credit(s) to send a message.`);
-      return;
-    }
+-    if ((user?.credits ?? 0) < AI_CHAT_CREDITS_COST) {
+-      toast.error(`Insufficient credits. You need ${AI_CHAT_CREDITS_COST} credit(s) to send a message.`);
+-      return;
+-    }
++    // No credit gating; messages are free to send
 
     const messageText = inputMessage.trim();
     setInputMessage('');
@@ -107,17 +110,20 @@ export default function AIChatPage() {
       
       // Refresh history to get the AI response and correct IDs
       await fetchHistory();
-      await refresh(); // Update credits
+-      await refresh(); // Update credits
++      // No credit consumption; no need to refresh credits
     } catch (error: any) {
       // Remove temp message or show error
       setMessages(prev => prev.filter(m => m._id !== tempId));
       setInputMessage(messageText);
-      
-      if (error.message?.includes('Insufficient credits')) {
-        toast.error(error.message);
-      } else {
-        toast.error('Failed to send message.');
-      }
+-      if (error.message?.includes('Insufficient credits')) {
+-        toast.error(error.message);
+-      } else {
+-        toast.error('Failed to send message.');
+-      }
+-      // Show a generic error; chat is free on the frontend
+-      toast.error('Failed to send message.');
++      toast.error('Failed to send message.');
     } finally {
       setIsSending(false);
     }
@@ -327,7 +333,7 @@ export default function AIChatPage() {
                           value={inputMessage}
                           onChange={(e) => setInputMessage(e.target.value)}
                           placeholder="Type your message..."
-                          disabled={isSending || (user?.credits ?? 0) < AI_CHAT_CREDITS_COST}
+                          disabled={isSending}
                         />
                         <Button type="submit" size="icon" disabled={isSending || !inputMessage.trim()}>
                            {isSending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
