@@ -35,9 +35,8 @@ export default function AIChatPage() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { user, refresh } = useAuthContext();
 
--  const AI_CHAT_CREDITS_COST = 1;
-+  // AI Chat is free to use; no credits required
-+  const AI_CHAT_CREDITS_COST = 0;
+  // AI Chat is free to use; no credits required
+  const AI_CHAT_CREDITS_COST = 0;
 
   useEffect(() => {
     fetchInitialData();
@@ -85,11 +84,7 @@ export default function AIChatPage() {
 
     if (!inputMessage.trim() || isSending) return;
 
--    if ((user?.credits ?? 0) < AI_CHAT_CREDITS_COST) {
--      toast.error(`Insufficient credits. You need ${AI_CHAT_CREDITS_COST} credit(s) to send a message.`);
--      return;
--    }
-+    // No credit gating; messages are free to send
+    // No credit gating; messages are free to send
 
     const messageText = inputMessage.trim();
     setInputMessage('');
@@ -110,20 +105,12 @@ export default function AIChatPage() {
       
       // Refresh history to get the AI response and correct IDs
       await fetchHistory();
--      await refresh(); // Update credits
-+      // No credit consumption; no need to refresh credits
+      // No credit consumption; no need to refresh credits
     } catch (error: any) {
       // Remove temp message or show error
       setMessages(prev => prev.filter(m => m._id !== tempId));
       setInputMessage(messageText);
--      if (error.message?.includes('Insufficient credits')) {
--        toast.error(error.message);
--      } else {
--        toast.error('Failed to send message.');
--      }
--      // Show a generic error; chat is free on the frontend
--      toast.error('Failed to send message.');
-+      toast.error('Failed to send message.');
+      toast.error('Failed to send message.');
     } finally {
       setIsSending(false);
     }
@@ -285,16 +272,15 @@ export default function AIChatPage() {
 
                {/* Chat Area */}
                <div className="flex-1 flex flex-col min-h-0">
-                  {/* Credit Notice */}
-                  <Card className="border-primary/20 bg-primary/5 mb-4 shrink-0">
-                    <CardContent className="p-3 flex items-center justify-between">
-                       <div className="flex items-center gap-2">
-                          <Coins className="h-4 w-4 text-primary" />
-                          <span className="text-sm font-medium">{AI_CHAT_CREDITS_COST} credit/msg</span>
-                       </div>
-                       <span className="text-sm text-muted-foreground">Balance: {user?.credits ?? 0}</span>
-                    </CardContent>
-                  </Card>
+                  {/* Info Notice */}
+               <Card className="border-primary/20 bg-primary/5 mb-4 shrink-0">
+                 <CardContent className="p-3 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                       <Bot className="h-4 w-4 text-primary" />
+                       <span className="text-sm font-medium">AI Chat is free to use</span>
+                    </div>
+                 </CardContent>
+               </Card>
 
                   {/* Messages */}
                   <Card className="flex-1 flex flex-col border-border/50 min-h-0">
