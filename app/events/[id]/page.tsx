@@ -15,6 +15,7 @@ import { useAuthContext } from '@/contexts/AuthContext';
 import { format, parseISO } from 'date-fns';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { buildGoogleCalendarUrl } from '@/lib/utils/calendar';
 
 export default function EventDetailPage({ params }: { params: { id: string } }) {
     const { id } = params;
@@ -252,6 +253,24 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
                                                 Secure payment via Stripe. <br />
                                                 Tickets are sent to your email immediately.
                                             </p>
+
+                                            <div className="flex justify-center">
+                                                <Button variant="outline" size="sm" asChild>
+                                                    <a
+                                                        href={buildGoogleCalendarUrl({
+                                                            title: event.title,
+                                                            start: parseISO(event.startDateTime),
+                                                            end: new Date(parseISO(event.startDateTime).getTime() + 2 * 60 * 60 * 1000),
+                                                            description: event.description || 'Live event',
+                                                            location: event.isOnline ? 'Google Meet' : (event.location || ''),
+                                                        })}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                    >
+                                                        Add to Google Calendar
+                                                    </a>
+                                                </Button>
+                                            </div>
                                         </CardContent>
                                     </Card>
 

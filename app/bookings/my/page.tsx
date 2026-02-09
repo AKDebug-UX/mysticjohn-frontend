@@ -21,6 +21,7 @@ import { Calendar, Clock, Video, MapPin, X, Loader2, AlertCircle } from 'lucide-
 import { format, parseISO, isPast, isToday } from 'date-fns';
 import { toast } from 'sonner';
 import Link from 'next/link';
+import { buildGoogleCalendarUrl } from '@/lib/utils/calendar';
 
 export default function MyBookingsPage() {
   const { bookings, isLoading, error, fetchBookings, cancelBooking } = useBookings();
@@ -240,6 +241,23 @@ export default function MyBookingsPage() {
                                 <span className="font-semibold text-foreground">
                                   £{booking.service.price}
                                 </span>
+                              </div>
+                              <div className="flex items-center justify-end gap-2 mt-3">
+                                <Button variant="outline" size="sm" asChild>
+                                  <a
+                                    href={buildGoogleCalendarUrl({
+                                      title: booking.service?.name ?? 'Booking',
+                                      start: startDate,
+                                      end: endDate,
+                                      description: `Session (${booking.type === 'ONLINE' ? 'Online' : 'In-Person'})${booking.meetingLink ? ` | Meeting: ${booking.meetingLink}` : ''}`,
+                                      location: booking.type === 'ONLINE' ? 'Online' : booking.service?.name ?? '',
+                                    })}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
+                                    Add to Google Calendar
+                                  </a>
+                                </Button>
                               </div>
                             </div>
                           )}

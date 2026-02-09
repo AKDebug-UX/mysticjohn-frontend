@@ -57,7 +57,7 @@ export default function CommunityPage() {
 
     const handleSubmitComment = async (postId: string) => {
         if (!commentText.trim()) return;
-        
+
         const success = await addComment(postId, { content: commentText });
         if (success) {
             setCommentText('');
@@ -83,7 +83,7 @@ export default function CommunityPage() {
                                 <div className="relative z-10 flex items-center justify-between">
                                     <div>
                                         <h1 className="text-3xl font-bold text-foreground flex items-center gap-2">
-                                            John's Inner Circle <Sparkles className="h-6 w-6 text-primary animate-pulse" />
+                                            The Inner Circle <Sparkles className="h-6 w-6 text-primary animate-pulse" />
                                         </h1>
                                         <p className="text-muted-foreground">A safe space for our spiritual community.</p>
                                     </div>
@@ -184,11 +184,11 @@ export default function CommunityPage() {
                                                         className={post.isLiked ? "text-red-500 hover:text-red-600 hover:bg-red-500/10" : "hover:text-foreground"}
                                                     >
                                                         <Heart className={`h-4 w-4 mr-2 ${post.isLiked ? 'fill-current' : ''}`} />
-                                                        {post.likes?.length || 0}
+                                                        {post.likesCount || 0}
                                                     </Button>
-                                                    <Button 
-                                                        variant="ghost" 
-                                                        size="sm" 
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="sm"
                                                         className={`hover:text-foreground ${activeCommentId === post.id ? 'text-primary bg-primary/10' : ''}`}
                                                         onClick={() => toggleComments(post.id)}
                                                     >
@@ -224,17 +224,17 @@ export default function CommunityPage() {
                                                                 No comments yet. Be the first to share your thoughts!
                                                             </div>
                                                         )}
-                                                        
+
                                                         {/* Add Comment Input */}
                                                         <div className="flex gap-2">
-                                                            <Textarea 
-                                                                placeholder="Write a comment..." 
+                                                            <Textarea
+                                                                placeholder="Write a comment..."
                                                                 value={commentText}
                                                                 onChange={(e) => setCommentText(e.target.value)}
                                                                 className="min-h-[60px] resize-none bg-background focus-visible:ring-1"
                                                             />
-                                                            <Button 
-                                                                size="icon" 
+                                                            <Button
+                                                                size="icon"
                                                                 className="h-[60px] w-[60px]"
                                                                 disabled={!commentText.trim()}
                                                                 onClick={() => handleSubmitComment(post.id)}

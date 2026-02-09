@@ -83,8 +83,14 @@ export default function TarotPage() {
           toast.success('Card saved! The universe has spoken.');
         })
         .catch((error: any) => {
-          console.error('Failed to save pick:', error);
-          toast.error(error.message || 'Failed to save card pick');
+          console.warn('Failed to save pick (likely insufficient permissions):', error);
+          // If it's a permission error, we just don't show the error toast
+          // but we still mark it as picked today locally so they don't keep trying
+          setHasPickedToday(true);
+          // Only show error if it's NOT a permission error (status 403 or 401)
+          if (error.status !== 403 && error.status !== 401) {
+            toast.error(error.message || 'Failed to save card pick');
+          }
         })
         .finally(() => {
           setIsPicking(false);
@@ -211,18 +217,15 @@ export default function TarotPage() {
                     <div className="flex flex-col items-center gap-6">
                       {/* Card Visual */}
                       <div
-                        className={`w-64 h-96 bg-linear-to-br ${
-                          cardReversed
+                        className={`w-64 h-96 bg-linear-to-br ${cardReversed
                             ? 'from-destructive/20 to-destructive/40 border-destructive/50'
                             : 'from-primary/20 to-primary/40 border-primary/50'
-                        } rounded-lg border-2 shadow-lg flex flex-col items-center justify-center p-6 transition-all duration-500 ${
-                          isRevealed ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
-                        }`}
+                          } rounded-lg border-2 shadow-lg flex flex-col items-center justify-center p-6 transition-all duration-500 ${isRevealed ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+                          }`}
                       >
                         <Sparkles
-                          className={`h-24 w-24 ${
-                            cardReversed ? 'text-destructive/50' : 'text-primary/50'
-                          }`}
+                          className={`h-24 w-24 ${cardReversed ? 'text-destructive/50' : 'text-primary/50'
+                            }`}
                         />
                         <p className="text-center text-lg font-bold text-foreground mt-4">
                           {selectedCard.name}
@@ -236,11 +239,9 @@ export default function TarotPage() {
                       {isRevealed && (
                         <div className="w-full max-w-2xl space-y-4">
                           <div
-                            className={`bg-${
-                              cardReversed ? 'destructive' : 'primary'
-                            }/5 border border-${
-                              cardReversed ? 'destructive' : 'primary'
-                            }/20 rounded-lg p-6`}
+                            className={`bg-${cardReversed ? 'destructive' : 'primary'
+                              }/5 border border-${cardReversed ? 'destructive' : 'primary'
+                              }/20 rounded-lg p-6`}
                           >
                             <h3 className="text-xl font-semibold mb-3 text-foreground">
                               {cardReversed ? 'Reversed Meaning' : 'Upright Meaning'}

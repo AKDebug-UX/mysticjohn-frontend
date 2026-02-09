@@ -15,6 +15,7 @@ import { format } from 'date-fns';
 import {
   ZODIAC_SIGNS,
   ZODIAC_DATES,
+  getDailyHoroscope as getLocalHoroscope,
   type ZodiacSign,
   type HoroscopeData,
 } from '@/lib/data/horoscopes';
@@ -44,22 +45,32 @@ export default function HoroscopesPage() {
 
   const handleSignChange = async (sign: ZodiacSign, saveToProfile = true) => {
     if (saveToProfile) {
-        setSelectedSign(sign);
+      setSelectedSign(sign);
     }
-    
+
     setIsLoading(true);
     setError(null);
 
     try {
-      const data = await horoscopeApi.getDailyHoroscope(sign);
-      // Adapt API response if needed or use directly if it matches
-      // The API returns HoroscopeData which should match our local type mostly
-      // If the API return type is slightly different, we might need to map it
-      // But assuming for now it matches or we cast it
-      setHoroscope(data as unknown as HoroscopeData);
+      const apiData = await horoscopeApi.getDailyHoroscope(sign);
+      const localData = getLocalHoroscope(sign);
+
+      // Merge API data with local fallback
+      // Use API reading if it exists and isn't too generic (placeholder check)
+      const hasValidApiReading = apiData.reading && apiData.reading.length > 20;
+
+      setHoroscope({
+        ...localData,
+        ...apiData,
+        reading: hasValidApiReading ? apiData.reading : localData.reading,
+        luckyNumber: apiData.luckyNumber || localData.luckyNumber,
+        luckyColor: apiData.luckyColor || localData.luckyColor,
+        mood: apiData.mood || localData.mood
+      } as unknown as HoroscopeData);
     } catch (err) {
-      console.error('Failed to fetch horoscope:', err);
-      setError('Failed to load horoscope. Please try again later.');
+      console.error('Failed to fetch horoscope, using local fallback:', err);
+      // Fallback to purely local data on error
+      setHoroscope(getLocalHoroscope(sign));
     } finally {
       setIsLoading(false);
     }
@@ -133,16 +144,14 @@ export default function HoroscopesPage() {
                       variant={selectedSign === sign ? 'default' : 'outline'}
                       onClick={() => handleSignChange(sign)}
                       disabled={isLoading || isSaving}
-                      className={`h-auto py-4 flex flex-col items-center gap-2 ${
-                        selectedSign === sign
+                      className={`h-auto py-4 flex flex-col items-center gap-2 ${selectedSign === sign
                           ? 'bg-primary text-primary-foreground'
                           : 'hover:border-primary/50'
-                      }`}
+                        }`}
                     >
                       <Star
-                        className={`h-6 w-6 ${
-                          selectedSign === sign ? 'text-primary-foreground' : 'text-primary'
-                        }`}
+                        className={`h-6 w-6 ${selectedSign === sign ? 'text-primary-foreground' : 'text-primary'
+                          }`}
                       />
                       <span className="text-sm font-medium">{sign}</span>
                       <span className="text-xs opacity-75">

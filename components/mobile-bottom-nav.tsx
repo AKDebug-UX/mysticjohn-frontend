@@ -10,7 +10,7 @@ const navigation = [
   { name: 'Bookings', href: '/bookings', icon: Calendar },
   { name: 'Horoscopes', href: '/horoscopes', icon: Sparkles },
   { name: 'Tarot', href: '/tarot', icon: Gem },
-  { name: 'AI Chat', href: '/ai-chat', icon: Bot },
+  { name: 'Events', href: '/events', icon: CalendarCheck },
   { name: 'Settings', href: '/settings', icon: Settings },
 ];
 
@@ -22,6 +22,7 @@ const showOnRoutes = [
   '/horoscopes',
   '/tarot',
   '/ai-chat',
+  '/events',
   '/courses',
   '/settings',
   '/messages',

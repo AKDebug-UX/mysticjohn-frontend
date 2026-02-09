@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { MysticalSparkles } from '@/components/mystical-sparkles'
 
@@ -14,8 +15,8 @@ export function CommunityCTA() {
           <p className="text-xl text-muted-foreground text-pretty">
             Connect with fellow souls, get exclusive readings, and unlock yer spiritual potential
           </p>
-          <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 text-lg px-8">
-            Join the Circle on Spaces App
+          <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 text-lg px-8" asChild>
+            <Link href="/community">Join the Inner Circle</Link>
           </Button>
         </div>
       </div>
