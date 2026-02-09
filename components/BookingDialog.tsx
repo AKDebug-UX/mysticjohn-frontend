@@ -27,7 +27,7 @@ interface BookingDialogProps {
 
 export function BookingDialog({ open, onOpenChange, service }: BookingDialogProps) {
   const { fetchAvailability, createBooking, isLoading, error, clearError, availability } = useBookings();
-  const { fetchBalance } = useCredits();
+  const { fetchBalance, balance } = useCredits();
   const { isAuthenticated, user, refresh } = useAuthContext();
   const router = useRouter();
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);

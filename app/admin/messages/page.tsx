@@ -129,13 +129,11 @@ export default function AdminMessagesPage() {
         }
     };
 
-    const getInitials = (name: string) => {
-        return name
-            .split(' ')
-            .map(n => n[0])
-            .slice(0, 2)
-            .join('')
-            .toUpperCase();
+    const getInitials = (name?: string | null) => {
+        if (typeof name !== 'string' || !name.trim()) return 'UU';
+        const parts = name.trim().split(/\s+/);
+        const initials = parts.slice(0, 2).map(n => n[0]).join('');
+        return initials.toUpperCase();
     };
 
     if (isLoading && questions.length === 0) {
@@ -214,7 +212,7 @@ export default function AdminMessagesPage() {
                                             <div className="flex-1 min-w-0">
                                                 <div className="flex justify-between items-baseline mb-1">
                                                     <span className={`font-medium truncate ${isSelected ? 'text-primary' : 'text-foreground'}`}>
-                                                        {user.name}
+                                                        {user.name || 'Unknown User'}
                                                     </span>
                                                     <span className="text-xs text-muted-foreground shrink-0 ml-2">
                                                         {format(new Date(lastQuestion.createdAt), 'MMM d')}
@@ -255,10 +253,10 @@ export default function AdminMessagesPage() {
                                 </Avatar>
                                 <div>
                                     <h2 className="font-semibold text-lg">
-                                        {conversations[selectedUserId].user.name}
+                                        {conversations[selectedUserId].user.name || 'Unknown User'}
                                     </h2>
                                     <p className="text-sm text-muted-foreground">
-                                        {conversations[selectedUserId].user.email}
+                                        {conversations[selectedUserId].user.email || 'No Email'}
                                     </p>
                                 </div>
                             </div>
@@ -278,7 +276,7 @@ export default function AdminMessagesPage() {
                                                         {q.question || q.message}
                                                     </p>
                                                 </div>
-                                                <div className="flex items-center gap-2 mt-1 ml-1">
+                                                <div className="flex items_center gap-2 mt-1 ml-1">
                                                     <span className="text-xs text-muted-foreground">
                                                         {format(new Date(q.createdAt), 'MMM d, h:mm a')}
                                                     </span>
@@ -309,7 +307,7 @@ export default function AdminMessagesPage() {
                                                             }
                                                         </span>
                                                         <Avatar className="h-6 w-6">
-                                                            <AvatarFallback className="bg-primary text-primary-foreground text-[10px]">ME</AvatarFallback>
+                                                            <AvatarFallback className="bg_primary text_primary-foreground text-[10px]">ME</AvatarFallback>
                                                         </Avatar>
                                                     </div>
                                                 </div>
@@ -355,7 +353,7 @@ export default function AdminMessagesPage() {
                         </>
                     ) : (
                         <div className="flex-1 flex flex-col items-center justify-center text-muted-foreground p-8">
-                            <div className="h-16 w-16 bg-muted/30 rounded-full flex items-center justify-center mb-4">
+                            <div className="h-16 w-16 bg-muted/30 rounded-full flex items-center justify_center mb-4">
                                 <MessageSquare className="h-8 w-8 opacity-50" />
                             </div>
                             <h3 className="text-lg font-medium mb-2">Select a Conversation</h3>
