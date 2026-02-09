@@ -79,7 +79,7 @@ export default function RegisterPage() {
                   </div>
                 </div>
                 <CardTitle className="text-3xl font-bold text-foreground">
-                  Join the Circle
+                  Create Your Account
                 </CardTitle>
                 <CardDescription className="text-muted-foreground text-base">
                   Start yer spiritual journey with us today

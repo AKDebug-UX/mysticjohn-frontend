@@ -91,7 +91,7 @@ export function getDailyHoroscope(sign: ZodiacSign, date: Date = new Date()): Ho
     Aquarius: [
       "Innovation and originality are yer strengths, visionary Aquarius. Ye see possibilities others miss and have unique solutions to problems. Don't be afraid to think outside the box today.",
       "Humanitarian causes call to ye, Aquarius. Ye're drawn to help others and make the world a better place. Yer ideas for change are valuable - share them with those who can help make them reality.",
-      "Friendship and community matter, Aquarius. Connect with like-minded people who share yer values. Together, ye can accomplish more than ye could alone.",
+      "Friendship and connection matter, Aquarius. Connect with like-minded people who share yer values. Together, ye can accomplish more than ye could alone.",
     ],
     Pisces: [
       "Intuition and creativity flow through ye, dreamy Pisces. Yer imagination is powerful today - use it for artistic pursuits or problem-solving. Trust yer gut feelings; they're usually right.",

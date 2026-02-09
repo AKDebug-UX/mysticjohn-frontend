@@ -30,9 +30,7 @@ export function HeroSection() {
             <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 text-lg px-8" asChild>
               <Link href="/bookings">Book a Reading</Link>
             </Button>
-            <Button size="lg" variant="outline" className="text-lg px-8 border-primary/50 hover:bg-primary/10" asChild>
-              <Link href="#community">Join the Community</Link>
-            </Button>
+
           </div>
         </div>
       </div>

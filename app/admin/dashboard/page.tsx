@@ -190,17 +190,6 @@ export default function AdminDashboardPage() {
                   </div>
                 </Link>
 
-                <Link href="/admin/community" className="group">
-                  <div className="p-4 rounded-xl border border-border/50 bg-background/50 hover:bg-accent/50 transition-all duration-300 hover:shadow-md flex items-center gap-4">
-                    <div className="p-3 rounded-lg bg-pink-500/10 text-pink-500 group-hover:bg-pink-500 group-hover:text-white transition-colors">
-                      <Users className="h-6 w-6" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold">Community</h3>
-                      <p className="text-sm text-muted-foreground">Moderate discussions</p>
-                    </div>
-                  </div>
-                </Link>
 
                 <Link href="/admin/credit-packs" className="group">
                   <div className="p-4 rounded-xl border border-border/50 bg-background/50 hover:bg-accent/50 transition-all duration-300 hover:shadow-md flex items-center gap-4">
@@ -246,10 +235,7 @@ export default function AdminDashboardPage() {
                 <div className="mt-6 pt-6 border-t border-border/50">
                   <h4 className="text-sm font-semibold mb-3">Pending Tasks</h4>
                   <div className="space-y-2">
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <div className="w-1.5 h-1.5 rounded-full bg-yellow-500" />
-                      <span>Review 3 new community posts</span>
-                    </div>
+
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
                       <span>Respond to 2 booking inquiries</span>

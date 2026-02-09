@@ -54,9 +54,6 @@ export function Navigation() {
             </Link>
             {isAuthenticated && (
               <>
-                <Link href="/community" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  Community
-                </Link>
                 <Link href="/dashboard" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                   Dashboard
                 </Link>
@@ -88,7 +85,7 @@ export function Navigation() {
                   className="bg-primary text-primary-foreground hover:bg-primary/90"
                   asChild
                 >
-                  <Link href="/register">Join the Circle</Link>
+                  <Link href="/register">Register</Link>
                 </Button>
               </>
             )}
@@ -155,13 +152,7 @@ export function Navigation() {
             </Link>
             {isAuthenticated && (
               <>
-                <Link
-                  href="/community"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors py-2"
-                  onClick={closeMobileMenu}
                 >
-                  Community
-                </Link>
                 <Link
                   href="/dashboard"
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors py-2"
@@ -200,7 +191,7 @@ export function Navigation() {
                   className="bg-primary text-primary-foreground hover:bg-primary/90 w-full"
                   asChild
                 >
-                  <Link href="/register" onClick={closeMobileMenu}>Join the Circle</Link>
+                  <Link href="/register" onClick={closeMobileMenu}>Register</Link>
                 </Button>
               </div>
             )}
