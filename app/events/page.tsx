@@ -205,7 +205,7 @@ export default function EventsPage() {
                                                  £{event.price}
                                              </div>
                                              <Button asChild>
-                                                 <Link href={`/events/${event.id}`}>
+                                                 <Link href={`/events/${event.id || event._id}`}>
                                                      Event Details
                                                  </Link>
                                              </Button>

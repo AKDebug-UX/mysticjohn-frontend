@@ -6,19 +6,19 @@ import { Footer } from '@/components/footer';
 import { MysticalSparkles } from '@/components/mystical-sparkles';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Calendar, MapPin, Video, Clock, Ticket, Share2, ArrowLeft, Loader2, Check } from 'lucide-react';
 import Link from 'next/link';
 import { useEvents } from '@/lib/hooks/useEvents';
 import { useCheckout } from '@/lib/hooks/useCheckout';
 import { useAuthContext } from '@/contexts/AuthContext';
 import { format, parseISO } from 'date-fns';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { buildGoogleCalendarUrl } from '@/lib/utils/calendar';
 
-export default function EventDetailPage({ params }: { params: { id: string } }) {
-    const { id } = params;
+export default function EventDetailPage() {
+    const { id } = useParams<{ id: string }>();
     const { fetchEvent, isLoading: isEventLoading } = useEvents();
     const { checkout, isLoading: isCheckoutLoading } = useCheckout();
     const { isAuthenticated, user } = useAuthContext();
@@ -29,6 +29,10 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
 
     useEffect(() => {
         const loadEvent = async () => {
+            if (!id || id === 'undefined' || id === 'null') {
+                setError('Invalid event ID');
+                return;
+            }
             const data = await fetchEvent(id);
             if (data) {
                 setEvent(data);
@@ -47,19 +51,35 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
         }
 
         try {
-            const response = await checkout({
+            const result = await checkout({
                 itemType: 'event',
                 eventId: id,
-                quantity: 1
+                quantity: 1,
+                price: event?.price,
             });
 
-            if (response?.checkoutUrl) {
-                window.location.href = response.checkoutUrl;
-            } else {
-                toast.error('Failed to start checkout');
+            if (result) {
+                if ('checkoutUrl' in result && result.checkoutUrl) {
+                    const transactionId = result?.paymentId;
+                    const sessionId = result?.sessionId;
+
+                    if (transactionId) {
+                        sessionStorage.setItem('checkout_transaction_id', transactionId);
+                    }
+                    if (sessionId) {
+                        sessionStorage.setItem('checkout_session_id', sessionId);
+                    }
+
+                    toast.info('Redirecting to secure payment...', { duration: 1500 });
+                    window.location.href = result.checkoutUrl;
+                } else if (result.paymentIntent?.clientSecret) {
+                    toast.error('Please update the backend to use Checkout Sessions');
+                } else {
+                    toast.error('Checkout session not received');
+                }
             }
-        } catch (err) {
-            toast.error('Something went wrong. Please try again.');
+        } catch (error: any) {
+            toast.error(error?.message || 'Failed to process payment');
         }
     };
 
@@ -254,23 +274,30 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
                                                 Tickets are sent to your email immediately.
                                             </p>
 
-                                            <div className="flex justify-center">
-                                                <Button variant="outline" size="sm" asChild>
-                                                    <a
-                                                        href={buildGoogleCalendarUrl({
-                                                            title: event.title,
-                                                            start: parseISO(event.startDateTime),
-                                                            end: new Date(parseISO(event.startDateTime).getTime() + 2 * 60 * 60 * 1000),
-                                                            description: event.description || 'Live event',
-                                                            location: event.isOnline ? 'Google Meet' : (event.location || ''),
-                                                        })}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                    >
-                                                        Add to Google Calendar
-                                                    </a>
-                                                </Button>
-                                            </div>
+                                            {event.startDateTime && !isNaN(parseISO(event.startDateTime).getTime()) && (
+                                                <div className="flex justify-center">
+                                                    <Button variant="outline" size="sm" asChild>
+                                                        <a
+                                                            href={buildGoogleCalendarUrl({
+                                                                title: event.title,
+                                                                start: parseISO(event.startDateTime),
+                                                                end:
+                                                                    event.endDateTime && !isNaN(parseISO(event.endDateTime).getTime())
+                                                                        ? parseISO(event.endDateTime)
+                                                                        : new Date(
+                                                                              parseISO(event.startDateTime).getTime() + 2 * 60 * 60 * 1000
+                                                                          ),
+                                                                description: event.description || 'Live event',
+                                                                location: event.isOnline ? 'Google Meet' : event.location || '',
+                                                            })}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                        >
+                                                            Add to Google Calendar
+                                                        </a>
+                                                    </Button>
+                                                </div>
+                                            )}
                                         </CardContent>
                                     </Card>
 

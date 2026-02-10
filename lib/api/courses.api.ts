@@ -1,4 +1,4 @@
-import { apiClient } from './client';
+import { apiClient, ApiClientError } from './client';
 import type {
   Course,
   CourseEnrollment,
@@ -24,6 +24,9 @@ export const coursesApi = {
    * Get course by ID with steps and enrollment status
    */
   getCourse: async (id: string): Promise<Course> => {
+    if (!id || id === 'undefined' || id === 'null') {
+      throw new ApiClientError('Invalid course ID', 400);
+    }
     return apiClient.get<Course>(`/api/courses/${id}`);
   },
 
@@ -63,22 +66,14 @@ export const coursesApi = {
   },
 
   /**
-   * Admin: Add step to course
+   * Admin: Manage course steps
    */
   addStep: async (courseId: string, data: CreateStepRequest): Promise<Course> => {
     return apiClient.post<Course>(`/api/courses/${courseId}/steps`, data);
   },
-
-  /**
-   * Admin: Update step
-   */
   updateStep: async (courseId: string, stepId: string, data: UpdateStepRequest): Promise<Course> => {
     return apiClient.patch<Course>(`/api/courses/${courseId}/steps/${stepId}`, data);
   },
-
-  /**
-   * Admin: Delete step
-   */
   deleteStep: async (courseId: string, stepId: string): Promise<Course> => {
     return apiClient.delete<Course>(`/api/courses/${courseId}/steps/${stepId}`);
   },

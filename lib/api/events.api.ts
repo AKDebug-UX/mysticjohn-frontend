@@ -1,4 +1,4 @@
-import { apiClient } from './client';
+import { apiClient, ApiClientError } from './client';
 import { ApiResponse, Event, Ticket, CreateEventRequest, UpdateEventRequest } from './types';
 
 class EventsApi {
@@ -13,6 +13,9 @@ class EventsApi {
      * Get single event by ID
      */
     async getEvent(id: string): Promise<ApiResponse<Event>> {
+        if (!id || id === 'undefined') {
+            throw new ApiClientError('Invalid event ID', 400);
+        }
         return apiClient.get(`/api/events/${id}`);
     }
 

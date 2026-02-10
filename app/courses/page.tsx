@@ -72,7 +72,7 @@ export default function CoursesPage() {
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
                     {courses.map((course) => (
-                      <Card key={course.id} className="border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/20 relative overflow-hidden flex flex-col">
+                      <Card key={course.id || course._id} className="border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/20 relative overflow-hidden flex flex-col">
                         <div className="h-48 bg-linear-to-br from-primary/20 via-accent/20 to-secondary/20 relative overflow-hidden flex items-center justify-center">
                           <MysticalSparkles />
                           <BookOpen className="h-20 w-20 text-primary/40 animate-float relative z-10" />
@@ -106,7 +106,7 @@ export default function CoursesPage() {
                           <div className="flex items-center justify-between pt-3 border-t border-border/50">
                             <span className="text-2xl font-bold text-primary">£{course.price}</span>
                             <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90" asChild>
-                              <Link href={`/courses/${course._id}`}>
+                              <Link href={`/courses/${course.id || course._id}`}>
                                 Start Course
                               </Link>
                             </Button>

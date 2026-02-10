@@ -107,7 +107,7 @@ export function LandingUpcomingEvents() {
                 </CardContent>
                 <CardFooter className="flex justify-between">
                   <Button asChild>
-                    <Link href={`/events/${event.id}`}>Details</Link>
+                    <Link href={`/events/${event.id || event._id}`}>Details</Link>
                   </Button>
                   <Button asChild variant="ghost">
                     <Link href="/events">All Events</Link>
