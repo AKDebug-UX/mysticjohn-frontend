@@ -1,11 +1,10 @@
 {
-  "/admin/bookings/page": "app/admin/bookings/page.js",
-  "/admin/courses/page": "app/admin/courses/page.js",
-  "/admin/dashboard/page": "app/admin/dashboard/page.js",
-  "/admin/events/page": "app/admin/events/page.js",
+  "/(landing)/events/page": "app/(landing)/events/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/dashboard/ai-chat/page": "app/dashboard/ai-chat/page.js",
+  "/dashboard/courses/[id]/page": "app/dashboard/courses/[id]/page.js",
+  "/dashboard/courses/page": "app/dashboard/courses/page.js",
+  "/dashboard/events/page": "app/dashboard/events/page.js",
   "/dashboard/page": "app/dashboard/page.js",
-  "/events/[id]/page": "app/events/[id]/page.js",
-  "/events/page": "app/events/page.js",
-  "/login/page": "app/login/page.js",
-  "/page": "app/page.js"
+  "/dashboard/settings/page": "app/dashboard/settings/page.js"
 }

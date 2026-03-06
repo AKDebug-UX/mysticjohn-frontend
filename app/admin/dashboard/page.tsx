@@ -128,7 +128,7 @@ export default function AdminDashboardPage() {
         {stats.map((stat, index) => {
           const Icon = stat.icon;
           return (
-            <Card key={index} className="border-border/50 bg-card/50 backdrop-blur-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+            <Card key={index} className="border-border/50 pb-3 bg-card/50 backdrop-blur-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
               <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
                   {stat.title}
@@ -152,7 +152,7 @@ export default function AdminDashboardPage() {
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
         {/* Quick Actions & Recent Activity */}
         <div className="col-span-4 space-y-6">
-          <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
+          <Card className="pb-3 border-border/50 bg-card/50 backdrop-blur-sm">
             <CardHeader>
               <CardTitle>Quick Actions</CardTitle>
               <CardDescription>Frequently used management tools</CardDescription>
@@ -213,7 +213,7 @@ export default function AdminDashboardPage() {
 
         {/* Recent Notifications / System Status */}
         <div className="col-span-3 space-y-6">
-          <Card className="border-border/50 bg-card/50 backdrop-blur-sm h-full">
+          <Card className="pb-3 border-border/50 bg-card/50 backdrop-blur-sm h-full">
             <CardHeader>
               <CardTitle>System Overview</CardTitle>
               <CardDescription>Platform health and status</CardDescription>

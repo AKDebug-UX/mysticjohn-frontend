@@ -26,7 +26,7 @@ export function AdminSidebar({ className, onLinkClick }: AdminSidebarProps) {
         <aside className={cn("hidden lg:block fixed left-0 top-0 h-screen w-64 border-r border-border/50 bg-card/50 backdrop-blur-xl z-30 transition-all duration-300", className)}>
             <div className="flex flex-col h-full">
                 <div className="h-16 flex items-center px-6 border-b border-border/50 bg-background/50 backdrop-blur-md">
-                    <span className="font-bold text-xl bg-gradient-to-r from-primary to-purple-400 bg-clip-text text-transparent">Mystic Admin</span>
+                    <span className="font-bold text-xl bg-gradient-to-r from-primary to-purple-400 bg-clip-text text-transparent">John Spratt Admin</span>
                 </div>
 
                 <div className="flex-1 overflow-y-auto py-6 px-4 space-y-1">

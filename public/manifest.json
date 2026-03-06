@@ -1,0 +1,26 @@
+{
+    "name": "John Spratt Psychic Medium",
+    "short_name": "John Spratt",
+    "description": "Scottish Psychic Medium John Spratt - Spiritual Guidance & Readings",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#09090b",
+    "theme_color": "#7c3aed",
+    "icons": [
+        {
+            "src": "/icon-light-32x32.png",
+            "sizes": "32x32",
+            "type": "image/png"
+        },
+        {
+            "src": "/apple-icon.png",
+            "sizes": "180x180",
+            "type": "image/png"
+        },
+        {
+            "src": "/icon.svg",
+            "sizes": "192x192",
+            "type": "image/svg+xml"
+        }
+    ]
+}

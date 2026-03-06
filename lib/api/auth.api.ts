@@ -98,13 +98,13 @@ export const authApi = {
   /**
    * Update user profile
    */
-  updateProfile: async (data: { name?: string; phone?: string; zodiacSign?: string }): Promise<{ user: User; message: string }> => {
+  updateProfile: async (data: { name?: string; phone?: string; zodiacSign?: string; dob?: string; profilePhoto?: string; interests?: string[] }): Promise<{ user: User; message: string }> => {
     const response = await apiClient.put<any>('/api/auth/profile', data);
-    
+
     // Handle wrapped response
     const userData = response.data || response.user || response;
     const user = mapUser(userData);
-    
+
     return {
       user,
       message: response.message || 'Profile updated'

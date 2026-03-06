@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { Navigation } from '@/components/nav-dashboard';
-import { DashboardSidebar } from '@/components/dashboard-sidebar';
-import { MobileBottomNav } from '@/components/mobile-bottom-nav';
+import { Navigation } from '@/components/dashboard/nav-dashboard';
+import { DashboardSidebar } from '@/components/dashboard/sidebar';
+import { MobileBottomNav } from '@/components/dashboard/bottom-nav';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Menu } from 'lucide-react';

@@ -4,9 +4,6 @@ import { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Navigation } from '@/components/navigation'
-import { DashboardSidebar } from '@/components/dashboard-sidebar'
-import { MobileBottomNav } from '@/components/mobile-bottom-nav'
 import { MysticalSparkles } from '@/components/mystical-sparkles'
 import { BookingDialog } from '@/components/BookingDialog'
 import { useBookings } from '@/lib/hooks'
@@ -65,13 +62,8 @@ export default function BookingsClient() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation />
-
-      <div className="flex">
-        {isAuthenticated && <DashboardSidebar />}
-
-        <main className={cn("flex-1", isAuthenticated && "lg:ml-64")}>
+    <>
+       <main className={cn("", isAuthenticated && "")}>
           {/* Header */}
           <section className="relative overflow-hidden pt-16">
             <MysticalSparkles />
@@ -140,7 +132,7 @@ export default function BookingsClient() {
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
                   {filteredServices.map((service) => (
-                    <Card key={service._id} className="border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/20 relative overflow-hidden">
+                    <Card key={service._id} className="border-border/50 pb-3 hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/20 relative overflow-hidden">
                       <div className="absolute top-0 right-0 w-24 h-24 bg-linear-to-br from-primary/20 to-accent/20 blur-2xl" />
                       <CardHeader className="relative">
                         <div className="flex items-start justify-between mb-2">
@@ -183,15 +175,12 @@ export default function BookingsClient() {
             </div>
           </section>
         </main>
-      </div>
-
-      <MobileBottomNav />
-
+     
       <BookingDialog
         open={isBookingDialogOpen}
         onOpenChange={setIsBookingDialogOpen}
         service={selectedService}
       />
-    </div>
+    </>
   )
 }

@@ -50,6 +50,9 @@ export interface User {
   zodiacSign?: string;
   role?: string;
   level?: string | number;
+  dob?: string;
+  profilePhoto?: string;
+  interests?: string[];
   createdAt?: string;
   updatedAt?: string;
 }

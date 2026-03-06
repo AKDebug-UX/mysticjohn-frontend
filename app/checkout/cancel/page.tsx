@@ -24,7 +24,7 @@ function CheckoutCancelContent() {
         <main className="flex-1 lg:ml-64">
           <div className="container mx-auto px-4 py-16">
             <div className="max-w-2xl mx-auto">
-              <Card className="border-yellow-500/20">
+              <Card className="pb-3 border-yellow-500/20">
                 <CardHeader className="text-center pb-4">
                   <div className="mx-auto mb-4 w-16 h-16 bg-yellow-500/10 rounded-full flex items-center justify-center">
                     <XCircle className="h-10 w-10 text-yellow-500" />
@@ -56,7 +56,7 @@ function CheckoutCancelContent() {
                       <Link href="/dashboard">Go to Dashboard</Link>
                     </Button>
                     <Button variant="outline" asChild className="flex-1">
-                      <Link href="/bookings">Try Again</Link>
+                      <Link href="/dashboard/bookings">Try Again</Link>
                     </Button>
                   </div>
                 </CardContent>

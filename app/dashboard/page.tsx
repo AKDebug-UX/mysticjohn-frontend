@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { useAuthContext } from '@/contexts/AuthContext'
 import { useBookings, useCourses, useCredits, useEvents } from '@/lib/hooks'
-import { Calendar, BookOpen, Bell, Coins, Plus, Clock, MapPin, Play, Link as LinkIcon, Sparkles } from 'lucide-react'
+import { Calendar, BookOpen, Bell, Coins, Plus, Clock, MapPin, Play, Link as LinkIcon, Sparkles, Ticket as TicketIcon } from 'lucide-react'
 import Link from 'next/link'
 import { format, parseISO, isFuture } from 'date-fns'
 import { BuyCreditsDialog } from '@/components/BuyCreditsDialog'
@@ -147,7 +147,7 @@ export default function DashboardPage() {
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Credit Balance Card */}
-            <Card className="border-border/50 bg-card/50 backdrop-blur-sm hover:bg-card/80 transition-all duration-300 group overflow-hidden relative">
+            <Card className="pb-3 border-border/50 bg-card/50 backdrop-blur-sm hover:bg-card/80 transition-all duration-300 group overflow-hidden relative">
               <div className="absolute inset-0 bg-linear-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Credit Balance</CardTitle>
@@ -170,7 +170,7 @@ export default function DashboardPage() {
             </Card>
 
             {/* Next Appointment Card */}
-            <Card className="border-border/50 bg-card/50 backdrop-blur-sm hover:bg-card/80 transition-all duration-300 md:col-span-2 relative overflow-hidden group">
+            <Card className="pb-3 border-border/50 bg-card/50 backdrop-blur-sm hover:bg-card/80 transition-all duration-300 md:col-span-2 relative overflow-hidden group">
               <div className="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
                 <Calendar className="w-24 h-24 text-primary" />
               </div>
@@ -219,7 +219,7 @@ export default function DashboardPage() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* My Courses Section */}
-            <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
+            <Card className="pb-3 border-border/50 bg-card/50 backdrop-blur-sm">
               <CardHeader className="flex flex-row items-center justify-between">
                 <div>
                   <CardTitle className="flex items-center gap-2">
@@ -229,7 +229,7 @@ export default function DashboardPage() {
                   <CardDescription>Your learning journey</CardDescription>
                 </div>
                 <Button variant="ghost" size="sm" asChild>
-                  <Link href="/courses">View All</Link>
+                  <Link href="/dashboard/courses">View All</Link>
                 </Button>
               </CardHeader>
               <CardContent>
@@ -243,7 +243,7 @@ export default function DashboardPage() {
                         </div>
                         <Progress value={calculateProgress(enrollment)} className="h-1.5 mb-3" />
                         <Button variant="outline" size="sm" className="w-full h-8 text-xs" asChild>
-                          <Link href={`/courses/${enrollment.courseId}`}>Continue Learning</Link>
+                          <Link href={`/dashboard/courses/${enrollment.courseId}`}>Continue Learning</Link>
                         </Button>
                       </div>
                     ))}
@@ -253,7 +253,7 @@ export default function DashboardPage() {
                     <BookOpen className="h-8 w-8 mx-auto text-muted-foreground/50 mb-3" />
                     <p className="text-sm text-muted-foreground mb-4">No active courses yet</p>
                     <Button variant="outline" size="sm" asChild>
-                      <Link href="/courses">Explore Courses</Link>
+                      <Link href="/dashboard/courses">Explore Courses</Link>
                     </Button>
                   </div>
                 )}
@@ -261,7 +261,7 @@ export default function DashboardPage() {
             </Card>
 
             {/* Upcoming Events Section */}
-            <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
+            <Card className="pb-3 border-border/50 bg-card/50 backdrop-blur-sm">
               <CardHeader className="flex flex-row items-center justify-between">
                 <div>
                   <CardTitle className="flex items-center gap-2">
@@ -317,7 +317,7 @@ export default function DashboardPage() {
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Notifications / Updates */}
-            <Card className="col-span-1 lg:col-span-2 border-border/50 bg-card/50 backdrop-blur-sm">
+            <Card className="pb-3 col-span-1 lg:col-span-2 border-border/50 bg-card/50 backdrop-blur-sm">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Bell className="w-5 h-5 text-accent" />
@@ -346,22 +346,22 @@ export default function DashboardPage() {
             </Card>
 
             {/* Quick Actions */}
-            <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
+            <Card className="pb-3 border-border/50 bg-card/50 backdrop-blur-sm">
               <CardHeader>
                 <CardTitle>Quick Actions</CardTitle>
               </CardHeader>
               <CardContent className="grid grid-cols-2 gap-3">
-                <Link href="/bookings/new" className="flex flex-col items-center justify-center p-4 rounded-xl border border-border/50 hover:bg-primary/5 hover:border-primary/30 transition-all group text-center space-y-2">
-                  <Calendar className="w-6 h-6 text-muted-foreground group-hover:text-primary transition-colors" />
-                  <span className="text-xs font-medium">Book Reading</span>
-                </Link>
-                <Link href="/courses" className="flex flex-col items-center justify-center p-4 rounded-xl border border-border/50 hover:bg-primary/5 hover:border-primary/30 transition-all group text-center space-y-2">
+                <Link href="/dashboard/courses" className="flex flex-col items-center justify-center p-4 rounded-xl border border-border/50 hover:bg-primary/5 hover:border-primary/30 transition-all group text-center space-y-2">
                   <BookOpen className="w-6 h-6 text-muted-foreground group-hover:text-primary transition-colors" />
                   <span className="text-xs font-medium">My Courses</span>
                 </Link>
-                <Link href="/ai-chat" className="flex flex-col items-center justify-center p-4 rounded-xl border border-border/50 hover:bg-primary/5 hover:border-primary/30 transition-all group text-center space-y-2">
+                <Link href="/dashboard/ai-chat" className="flex flex-col items-center justify-center p-4 rounded-xl border border-border/50 hover:bg-primary/5 hover:border-primary/30 transition-all group text-center space-y-2">
                   <Sparkles className="w-6 h-6 text-muted-foreground group-hover:text-primary transition-colors" />
                   <span className="text-xs font-medium">Ask AI</span>
+                </Link>
+                <Link href="/dashboard/events" className="flex flex-col items-center justify-center p-4 rounded-xl border border-border/50 hover:bg-primary/5 hover:border-primary/30 transition-all group text-center space-y-2">
+                  <TicketIcon className="w-6 h-6 text-muted-foreground group-hover:text-primary transition-colors" />
+                  <span className="text-xs font-medium">My Tickets</span>
                 </Link>
                 <div onClick={() => setBuyCreditsOpen(true)} className="cursor-pointer flex flex-col items-center justify-center p-4 rounded-xl border border-border/50 hover:bg-primary/5 hover:border-primary/30 transition-all group text-center space-y-2">
                   <Coins className="w-6 h-6 text-muted-foreground group-hover:text-primary transition-colors" />

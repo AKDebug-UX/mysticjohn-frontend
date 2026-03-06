@@ -17,7 +17,7 @@ export function LandingFeaturedServices() {
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto">
-          <Card className="border-border/50 hover:border-primary/50 transition-all hover:shadow-lg hover:shadow-primary/10">
+          <Card className="pb-3 border-border/50 hover:border-primary/50 transition-all hover:shadow-lg hover:shadow-primary/10">
             <CardHeader>
               <div className="flex items-center gap-3">
                 <Sparkles className="h-6 w-6 text-primary" />
@@ -32,7 +32,7 @@ export function LandingFeaturedServices() {
             </CardContent>
             <CardFooter className="flex justify-between">
               <Button asChild variant="default">
-                <Link href="/bookings">Book Now</Link>
+                <Link href="/dashboard/bookings">Book Now</Link>
               </Button>
               <Button asChild variant="ghost">
                 <Link href="/services">Learn More</Link>
@@ -40,7 +40,7 @@ export function LandingFeaturedServices() {
             </CardFooter>
           </Card>
 
-          <Card className="border-border/50 hover:border-primary/50 transition-all hover:shadow-lg hover:shadow-primary/10">
+          <Card className="pb-3 border-border/50 hover:border-primary/50 transition-all hover:shadow-lg hover:shadow-primary/10">
             <CardHeader>
               <div className="flex items-center gap-3">
                 <Gem className="h-6 w-6 text-primary" />
@@ -55,7 +55,7 @@ export function LandingFeaturedServices() {
             </CardContent>
             <CardFooter className="flex justify-between">
               <Button asChild variant="default">
-                <Link href="/bookings">Book Now</Link>
+                <Link href="/dashboard/bookings">Book Now</Link>
               </Button>
               <Button asChild variant="ghost">
                 <Link href="/services">Learn More</Link>
@@ -63,7 +63,7 @@ export function LandingFeaturedServices() {
             </CardFooter>
           </Card>
 
-          <Card className="border-border/50 hover:border-primary/50 transition-all hover:shadow-lg hover:shadow-primary/10">
+          <Card className="pb-3 border-border/50 hover:border-primary/50 transition-all hover:shadow-lg hover:shadow-primary/10">
             <CardHeader>
               <div className="flex items-center gap-3">
                 <Calendar className="h-6 w-6 text-primary" />
@@ -78,7 +78,7 @@ export function LandingFeaturedServices() {
             </CardContent>
             <CardFooter className="flex justify-between">
               <Button asChild variant="default">
-                <Link href="/bookings">Book Now</Link>
+                <Link href="/dashboard/bookings">Book Now</Link>
               </Button>
               <Button asChild variant="ghost">
                 <Link href="/services">Learn More</Link>

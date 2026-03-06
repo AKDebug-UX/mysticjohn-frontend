@@ -10,8 +10,10 @@ const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: 'John Spratt Psychic Medium | Psychic Services & Spiritual Guidance',
-  description: 'Experience mystical readings, spiritual courses, and psychic guidance with a Scottish flair. Book your session today.',
-  generator: 'v0.app',
+  description: 'Scottish Psychic Medium John Spratt - Experience mystical readings, spiritual courses, and psychic guidance with a Scottish flair.',
+  manifest: '/manifest.json',
+  themeColor: '#7c3aed',
+  viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
   icons: {
     icon: [
       {

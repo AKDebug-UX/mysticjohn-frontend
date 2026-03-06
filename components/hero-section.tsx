@@ -28,7 +28,7 @@ export function HeroSection() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 text-lg px-8" asChild>
-              <Link href="/bookings">Book a Reading</Link>
+              <Link href="/dashboard/bookings">Book a Reading</Link>
             </Button>
 
           </div>

@@ -28,7 +28,7 @@ export function LandingTestimonials() {
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto">
           {TESTIMONIALS.map((t) => (
-            <Card key={t.name} className="border-border/50">
+            <Card key={t.name} className="border-border/50 pb-3">
               <CardHeader>
                 <CardTitle className="text-lg">{t.name}</CardTitle>
                 <CardDescription>Verified Client</CardDescription>
