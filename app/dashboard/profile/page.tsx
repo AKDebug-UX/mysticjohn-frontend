@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuthContext } from '@/contexts/AuthContext';
 import { authApi } from '@/lib/api/auth.api';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -19,7 +19,7 @@ const INTEREST_OPTIONS = [
 ];
 
 export default function ProfilePage() {
-    const { user, login } = useAuth();
+    const { user } = useAuthContext();
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         name: '',
