@@ -21,10 +21,10 @@ function CheckoutCancelContent() {
     <ProtectedRoute>
       <div className="min-h-screen bg-background">
         <Navigation />
-        <main className="flex-1 lg:ml-64">
+        <main className="">
           <div className="container mx-auto px-4 py-16">
             <div className="max-w-2xl mx-auto">
-              <Card className="pb-3 border-yellow-500/20">
+              <Card className="py-3 border-yellow-500/20">
                 <CardHeader className="text-center pb-4">
                   <div className="mx-auto mb-4 w-16 h-16 bg-yellow-500/10 rounded-full flex items-center justify-center">
                     <XCircle className="h-10 w-10 text-yellow-500" />

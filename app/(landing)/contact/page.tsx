@@ -60,7 +60,7 @@ export default function ContactPage() {
                     <div className="grid lg:grid-cols-3 gap-12 max-w-6xl mx-auto">
                         {/* Contact Info */}
                         <div className="space-y-8">
-                            <Card className="pb-3 group border-border/50 bg-card/30 backdrop-blur-sm hover:border-primary/50 transition-all duration-300 overflow-hidden relative">
+                            <Card className="py-3 group border-border/50 bg-card/30 backdrop-blur-sm hover:border-primary/50 transition-all duration-300 overflow-hidden relative">
                                 <div className="absolute top-0 left-0 w-1 h-full bg-primary/20 group-hover:bg-primary transition-colors" />
                                 <CardContent className="p-8 flex items-start gap-6">
                                     <div className="bg-primary/10 p-4 rounded-2xl group-hover:scale-110 transition-transform">
@@ -74,7 +74,7 @@ export default function ContactPage() {
                                 </CardContent>
                             </Card>
 
-                            <Card className="pb-3 group border-border/50 bg-card/30 backdrop-blur-sm hover:border-accent/50 transition-all duration-300 overflow-hidden relative">
+                            <Card className="py-3 group border-border/50 bg-card/30 backdrop-blur-sm hover:border-accent/50 transition-all duration-300 overflow-hidden relative">
                                 <div className="absolute top-0 left-0 w-1 h-full bg-accent/20 group-hover:bg-accent transition-colors" />
                                 <CardContent className="p-8 flex items-start gap-6">
                                     <div className="bg-accent/10 p-4 rounded-2xl group-hover:scale-110 transition-transform">
@@ -108,7 +108,7 @@ export default function ContactPage() {
                         </div>
 
                         {/* Contact Form */}
-                        <Card className="pb-3 lg:col-span-2 border-border/50 bg-card/40 backdrop-blur-md shadow-2xl shadow-primary/5 rounded-3xl overflow-hidden">
+                        <Card className="py-3 lg:col-span-2 border-border/50 bg-card/40 backdrop-blur-md shadow-2xl shadow-primary/5 rounded-3xl overflow-hidden">
                             <CardHeader className="p-10 pb-2">
                                 <CardTitle className="text-3xl font-bold">Send a Message</CardTitle>
                                 <CardDescription className="text-lg mt-2">

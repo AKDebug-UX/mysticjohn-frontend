@@ -52,7 +52,7 @@ export default function CoursesPage() {
                 <Button onClick={() => fetchCourses()}>Try Again</Button>
               </div>
             ) : !courses || courses.length === 0 ? (
-              <Card className="pb-3 border-border/50">
+              <Card className="py-3 border-border/50">
                 <CardContent className="py-12 text-center">
                   <BookOpen className="h-12 w-12 mx-auto text-muted-foreground mb-4 opacity-50" />
                   <p className="text-muted-foreground text-lg mb-2">No courses available yet.</p>

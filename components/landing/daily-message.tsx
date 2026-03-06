@@ -16,7 +16,7 @@ export function LandingDailyMessage({
     <section className="py-16 animate-fade-in">
       <div className="container mx-auto px-4">
         <div className="max-w-2xl mx-auto">
-          <Card className="pb-3 border-primary/30 relative overflow-hidden">
+          <Card className="py-3 border-primary/30 relative overflow-hidden">
             <div className="absolute inset-0 bg-linear-to-br from-primary/5 via-accent/5 to-transparent" />
             <MysticalSparkles />
             <CardHeader className="relative z-10">

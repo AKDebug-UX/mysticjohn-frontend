@@ -119,7 +119,7 @@ export default function HoroscopesPage() {
             </div>
 
             {/* Zodiac Sign Selector */}
-            <Card className="pb-3 mb-6 border-border/50">
+            <Card className="py-3 mb-6 border-border/50">
               <CardHeader>
                 <CardTitle>Select Your Zodiac Sign</CardTitle>
                 <CardDescription>
@@ -155,14 +155,14 @@ export default function HoroscopesPage() {
 
             {/* Horoscope Reading */}
             {isLoading ? (
-              <Card className="pb-3 border-border/50">
+              <Card className="py-3 border-border/50">
                 <CardContent className="py-12 text-center">
                   <Loader2 className="h-8 w-8 animate-spin text-primary mx-auto mb-4" />
                   <p className="text-muted-foreground">Reading the stars...</p>
                 </CardContent>
               </Card>
             ) : error ? (
-              <Card className="pb-3 border-destructive/30">
+              <Card className="py-3 border-destructive/30">
                 <CardContent className="py-12 text-center">
                   <AlertCircle className="h-8 w-8 text-destructive mx-auto mb-4" />
                   <p className="text-destructive mb-2">{error}</p>
@@ -172,7 +172,7 @@ export default function HoroscopesPage() {
                 </CardContent>
               </Card>
             ) : horoscope ? (
-              <Card className="pb-3 border-border/50">
+              <Card className="py-3 border-border/50">
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <div>
@@ -220,7 +220,7 @@ export default function HoroscopesPage() {
                 </CardContent>
               </Card>
             ) : (
-              <Card className="pb-3 border-border/50">
+              <Card className="py-3 border-border/50">
                 <CardContent className="py-12 text-center">
                   <Star className="h-8 w-8 text-muted-foreground mx-auto mb-4 opacity-50" />
                   <p className="text-muted-foreground mb-2">Select a zodiac sign to view your horoscope</p>

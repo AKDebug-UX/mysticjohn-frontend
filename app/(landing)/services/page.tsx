@@ -41,7 +41,7 @@ export default function ServicesPage() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <Card className="pb-3 group border-border/50 bg-card/30 backdrop-blur-sm hover:border-primary/50 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/10 flex flex-col">
+            <Card className="py-3 group border-border/50 bg-card/30 backdrop-blur-sm hover:border-primary/50 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/10 flex flex-col">
               <CardHeader className="p-8">
                 <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
                   <Video className="h-8 w-8 text-primary" />
@@ -61,7 +61,7 @@ export default function ServicesPage() {
               </CardFooter>
             </Card>
 
-            <Card className="pb-3 group border-border/50 bg-card/30 backdrop-blur-sm hover:border-accent/50 transition-all duration-500 hover:shadow-2xl hover:shadow-accent/10 flex flex-col">
+            <Card className="py-3 group border-border/50 bg-card/30 backdrop-blur-sm hover:border-accent/50 transition-all duration-500 hover:shadow-2xl hover:shadow-accent/10 flex flex-col">
               <CardHeader className="p-8">
                 <div className="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
                   <MapPin className="h-8 w-8 text-accent" />
@@ -81,7 +81,7 @@ export default function ServicesPage() {
               </CardFooter>
             </Card>
 
-            <Card className="pb-3 group border-border/50 bg-card/30 backdrop-blur-sm hover:border-secondary/50 transition-all duration-500 hover:shadow-2xl hover:shadow-secondary/10 flex flex-col border-dashed">
+            <Card className="py-3 group border-border/50 bg-card/30 backdrop-blur-sm hover:border-secondary/50 transition-all duration-500 hover:shadow-2xl hover:shadow-secondary/10 flex flex-col border-dashed">
               <CardHeader className="p-8">
                 <div className="w-16 h-16 rounded-2xl bg-secondary/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
                   <Users className="h-8 w-8 text-secondary-foreground" />

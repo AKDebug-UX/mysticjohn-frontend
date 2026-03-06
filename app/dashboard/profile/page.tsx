@@ -114,7 +114,7 @@ export default function ProfilePage() {
             </div>
 
             <div className="grid gap-6">
-                <Card className="pb-3 bg-card/50 backdrop-blur-sm border-white/10 text-white">
+                <Card className="py-3 bg-card/50 backdrop-blur-sm border-white/10 text-white">
                     <CardHeader>
                         <CardTitle>Personal Information</CardTitle>
                         <CardDescription>Update your personal details and how we contact you.</CardDescription>

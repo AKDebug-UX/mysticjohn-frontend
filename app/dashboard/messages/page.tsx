@@ -73,11 +73,11 @@ export default function MessagesPage() {
                 </div>
               </div>
             ) : (
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 gap-6">
                 {/* Message Input & History */}
                 <div className="lg:col-span-2 space-y-6">
                   {/* Credit Display Bar */}
-                  <Card className="pb-3 border-primary/50 relative overflow-hidden shadow-lg shadow-primary/10">
+                  <Card className="py-3 border-primary/50 relative overflow-hidden shadow-lg shadow-primary/10">
                     <div className="absolute inset-0 bg-linear-to-br from-primary/10 via-accent/5 to-transparent" />
                     <MysticalSparkles />
                     <CardContent className="relative z-10 py-6">
@@ -105,7 +105,7 @@ export default function MessagesPage() {
                   </Card>
 
                   {/* Message Input Box */}
-                  <Card className="pb-3 border-border/50 relative overflow-hidden">
+                  <Card className="py-3 border-border/50 relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-48 h-48 bg-linear-to-br from-accent/10 to-transparent blur-2xl" />
                     <CardHeader className="relative z-10">
                       <CardTitle className="text-foreground">Ask Your Question</CardTitle>
@@ -145,7 +145,7 @@ export default function MessagesPage() {
                   </Card>
 
                   {/* Message History Section */}
-                  <Card className="pb-3 border-border/50">
+                  <Card className="py-3 border-border/50">
                     <CardHeader>
                       <CardTitle className="text-foreground">Message History</CardTitle>
                       <CardDescription className="text-muted-foreground">
@@ -214,90 +214,7 @@ export default function MessagesPage() {
                   </Card>
                 </div>
 
-                {/* Sidebar Info */}
-                <div className="space-y-6">
-                  {/* How It Works */}
-                  <Card className="pb-3 border-border/50">
-                    <CardHeader>
-                      <CardTitle className="text-foreground text-lg">How It Works</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="space-y-2">
-                        <div className="flex items-start gap-3">
-                          <div className="h-6 w-6 rounded-full bg-primary/20 flex items-center justify-center shrink-0 mt-0.5">
-                            <span className="text-xs font-bold text-primary">1</span>
-                          </div>
-                          <p className="text-sm text-muted-foreground leading-relaxed">
-                            Write yer question in the box above
-                          </p>
-                        </div>
-                        <div className="flex items-start gap-3">
-                          <div className="h-6 w-6 rounded-full bg-accent/20 flex items-center justify-center shrink-0 mt-0.5">
-                            <span className="text-xs font-bold text-accent">2</span>
-                          </div>
-                          <p className="text-sm text-muted-foreground leading-relaxed">
-                            Spend 1 credit to send yer message
-                          </p>
-                        </div>
-                        <div className="flex items-start gap-3">
-                          <div className="h-6 w-6 rounded-full bg-secondary/30 flex items-center justify-center shrink-0 mt-0.5">
-                            <span className="text-xs font-bold text-secondary-foreground">3</span>
-                          </div>
-                          <p className="text-sm text-muted-foreground leading-relaxed">
-                            Get a personal reply from John within 24 hours
-                          </p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  {/* Guidelines */}
-                  <Card className="pb-3 border-border/50 relative overflow-hidden">
-                    <div className="absolute inset-0 bg-linear-to-br from-accent/5 to-transparent" />
-                    <CardHeader className="relative z-10">
-                      <CardTitle className="text-foreground text-lg">Guidelines</CardTitle>
-                    </CardHeader>
-                    <CardContent className="relative z-10">
-                      <ul className="space-y-2 text-sm text-muted-foreground">
-                        <li className="flex items-start gap-2">
-                          <Sparkles className="h-4 w-4 text-primary shrink-0 mt-0.5" />
-                          <span>Be specific with yer questions</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <Sparkles className="h-4 w-4 text-primary shrink-0 mt-0.5" />
-                          <span>One question per message works best</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <Sparkles className="h-4 w-4 text-primary shrink-0 mt-0.5" />
-                          <span>Replies come within 24 hours</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <Sparkles className="h-4 w-4 text-primary shrink-0 mt-0.5" />
-                          <span>Keep an open mind and heart</span>
-                        </li>
-                      </ul>
-                    </CardContent>
-                  </Card>
-
-                  {/* Buy More Credits CTA */}
-                  <Card className="pb-3 border-primary/30 bg-linear-to-br from-primary/5 to-accent/5 relative overflow-hidden">
-                    <MysticalSparkles />
-                    <CardHeader className="relative z-10">
-                      <CardTitle className="text-foreground text-lg">Need More Credits?</CardTitle>
-                      <CardDescription className="text-muted-foreground">
-                        Get more answers from the universe
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="relative z-10">
-                      <Button
-                        className="w-full bg-primary text-primary-foreground hover:bg-primary/90 mt-2"
-                        onClick={() => setBuyCreditsOpen(true)}
-                      >
-                        Buy Credits
-                      </Button>
-                    </CardContent>
-                  </Card>
-                </div>
+              
               </div>
             )}
           </main>

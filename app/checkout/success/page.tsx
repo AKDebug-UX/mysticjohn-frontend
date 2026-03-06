@@ -128,18 +128,18 @@ function CheckoutSuccessContent() {
     <ProtectedRoute>
       <div className="min-h-screen bg-background">
         <Navigation />
-        <main className="flex-1 lg:ml-64">
+        <main className="">
           <div className="container mx-auto px-4 py-16">
             <div className="max-w-2xl mx-auto">
               {isLoading ? (
-                <Card className="pb-3 border-primary/20">
+                <Card className="py-3 border-primary/20">
                   <CardContent className="p-12 text-center">
                     <Loader2 className="h-12 w-12 animate-spin text-primary mx-auto mb-4" />
                     <p className="text-muted-foreground">Processing your payment...</p>
                   </CardContent>
                 </Card>
               ) : status === 'pending' ? (
-                <Card className="pb-3 border-yellow-500/20">
+                <Card className="py-3 border-yellow-500/20">
                   <CardContent className="p-12 text-center space-y-3">
                     <Clock className="h-12 w-12 text-yellow-500 mx-auto mb-2" />
                     <CardTitle className="text-2xl">Payment Processing</CardTitle>
@@ -153,7 +153,7 @@ function CheckoutSuccessContent() {
                   </CardContent>
                 </Card>
               ) : error || status === 'failed' ? (
-                <Card className="pb-3 border-yellow-500/20">
+                <Card className="py-3 border-yellow-500/20">
                   <CardContent className="p-12 text-center">
                     <AlertCircle className="h-12 w-12 text-yellow-500 mx-auto mb-4" />
                     <CardTitle className="text-2xl mb-2">Payment Issue</CardTitle>
@@ -171,7 +171,7 @@ function CheckoutSuccessContent() {
                   </CardContent>
                 </Card>
               ) : (
-                <Card className="pb-3 border-primary/20">
+                <Card className="py-3 border-primary/20">
                   <CardHeader className="text-center pb-4">
                     <div className="mx-auto mb-4 w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
                       <CheckCircle2 className="h-10 w-10 text-primary" />

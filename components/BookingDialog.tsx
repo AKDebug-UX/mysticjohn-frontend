@@ -157,7 +157,7 @@ export function BookingDialog({ open, onOpenChange, service }: BookingDialogProp
 
         <div className="space-y-6">
           {/* Service Info */}
-          <Card className="pb-3 border-primary/20">
+          <Card className="py-3 border-primary/20">
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -329,7 +329,7 @@ export function BookingDialog({ open, onOpenChange, service }: BookingDialogProp
 
           {/* Booking Summary */}
           {selectedDate && selectedTime && (
-            <Card className="pb-3 border-primary/30 bg-primary/5">
+            <Card className="py-3 border-primary/30 bg-primary/5">
               <CardContent className="pt-6">
                 <h4 className="font-semibold text-foreground mb-3">Booking Summary</h4>
                 <div className="space-y-2 text-sm">

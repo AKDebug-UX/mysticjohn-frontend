@@ -224,7 +224,7 @@ export default function EventDetailPage() {
                         {/* Right Column: Ticket Card */}
                         <div className="lg:col-span-1">
                             <div className="sticky top-24">
-                                <Card className="pb-3 border-primary/50 overflow-hidden shadow-2xl shadow-primary/10">
+                                <Card className="py-3 border-primary/50 overflow-hidden shadow-2xl shadow-primary/10">
                                     <div className="h-2 bg-linear-to-r from-primary via-accent to-secondary" />
                                     <CardHeader>
                                         <CardTitle>Reserve Your Spot</CardTitle>

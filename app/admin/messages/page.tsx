@@ -166,7 +166,7 @@ export default function AdminMessagesPage() {
                 </div>
             </div>
 
-            <Card className="pb-3 flex flex-col md:flex-row overflow-auto h-screen border-muted">
+            <Card className="py-3 flex flex-col md:flex-row overflow-auto h-screen border-muted">
                 {/* Sidebar - User List */}
                 <div 
                     className={`

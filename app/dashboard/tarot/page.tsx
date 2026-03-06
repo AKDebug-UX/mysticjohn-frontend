@@ -132,7 +132,7 @@ export default function TarotPage() {
 
             {/* Daily Limit Notice */}
             {hasPickedToday && todayPick && (
-              <Card className="pb-3 mb-6 border-primary/20 bg-primary/5">
+              <Card className="py-3 mb-6 border-primary/20 bg-primary/5">
                 <CardContent className="py-4">
                   <p className="text-sm text-muted-foreground text-center">
                     Ye have already picked yer card today ({format(new Date(todayPick.pickedDate), 'MMMM d, yyyy')}).
@@ -144,7 +144,7 @@ export default function TarotPage() {
 
             {/* Card Selection Area */}
             {!selectedCard ? (
-              <Card className="pb-3 border-border/50">
+              <Card className="py-3 border-border/50">
                 <CardHeader>
                   <CardTitle className="text-2xl text-center">Ready to Pick Yer Card?</CardTitle>
                   <CardDescription className="text-center">
@@ -183,7 +183,7 @@ export default function TarotPage() {
             ) : (
               <div className="space-y-6">
                 {/* Card Display */}
-                <Card className="pb-3 border-border/50">
+                <Card className="py-3 border-border/50">
                   <CardHeader>
                     <CardTitle className="text-2xl text-center">
                       {selectedCard.name}

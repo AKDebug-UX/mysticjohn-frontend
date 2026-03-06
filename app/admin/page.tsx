@@ -152,7 +152,7 @@ export default function AdminDashboardPage() {
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
         {/* Quick Actions & Recent Activity */}
         <div className="col-span-4 space-y-6">
-          <Card className="pb-3 border-border/50 bg-card/50 backdrop-blur-sm">
+          <Card className="py-3 border-border/50 bg-card/50 backdrop-blur-sm">
             <CardHeader>
               <CardTitle>Quick Actions</CardTitle>
               <CardDescription>Frequently used management tools</CardDescription>
@@ -213,7 +213,7 @@ export default function AdminDashboardPage() {
 
         {/* Recent Notifications / System Status */}
         <div className="col-span-3 space-y-6">
-          <Card className="pb-3 border-border/50 bg-card/50 backdrop-blur-sm h-full">
+          <Card className="py-3 border-border/50 bg-card/50 backdrop-blur-sm h-full">
             <CardHeader>
               <CardTitle>System Overview</CardTitle>
               <CardDescription>Platform health and status</CardDescription>

@@ -26,7 +26,7 @@ export default function AboutPage() {
 
         {/* Main Content */}
         <div className="grid gap-12">
-          <Card className="pb-3 border-border/50 bg-card/30 backdrop-blur-md overflow-hidden relative">
+          <Card className="py-3 border-border/50 bg-card/30 backdrop-blur-md overflow-hidden relative">
             <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 blur-3xl rounded-full -mr-16 -mt-16" />
             <CardHeader>
               <CardTitle className="text-3xl font-bold text-primary">My Gift, My Journey</CardTitle>

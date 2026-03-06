@@ -220,7 +220,7 @@ export default function AIChatPage() {
 
             <div className="flex flex-1 gap-6 min-h-0">
                {/* Desktop Conversation List */}
-               <Card className="pb-3 hidden md:flex flex-col w-64 shrink-0 border-border/50">
+               <Card className="py-3 hidden md:flex flex-col w-64 shrink-0 border-border/50">
                   <CardHeader className="p-4 border-b">
                     <CardTitle className="text-lg">History</CardTitle>
                   </CardHeader>
@@ -255,7 +255,7 @@ export default function AIChatPage() {
                {/* Chat Area */}
                <div className="flex-1 flex flex-col min-h-0">
                   {/* Info Notice */}
-               <Card className="pb-3 border-primary/20 bg-primary/5 mb-4 shrink-0">
+               <Card className="py-3 border-primary/20 bg-primary/5 mb-4 shrink-0">
                  <CardContent className="p-3 flex items-center justify-between">
                     <div className="flex items-center gap-2">
                        <Bot className="h-4 w-4 text-primary" />
@@ -265,7 +265,7 @@ export default function AIChatPage() {
                </Card>
 
                   {/* Messages */}
-                  <Card className="pb-3 flex-1 flex flex-col border-border/50 min-h-0">
+                  <Card className="py-3 flex-1 flex flex-col border-border/50 min-h-0">
                     <CardContent className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0 scrollbar-thin">
                       {messages.length === 0 ? (
                         <div className="flex flex-col items-center justify-center h-full text-center">

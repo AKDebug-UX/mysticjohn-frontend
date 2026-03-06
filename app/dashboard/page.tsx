@@ -147,7 +147,7 @@ export default function DashboardPage() {
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Credit Balance Card */}
-            <Card className="pb-3 border-border/50 bg-card/50 backdrop-blur-sm hover:bg-card/80 transition-all duration-300 group overflow-hidden relative">
+            <Card className="py-3 border-border/50 bg-card/50 backdrop-blur-sm hover:bg-card/80 transition-all duration-300 group overflow-hidden relative">
               <div className="absolute inset-0 bg-linear-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Credit Balance</CardTitle>
@@ -170,7 +170,7 @@ export default function DashboardPage() {
             </Card>
 
             {/* Next Appointment Card */}
-            <Card className="pb-3 border-border/50 bg-card/50 backdrop-blur-sm hover:bg-card/80 transition-all duration-300 md:col-span-2 relative overflow-hidden group">
+            <Card className="py-3 border-border/50 bg-card/50 backdrop-blur-sm hover:bg-card/80 transition-all duration-300 md:col-span-2 relative overflow-hidden group">
               <div className="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
                 <Calendar className="w-24 h-24 text-primary" />
               </div>
@@ -219,7 +219,7 @@ export default function DashboardPage() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* My Courses Section */}
-            <Card className="pb-3 border-border/50 bg-card/50 backdrop-blur-sm">
+            <Card className="py-3 border-border/50 bg-card/50 backdrop-blur-sm">
               <CardHeader className="flex flex-row items-center justify-between">
                 <div>
                   <CardTitle className="flex items-center gap-2">
@@ -261,7 +261,7 @@ export default function DashboardPage() {
             </Card>
 
             {/* Upcoming Events Section */}
-            <Card className="pb-3 border-border/50 bg-card/50 backdrop-blur-sm">
+            <Card className="py-3 border-border/50 bg-card/50 backdrop-blur-sm">
               <CardHeader className="flex flex-row items-center justify-between">
                 <div>
                   <CardTitle className="flex items-center gap-2">
@@ -317,7 +317,7 @@ export default function DashboardPage() {
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Notifications / Updates */}
-            <Card className="pb-3 col-span-1 lg:col-span-2 border-border/50 bg-card/50 backdrop-blur-sm">
+            <Card className="py-3 col-span-1 lg:col-span-2 border-border/50 bg-card/50 backdrop-blur-sm">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Bell className="w-5 h-5 text-accent" />
@@ -346,7 +346,7 @@ export default function DashboardPage() {
             </Card>
 
             {/* Quick Actions */}
-            <Card className="pb-3 border-border/50 bg-card/50 backdrop-blur-sm">
+            <Card className="py-3 border-border/50 bg-card/50 backdrop-blur-sm">
               <CardHeader>
                 <CardTitle>Quick Actions</CardTitle>
               </CardHeader>

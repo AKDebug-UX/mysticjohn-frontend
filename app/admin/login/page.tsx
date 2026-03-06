@@ -62,7 +62,7 @@ export default function AdminLoginPage() {
         <MysticalSparkles />
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-md mx-auto">
-            <Card className="pb-3 border-primary/30 relative overflow-hidden shadow-lg shadow-primary/10">
+            <Card className="py-3 border-primary/30 relative overflow-hidden shadow-lg shadow-primary/10">
               <div className="absolute inset-0 bg-linear-to-br from-primary/5 via-accent/5 to-transparent" />
               <MysticalSparkles />
 

@@ -65,7 +65,7 @@ export function NavigationBlocks() {
             const Icon = block.icon
             return (
               <Link key={block.href} href={block.href} className="group">
-                <Card className="pb-3 h-full border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/20">
+                <Card className="py-3 h-full border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/20">
                   <CardHeader>
                     <div className={cn('h-12 w-12 rounded-lg flex items-center justify-center mb-4 transition-colors', block.iconClassName)}>
                       <Icon className={cn('h-6 w-6', block.iconColor)} />
