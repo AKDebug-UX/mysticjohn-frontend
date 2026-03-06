@@ -110,4 +110,25 @@ export const authApi = {
       message: response.message || 'Profile updated'
     };
   },
+
+  /**
+   * Request password reset
+   */
+  forgotPassword: async (email: string): Promise<void> => {
+    await apiClient.post('/api/auth/forgot-password', { email });
+  },
+
+  /**
+   * Reset password with token
+   */
+  resetPassword: async (token: string, newPassword: string): Promise<void> => {
+    await apiClient.post('/api/auth/reset-password', { token, newPassword });
+  },
+
+  /**
+   * Change password for authenticated user
+   */
+  changePassword: async (currentPassword: string, newPassword: string): Promise<void> => {
+    await apiClient.post('/api/auth/change-password', { currentPassword, newPassword });
+  },
 };
